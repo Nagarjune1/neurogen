@@ -21,14 +21,4 @@ public class ThesisApp extends Application {
         stage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
     }
-
-    /*
-    private void initializeSizeListener() {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
-                System.out.println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
-
-        stage.widthProperty().addListener(stageSizeListener);
-        stage.heightProperty().addListener(stageSizeListener);
-    }
-    */
 }

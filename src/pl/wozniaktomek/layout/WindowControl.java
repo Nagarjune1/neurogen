@@ -5,16 +5,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Pane;
-import pl.wozniaktomek.layout.widgets.DataEditorWidget;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class WindowControl implements Initializable {
+    @FXML private AnchorPane rightPane;
     @FXML private ScrollPane paneHome;
     @FXML private ScrollPane paneDataEditor;
-    @FXML private Pane dataEditorContainer;
+    @FXML private HBox dataEditorContainer;
 
     @FXML private Button buttonNavHome;
     @FXML private Button buttonNavDataEditor;
@@ -30,7 +31,7 @@ public class WindowControl implements Initializable {
 
     /*
     private void initializeDataEditorWidget() {
-        DataEditorWidget dataEditorWidget = new DataEditorWidget();
+        DataEditorWidget dataEditorWidget = new DataEditorWidget(rightPane);
         dataEditorContainer.getChildren().add(dataEditorWidget.getChart());
     }
     */
