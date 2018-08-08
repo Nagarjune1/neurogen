@@ -1,0 +1,71 @@
+/* Main */
+.root {
+    -fx-font-size: 14px;
+    -fx-font-family: 'Roboto Condensed';
+}
+
+/* Font */
+@font-face {
+    src: url("../font/RobotoCondensed.ttf");
+}
+
+/* Panel */
+.left-pane {
+    -fx-background-color: rgba(54, 69, 79, 1.0);
+}
+
+.right-pane {
+
+}
+
+.widget-pane-full {
+    -fx-border-color: rgba(54, 69, 79, 1.0);
+    -fx-border-radius: 4px;
+}
+
+.widget-pane-half {
+    -fx-border-color: rgba(54, 69, 79, 1.0);
+    -fx-border-width: 0 0 0 10;
+}
+
+.widget-pane-text > Text {
+    -fx-fill: rgba(54, 69, 79, 1.0);
+}
+
+/* Button */
+.normal-button {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(54, 69, 79, 1.0);
+    -fx-border-radius: 4px;
+    -fx-text-fill: rgba(54, 69, 79, 1.0);
+    -fx-font-size: 16px;
+}
+
+.normal-button:hover {
+    -fx-background-color: rgba(54, 69, 79, 1.0);
+    -fx-text-fill: rgba(255, 255, 255, 1.0);
+}
+
+/* Text */
+.title {
+    -fx-font-size: 36px;
+}
+
+.section-title {
+    -fx-font-size: 28px;
+    -fx-fill: rgba(113, 140, 158, 1.0);
+}
+
+/* Navigation menu */
+.nav-button {
+    -fx-background-color: rgba(54, 69, 79, 1.0);
+    -fx-border-color: rgba(167, 184, 195, 1.0);
+    -fx-border-radius: 4px;
+    -fx-text-fill: rgba(167, 184, 195, 1.0);
+    -fx-font-size: 16px;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(167, 184, 195, 1.0);
+    -fx-text-fill: rgba(54, 69, 79, 1.0);
+}

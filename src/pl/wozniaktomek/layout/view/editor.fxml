@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="pl.wozniaktomek.layout.control.EditorControl">
+   <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;"
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.topAnchor="0.0">
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+      </padding>
+      <VBox spacing="10.0">
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych"/>
+         <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <opaqueInsets>
+               <Insets/>
+            </opaqueInsets>
+            <VBox.margin>
+               <Insets/>
+            </VBox.margin>
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Klasa obiektów:">
+               <HBox.margin>
+                  <Insets right="10.0"/>
+               </HBox.margin>
+            </Text>
+            <RadioButton fx:id="dataClassRadioButton1" mnemonicParsing="false" selected="true" text="1">
+               <toggleGroup>
+                  <ToggleGroup fx:id="dataClassToggleGroup"/>
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="dataClassRadioButton2" mnemonicParsing="false" text="2"
+                         toggleGroup="$dataClassToggleGroup"/>
+            <RadioButton fx:id="dataClassRadioButton3" mnemonicParsing="false" text="3"
+                         toggleGroup="$dataClassToggleGroup"/>
+            <RadioButton fx:id="dataClassRadioButton4" mnemonicParsing="false" text="4"
+                         toggleGroup="$dataClassToggleGroup"/>
+            <RadioButton fx:id="dataClassRadioButton5" mnemonicParsing="false" text="5"
+                         toggleGroup="$dataClassToggleGroup"/>
+         </HBox>
+         <HBox spacing="10.0">
+            <HBox fx:id="dataEditorContainer"/>
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+               <HBox.margin>
+                  <Insets top="14.0"/>
+               </HBox.margin>
+               <TextFlow fx:id="textSummary">
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                  </padding>
+                  <styleClass>
+                     <String fx:value="widget-pane-text"/>
+                     <String fx:value="widget-pane-full"/>
+                  </styleClass>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Podsumowanie"/>
+               </TextFlow>
+            </VBox>
+         </HBox>
+         <HBox spacing="10.0">
+            <padding>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <Button fx:id="buttonGenerate" mnemonicParsing="false" styleClass="normal-button" text="Wygeneruj"/>
+            <Button fx:id="buttonClear" mnemonicParsing="false" styleClass="normal-button" text="Wyczyść"/>
+            <Separator orientation="VERTICAL"/>
+            <Button fx:id="buttonSave" mnemonicParsing="false" styleClass="normal-button" text="Zapisz do pliku"/>
+            <Button fx:id="buttonRead" mnemonicParsing="false" styleClass="normal-button" text="Wczytaj z pliku"/>
+         </HBox>
+      </VBox>
+   </ScrollPane>
+</AnchorPane>

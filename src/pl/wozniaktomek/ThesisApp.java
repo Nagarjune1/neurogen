@@ -1,13 +1,17 @@
 package pl.wozniaktomek;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pl.wozniaktomek.layout.control.WindowControl;
 
 public class ThesisApp extends Application {
-    private Stage stage;
+    public static WindowControl windowControl;
+    public static Stage stage;
+    private Parent root;
 
     public static void main(String[] args) {
         launch(args);
@@ -15,10 +19,26 @@ public class ThesisApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("layout/window.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("layout/view/window.fxml"));
+        root = fxmlLoader.load();
+        setStage(primaryStage);
+
+        windowControl = fxmlLoader.getController();
+        windowControl.initialization();
+
+        primaryStage.show();
+    }
+
+    private void setStage(Stage primaryStage) {
         stage = primaryStage;
         stage.setTitle("Thesis");
         stage.setScene(new Scene(root, 1280, 720));
-        primaryStage.show();
+        stage.setMinWidth(854);
+        stage.setMinHeight(480);
+
+        stage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 }
