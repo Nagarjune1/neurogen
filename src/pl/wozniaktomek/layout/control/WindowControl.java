@@ -18,14 +18,16 @@ public class WindowControl implements Initializable {
     @FXML private AnchorPane contentPane;
     private AnchorPane homePane;
     private AnchorPane editorPane;
-    private AnchorPane algorithmPane;
+    private AnchorPane geneticPane;
+    private AnchorPane neuralPane;
 
     @FXML private Button buttonNavHome;
     @FXML private Button buttonNavDataEditor;
-    @FXML private Button buttonNavAlgorithm;
+    @FXML private Button buttonNavGenetic;
+    @FXML private Button buttonNavNeural;
     @FXML private Button buttonNavExit;
 
-    private enum ActivePane {HOME, EDITOR, ALGORITHM}
+    private enum ActivePane {HOME, EDITOR, GENETIC, NEURAL}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,12 +54,18 @@ public class WindowControl implements Initializable {
         }
 
         try {
-            algorithmPane = FXMLLoader.load(getClass().getResource("../view/algorithm.fxml"));
+            geneticPane = FXMLLoader.load(getClass().getResource("../view/genetic.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        contentPane.getChildren().addAll(homePane, editorPane, algorithmPane);
+        try {
+            neuralPane = FXMLLoader.load(getClass().getResource("../view/neural.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        contentPane.getChildren().addAll(homePane, editorPane, geneticPane, neuralPane);
         switchPanels(ActivePane.HOME);
     }
 
@@ -66,7 +74,8 @@ public class WindowControl implements Initializable {
             contentPane.setPrefSize(ThesisApp.stage.getWidth() - navPane.getWidth() - 16, ThesisApp.stage.getHeight() - 38);
             homePane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             editorPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
-            algorithmPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
+            geneticPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
+            neuralPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
         };
 
         ThesisApp.stage.widthProperty().addListener(stageSizeListener);
@@ -76,7 +85,8 @@ public class WindowControl implements Initializable {
     private void initializeButtonActions() {
         buttonNavHome.setOnAction(event -> switchPanels(ActivePane.HOME));
         buttonNavDataEditor.setOnAction(event -> switchPanels(ActivePane.EDITOR));
-        buttonNavAlgorithm.setOnAction(event -> switchPanels(ActivePane.ALGORITHM));
+        buttonNavGenetic.setOnAction(event -> switchPanels(ActivePane.GENETIC));
+        buttonNavNeural.setOnAction(event -> switchPanels(ActivePane.NEURAL));
         buttonNavExit.setOnAction(event -> closeProgram());
 
     }
@@ -84,21 +94,30 @@ public class WindowControl implements Initializable {
         switch (activePanel) {
             case HOME:
                 homePane.setVisible(true);
-                algorithmPane.setVisible(false);
                 editorPane.setVisible(false);
+                geneticPane.setVisible(false);
+                neuralPane.setVisible(false);
                 break;
 
             case EDITOR:
                 homePane.setVisible(false);
                 editorPane.setVisible(true);
-                algorithmPane.setVisible(false);
-
+                geneticPane.setVisible(false);
+                neuralPane.setVisible(false);
                 break;
 
-            case ALGORITHM:
+            case GENETIC:
                 homePane.setVisible(false);
                 editorPane.setVisible(false);
-                algorithmPane.setVisible(true);
+                geneticPane.setVisible(true);
+                neuralPane.setVisible(false);
+                break;
+
+            case NEURAL:
+                homePane.setVisible(false);
+                editorPane.setVisible(false);
+                geneticPane.setVisible(false);
+                neuralPane.setVisible(true);
                 break;
         }
     }

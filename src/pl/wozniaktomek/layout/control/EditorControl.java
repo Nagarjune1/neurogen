@@ -3,9 +3,7 @@ package pl.wozniaktomek.layout.control;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -21,7 +19,8 @@ public class EditorControl implements Initializable {
     @FXML private Button buttonSave;
     @FXML private Button buttonRead;
 
-    @FXML private HBox dataEditorContainer;
+    @FXML private HBox chartContainer;
+
     @FXML private RadioButton dataClassRadioButton1;
     @FXML private RadioButton dataClassRadioButton2;
     @FXML private RadioButton dataClassRadioButton3;
@@ -42,12 +41,6 @@ public class EditorControl implements Initializable {
         initializeSummaryListener();
         initializeButtonActions();
         initializeWidget();
-    }
-
-    private void initializeWidget() {
-        dataEditorWidget = new DataEditorWidget();
-        dataEditorWidget.setTextSummary(textSummaryContent);
-        dataEditorContainer.getChildren().add(dataEditorWidget.getChart());
     }
 
     private void initializeRadioButtons() {
@@ -87,5 +80,11 @@ public class EditorControl implements Initializable {
 
     private void initializeButtonActions() {
         buttonClear.setOnAction(event -> dataEditorWidget.clearChart());
+    }
+
+    private void initializeWidget() {
+        dataEditorWidget = new DataEditorWidget();
+        dataEditorWidget.setTextSummary(textSummaryContent);
+        chartContainer.getChildren().add(dataEditorWidget.getChart());
     }
 }

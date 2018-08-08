@@ -38,6 +38,7 @@ public class DataEditorWidget {
         chart = new ScatterChart<>(xAxis, yAxis);
         chart.setLegendSide(Side.RIGHT);
         chart.setPrefSize(854, 480);
+        chart.setAnimated(false);
     }
 
     private void initializeEvent() {
