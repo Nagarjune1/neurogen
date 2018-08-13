@@ -1,4 +1,4 @@
-package pl.wozniaktomek.layout.widgets;
+package pl.wozniaktomek.layout.widget;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Side;
@@ -14,7 +14,7 @@ public class DataEditorWidget {
     private Text textSummary;
 
     private ScatterChart<Number, Number> chart;
-    private HashMap<Integer, ArrayList<Point2D>> points;
+    private HashMap<Integer, ArrayList<Point2D>> objects;
     private NumberAxis xAxis;
     private NumberAxis yAxis;
     private Integer classNumber;
@@ -29,7 +29,7 @@ public class DataEditorWidget {
     private void initializeData() {
         classNumber = 1;
         objectAmount = 0;
-        points = new HashMap<>();
+        objects = new HashMap<>();
     }
 
     private void initializeChart() {
@@ -46,23 +46,21 @@ public class DataEditorWidget {
             Point2D pointScene = new Point2D(event.getSceneX(), event.getSceneY());
 
             Point2D pointClass = new Point2D(
-                    // TODO precision
-                    xAxis.getValueForDisplay(xAxis.sceneToLocal(pointScene).getX()).doubleValue(),
-                    yAxis.getValueForDisplay(yAxis.sceneToLocal(pointScene).getY()).doubleValue()
+                    Math.round(xAxis.getValueForDisplay(xAxis.sceneToLocal(pointScene).getX()).doubleValue() * 1000.0) / 1000.0,
+                    Math.round(yAxis.getValueForDisplay(yAxis.sceneToLocal(pointScene).getY()).doubleValue() * 1000.0) / 1000.0
             );
 
-            if (points.containsKey(classNumber)) {
-                ArrayList<Point2D> classPoints = points.get(classNumber);
+            if (objects.containsKey(classNumber)) {
+                ArrayList<Point2D> classPoints = objects.get(classNumber);
                 if (!classPoints.contains(pointClass))
                     classPoints.add(pointClass);
-                points.replace(classNumber, classPoints);
+                objects.replace(classNumber, classPoints);
             } else {
                 ArrayList<Point2D> classPoints = new ArrayList<>();
                 classPoints.add(pointClass);
-                points.put(classNumber, classPoints);
+                objects.put(classNumber, classPoints);
             }
 
-            objectAmount++;
             refreshChart();
             refreshSummary();
         });
@@ -71,7 +69,7 @@ public class DataEditorWidget {
     private void refreshChart() {
         chart.getData().clear();
 
-        for (Map.Entry<Integer, ArrayList<Point2D>> entry : points.entrySet()) {
+        for (Map.Entry<Integer, ArrayList<Point2D>> entry : objects.entrySet()) {
             ScatterChart.Series<Number, Number> series = new ScatterChart.Series<>();
             series.setName("klasa " + entry.getKey());
             for (Point2D point : entry.getValue()) {
@@ -83,11 +81,13 @@ public class DataEditorWidget {
     }
 
     private void refreshSummary() {
+        objectAmount = objects.values().stream().mapToInt(ArrayList::size).sum();
+
         String summary = "Podsumowanie";
 
         for (int i = 1; i < 6; i++) {
-            if (points.get(i) != null)
-                summary = summary.concat("\n     klasa " + i + ":  " + points.get(i).size() + " / " + objectAmount);
+            if (objects.get(i) != null)
+                summary = summary.concat("\n     klasa " + i + ":  " + objects.get(i).size() + " / " + objectAmount);
         }
 
         if (objectAmount.equals(0))
@@ -96,8 +96,13 @@ public class DataEditorWidget {
         textSummary.setText(summary);
     }
 
+    public void refresh() {
+        refreshChart();
+        refreshSummary();
+    }
+
     public void clearChart() {
-        points = new HashMap<>();
+        objects = new HashMap<>();
         objectAmount = 0;
         refreshChart();
         refreshSummary();
@@ -117,5 +122,13 @@ public class DataEditorWidget {
 
     public void setClassNumber(Integer classNumber) {
         this.classNumber = classNumber;
+    }
+
+    public void setObjects(HashMap<Integer, ArrayList<Point2D>> objects) {
+        this.objects = objects;
+    }
+
+    public HashMap<Integer, ArrayList<Point2D>> getObjects() {
+        return objects;
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.RadioButton?>
@@ -19,7 +18,20 @@
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
       </padding>
       <VBox spacing="10.0">
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych" />
+         <HBox alignment="CENTER_LEFT">
+            <children>
+               <HBox fx:id="titleContainer">
+                  <children>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych">
+                        <HBox.margin>
+                           <Insets right="6.0" />
+                        </HBox.margin>
+                     </Text>
+                  </children>
+               </HBox>
+               <Button fx:id="buttonHelp" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
+            </children>
+         </HBox>
          <HBox alignment="CENTER_LEFT" spacing="10.0">
             <opaqueInsets>
                <Insets />
@@ -47,18 +59,14 @@
          </HBox>
          <HBox spacing="10.0">
             <HBox fx:id="chartContainer" />
-            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+            <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" spacing="12.0">
                <HBox.margin>
                   <Insets top="14.0" />
                </HBox.margin>
-               <TextFlow fx:id="textSummary">
+               <TextFlow fx:id="textSummary" styleClass="widget-pane">
                   <padding>
                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                   </padding>
-                  <styleClass>
-                     <String fx:value="widget-pane-text" />
-                     <String fx:value="widget-pane-full" />
-                  </styleClass>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Podsumowanie" />
                </TextFlow>
             </VBox>
@@ -67,11 +75,11 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <Button fx:id="buttonGenerate" mnemonicParsing="false" styleClass="normal-button" text="Wygeneruj" />
-            <Button fx:id="buttonClear" mnemonicParsing="false" styleClass="normal-button" text="Wyczyść" />
+            <Button fx:id="buttonClear" mnemonicParsing="false" text="Wyczyść" />
+            <Button fx:id="buttonGenerate" mnemonicParsing="false" text="Wygeneruj" />
             <Separator orientation="VERTICAL" />
-            <Button fx:id="buttonSave" mnemonicParsing="false" styleClass="normal-button" text="Zapisz do pliku" />
-            <Button fx:id="buttonRead" mnemonicParsing="false" styleClass="normal-button" text="Wczytaj z pliku" />
+            <Button fx:id="buttonSave" mnemonicParsing="false" text="Zapisz do pliku" />
+            <Button fx:id="buttonRead" mnemonicParsing="false" text="Wczytaj z pliku" />
          </HBox>
       </VBox>
    </ScrollPane>
