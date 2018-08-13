@@ -1,7 +1,9 @@
 package pl.wozniaktomek.layout.widget;
 
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -9,14 +11,14 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
 public class ProgressWidget {
-    private HBox progressContainer;
+    private Pane progressContainer;
     private Integer progressSteps;
     private Integer progress;
 
     private enum State {EMPTY, COMPLETED}
     private enum Figure {CIRCLE, RECTANGLE}
 
-    public ProgressWidget(HBox progressContainer, Integer progressSteps) {
+    public ProgressWidget(Pane progressContainer, Integer progressSteps) {
         this.progressContainer = progressContainer;
         this.progressSteps = progressSteps;
         this.progress = 0;
@@ -87,8 +89,14 @@ public class ProgressWidget {
 
             case RECTANGLE:
                 shape = new Rectangle();
-                ((Rectangle) shape).setWidth(63.0);
-                ((Rectangle) shape).setHeight(21.0);
+                if (progressContainer instanceof HBox) {
+                    ((Rectangle) shape).setWidth(63.0);
+                    ((Rectangle) shape).setHeight(21.0);
+                } else if (progressContainer instanceof VBox) {
+                    ((Rectangle) shape).setWidth(21.0);
+                    ((Rectangle) shape).setHeight(63.0);
+                }
+
                 break;
         }
 
