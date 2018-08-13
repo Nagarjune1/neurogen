@@ -63,7 +63,6 @@ public class EditorControl implements Initializable {
             dataEditorWidget.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 200, ThesisApp.windowControl.getContentPane().getHeight() - 200);
         };
 
-
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
         ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
@@ -103,5 +102,6 @@ public class EditorControl implements Initializable {
         dataEditorWidget = new DataEditorWidget();
         dataEditorWidget.setTextSummary(textSummaryContent);
         chartContainer.getChildren().add(dataEditorWidget.getChart());
+        dataEditorWidget.refresh();
     }
 }
