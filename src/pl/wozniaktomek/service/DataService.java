@@ -1,8 +1,10 @@
 package pl.wozniaktomek.service;
 
 import javafx.geometry.Point2D;
+import javafx.scene.chart.ScatterChart;
 import javafx.stage.FileChooser;
 import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.service.util.DataGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,18 +16,14 @@ import java.util.*;
 public class DataService {
     private final static String SEPARATOR = ";";
     private Integer classCounter;
-    private FileChooser fileChooser;
 
-    public HashMap<Integer, ArrayList<Point2D>> generateObjects() {
-        HashMap<Integer, ArrayList<Point2D>> objects = new HashMap<>();
-
-        // TODO generating
-
-        return objects;
+    public HashMap<Integer, ArrayList<Point2D>> generateObjects(ScatterChart chart) {
+        DataGenerator dataGenerator = new DataGenerator(chart);
+        return dataGenerator.generateObjects(new Random().nextInt(3) + 2);
     }
 
     public void saveToFile(HashMap<Integer, ArrayList<Point2D>> objects) {
-        createFileChooser();
+        FileChooser fileChooser = createFileChooser();
         File file = fileChooser.showSaveDialog(ThesisApp.stage);
         if (file != null) {
             try {
@@ -37,7 +35,7 @@ public class DataService {
     }
 
     public HashMap<Integer, ArrayList<Point2D>> readFromFile() {
-        createFileChooser();
+        FileChooser fileChooser = createFileChooser();
         File file = fileChooser.showOpenDialog(ThesisApp.stage);
 
         if (file != null)
@@ -134,9 +132,10 @@ public class DataService {
         return null;
     }
 
-    private void createFileChooser() {
-        fileChooser = new FileChooser();
+    private FileChooser createFileChooser() {
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Plik z danymi");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("pliki .csv (*.csv)", "*.csv"));
+        return fileChooser;
     }
 }

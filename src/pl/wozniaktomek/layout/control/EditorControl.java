@@ -82,7 +82,10 @@ public class EditorControl implements Initializable {
 
     private void initializeButtonActions() {
         buttonClear.setOnAction(event -> dataEditorWidget.clearChart());
-        buttonGenerate.setOnAction(event -> dataEditorWidget.setObjects(new DataService().generateObjects()));
+        buttonGenerate.setOnAction(event -> {
+            dataEditorWidget.setObjects(new DataService().generateObjects(dataEditorWidget.getChart()));
+            dataEditorWidget.refresh();
+        });
 
         buttonSave.setOnAction(event -> {
             new DataService().saveToFile(dataEditorWidget.getObjects());
