@@ -31,7 +31,7 @@ public class ThesisApp extends Application {
 
     private void setStage(Stage primaryStage) {
         stage = primaryStage;
-        stage.setTitle("Thesis");
+        stage.setTitle("NeuroGen");
         stage.setScene(new Scene(root, 1280, 720));
         stage.setMinWidth(854);
         stage.setMinHeight(480);

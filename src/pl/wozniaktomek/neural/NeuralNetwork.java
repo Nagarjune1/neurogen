@@ -32,4 +32,8 @@ public class NeuralNetwork {
             }
         }
     }
+
+    public List<Layer> getLayers() {
+        return layers;
+    }
 }

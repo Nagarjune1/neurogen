@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.NeuralControl">
-   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
       </padding>
@@ -25,9 +25,10 @@
                      </Text>
                   </children>
                </HBox>
-               <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
+               <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
             </children>
          </HBox>
+         <VBox fx:id="widgetContainer" styleClass="widget-pane-secondary" />
       </VBox>
    </ScrollPane>
 </AnchorPane>

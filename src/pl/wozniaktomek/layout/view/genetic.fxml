@@ -25,7 +25,7 @@
                      </Text>
                   </children>
                </HBox>
-               <Button fx:id="buttonHelp" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
+               <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
             </children>
          </HBox>
          <VBox alignment="TOP_CENTER">
