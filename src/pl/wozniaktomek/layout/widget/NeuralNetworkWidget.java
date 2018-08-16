@@ -28,7 +28,6 @@ public class NeuralNetworkWidget {
 
     public NeuralNetworkWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        analyzeNetwork();
     }
 
     public Canvas getWidget() {
@@ -36,6 +35,7 @@ public class NeuralNetworkWidget {
     }
 
     public void drawNetwork(Double width) {
+        analyzeNetwork();
         createCanvas(width);
         createGraphicContext();
         if (neuralNetwork.getLayers().size() > 1) {

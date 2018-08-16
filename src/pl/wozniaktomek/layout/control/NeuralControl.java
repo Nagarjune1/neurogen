@@ -37,7 +37,6 @@ public class NeuralControl implements Initializable {
         neuralNetwork.addLayer(2);
         neuralNetwork.addLayer(12);
         neuralNetwork.addLayer(3);
-        neuralNetwork.addBias();
         neuralNetworkWidget = new NeuralNetworkWidget(neuralNetwork);
     }
 
@@ -67,7 +66,7 @@ public class NeuralControl implements Initializable {
         for (final Node node : nodes) {
             if (node instanceof ScrollBar) {
                 ScrollBar scrollBar = (ScrollBar) node;
-                if (scrollBar.getOrientation().equals(Orientation.VERTICAL))
+                if (scrollBar.getOrientation().equals(Orientation.VERTICAL) && scrollBar.isVisible())
                     return true;
             }
         }
