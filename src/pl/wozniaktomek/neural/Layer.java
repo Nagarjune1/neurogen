@@ -14,6 +14,10 @@ public class Layer {
         return neurons;
     }
 
+    public void addNeuron() {
+        neurons.add(new Neuron());
+    }
+
     private void createLayer(Integer numberOfNeurons) {
         neurons = new ArrayList<>();
 

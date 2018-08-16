@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import pl.wozniaktomek.neural.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
@@ -37,9 +38,11 @@ public class NeuralNetworkWidget {
     public void drawNetwork(Double width) {
         createCanvas(width);
         createGraphicContext();
-        calculatePoints();
-        drawNeurons();
-        drawConnections();
+        if (neuralNetwork.getLayers().size() > 1) {
+            calculatePoints();
+            drawNeurons();
+            drawConnections();
+        }
     }
 
     private void analyzeNetwork() {
@@ -60,7 +63,6 @@ public class NeuralNetworkWidget {
 
     private void createGraphicContext() {
         graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.setFill(Color.rgb(113, 140, 158, 1.0));
         graphicsContext.setStroke(Color.rgb(113, 140, 158, 1.0));
         graphicsContext.setLineWidth(2);
     }
@@ -113,41 +115,80 @@ public class NeuralNetworkWidget {
     }
 
     private void drawNeurons() {
-        for (Map.Entry<Integer, ArrayList<Point2D>> entry : points.entrySet()) {
-            for (Point2D point : entry.getValue()) {
+        drawInputNeurons();
+        drawHiddenLayers();
+
+        if (neuralNetwork.isBias())
+            drawBias();
+    }
+
+    private void drawInputNeurons() {
+        graphicsContext.setFill(Color.rgb(54, 69, 79, 1.0));
+
+        for (Point2D point : points.get(1)) {
+            graphicsContext.fillOval(point.getX() - neuronRadius / 2d, point.getY() - neuronRadius / 2, neuronRadius, neuronRadius);
+        }
+    }
+
+    private void drawHiddenLayers() {
+        for (int i = 2; i < points.size() + 1; i++) {
+            for (Point2D point : points.get(i)) {
                 graphicsContext.strokeOval(point.getX() - neuronRadius / 2d, point.getY() - neuronRadius / 2, neuronRadius, neuronRadius);
             }
         }
+    }
 
-        /* Bias
+    private void drawBias() {
+        graphicsContext.setFill(Color.rgb(113, 140, 158, 1.0));
+
         for (int i = 1; i < points.size(); i++) {
             Point2D point = points.get(i).get(points.get(i).size() - 1);
             graphicsContext.fillOval(point.getX() - neuronRadius / 2d, point.getY() - neuronRadius / 2, neuronRadius, neuronRadius);
         }
-        */
     }
 
     private void drawConnections() {
         graphicsContext.setLineWidth(0.5);
 
-        for (int i = 1; i < points.size() - 1; i++) {
+        for (int i = 1; i < points.size(); i++) {
             ArrayList<Point2D> layerPoints = points.get(i);
             ArrayList<Point2D> nextLayerPoints = points.get(i + 1);
 
             for (Point2D point : layerPoints) {
-                for (int j = 0; j < nextLayerPoints.size() - 1; j++) {
-                    graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoints.get(j).getX(), nextLayerPoints.get(j).getY() - neuronRadius / 2);
+                if (neuralNetwork.isBias()) {
+                    for (int j = 0; j < nextLayerPoints.size() - 1; j++) {
+                        graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoints.get(j).getX(), nextLayerPoints.get(j).getY() - neuronRadius / 2);
+                    }
+                } else {
+                    for (Point2D nextLayerPoint : nextLayerPoints) {
+                        graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoint.getX(), nextLayerPoint.getY() - neuronRadius / 2);
+                    }
                 }
             }
         }
 
+        // last layer
         ArrayList<Point2D> layerPoints = points.get(points.size() - 1);
         ArrayList<Point2D> nextLayerPoints = points.get(points.size());
 
         for (Point2D point : layerPoints) {
-            for (int j = 0; j < nextLayerPoints.size(); j++) {
-                graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoints.get(j).getX(), nextLayerPoints.get(j).getY() - neuronRadius / 2);
+            for (Point2D nextLayerPoint : nextLayerPoints) {
+                graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoint.getX(), nextLayerPoint.getY() - neuronRadius / 2);
             }
         }
     }
+
+    /* just for debug */
+    private void drawNeuronNumbers() {
+        graphicsContext.setFont(new Font("Arial", 16));
+        graphicsContext.setFill(Color.rgb(0, 0, 0, 1.0));
+
+        int counter = 0;
+        for (Map.Entry<Integer, ArrayList<Point2D>> entry : points.entrySet()) {
+            for (Point2D point : entry.getValue()) {
+                graphicsContext.fillText(String.valueOf(++counter), point.getX() - neuronRadius / 8d, point.getY() - neuronRadius / 8d);
+            }
+        }
+    }
+
 }

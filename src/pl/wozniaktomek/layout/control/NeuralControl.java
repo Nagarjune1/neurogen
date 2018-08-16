@@ -20,39 +20,46 @@ import java.util.Set;
 public class NeuralControl implements Initializable {
     @FXML private ScrollPane scrollPane;
     @FXML private HBox titleContainer;
-    @FXML private VBox widgetContainer;
+    @FXML private HBox progressWidgetContainer;
+    @FXML private VBox networkWidgetContainer;
 
     private NeuralNetwork neuralNetwork;
     private NeuralNetworkWidget neuralNetworkWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeWidget();
+        initializeNetworkWidget();
         initializeSizeListener();
     }
 
-    private void initializeWidget() {
+    private void initializeNetworkWidget() {
         neuralNetwork = new NeuralNetwork();
+        neuralNetwork.addLayer(2);
+        neuralNetwork.addLayer(12);
         neuralNetwork.addLayer(3);
-        neuralNetwork.addLayer(8);
-        neuralNetwork.addLayer(5);
-        neuralNetwork.addLayer(3);
-        neuralNetwork.createConnections();
+        neuralNetwork.addBias();
         neuralNetworkWidget = new NeuralNetworkWidget(neuralNetwork);
     }
 
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
-            widgetContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth());
+            progressWidgetContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth());
+            networkWidgetContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth());
 
             if (isScrollBarVisible())
-                refreshWidget(ThesisApp.windowControl.getContentPane().getWidth() - 18);
-            else refreshWidget(ThesisApp.windowControl.getContentPane().getWidth());
+                refreshNetworkWidget(ThesisApp.windowControl.getContentPane().getWidth() - 18);
+            else refreshNetworkWidget(ThesisApp.windowControl.getContentPane().getWidth());
         };
 
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
         ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+    }
+
+    private void refreshNetworkWidget(Double width) {
+        networkWidgetContainer.getChildren().clear();
+        neuralNetworkWidget.drawNetwork(width - 42);
+        networkWidgetContainer.getChildren().add(neuralNetworkWidget.getWidget());
     }
 
     private boolean isScrollBarVisible() {
@@ -66,11 +73,5 @@ public class NeuralControl implements Initializable {
         }
 
         return false;
-    }
-
-    private void refreshWidget(Double width) {
-        widgetContainer.getChildren().clear();
-        neuralNetworkWidget.drawNetwork(width - 42);
-        widgetContainer.getChildren().add(neuralNetworkWidget.getWidget());
     }
 }

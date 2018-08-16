@@ -13,7 +13,7 @@
       <padding>
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
       </padding>
-      <VBox spacing="10.0">
+      <VBox spacing="12.0">
          <HBox alignment="CENTER_LEFT">
             <children>
                <HBox fx:id="titleContainer" alignment="CENTER_LEFT">
@@ -28,7 +28,12 @@
                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
             </children>
          </HBox>
-         <VBox fx:id="widgetContainer" styleClass="widget-pane-secondary" />
+         <HBox fx:id="progressWidgetContainer" alignment="CENTER" styleClass="widget-pane-secondary">
+            <padding>
+               <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+         </HBox>
+         <VBox fx:id="networkWidgetContainer" styleClass="widget-pane-secondary" />
       </VBox>
    </ScrollPane>
 </AnchorPane>
