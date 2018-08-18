@@ -22,12 +22,11 @@
             <HBox fx:id="titleContainer">
                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych">
                   <HBox.margin>
-                     <Insets right="6.0"/>
+                     <Insets right="6.0" />
                   </HBox.margin>
                </Text>
             </HBox>
-            <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?"/>
+            <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
          </HBox>
          <HBox alignment="CENTER_LEFT" spacing="10.0">
             <opaqueInsets>

@@ -1,7 +1,6 @@
 package pl.wozniaktomek.service;
 
 import javafx.geometry.Point2D;
-import javafx.scene.chart.ScatterChart;
 import javafx.stage.FileChooser;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.service.util.DataGenerator;
@@ -35,9 +34,9 @@ public class DataService {
         return points;
     }
 
-    public HashMap<Integer, ArrayList<Point2D>> generateObjects(ScatterChart chart) {
-        DataGenerator dataGenerator = new DataGenerator(chart);
-        return dataGenerator.generateObjects(new Random().nextInt(3) + 2);
+    public HashMap<Integer, ArrayList<Point2D>> generateObjects() {
+        DataGenerator dataGenerator = new DataGenerator();
+        return dataGenerator.generateObjects(ThreadLocalRandom.current().nextInt(2, 5));
     }
 
     public void saveToFile(HashMap<Integer, ArrayList<Point2D>> objects) {
