@@ -19,18 +19,15 @@
       </padding>
       <VBox spacing="10.0">
          <HBox alignment="CENTER_LEFT">
-            <children>
-               <HBox fx:id="titleContainer">
-                  <children>
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych">
-                        <HBox.margin>
-                           <Insets right="6.0" />
-                        </HBox.margin>
-                     </Text>
-                  </children>
-               </HBox>
-               <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
-            </children>
+            <HBox fx:id="titleContainer">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych">
+                  <HBox.margin>
+                     <Insets right="6.0"/>
+                  </HBox.margin>
+               </Text>
+            </HBox>
+            <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?"/>
          </HBox>
          <HBox alignment="CENTER_LEFT" spacing="10.0">
             <opaqueInsets>
@@ -75,8 +72,9 @@
             <padding>
                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
             </padding>
-            <Button fx:id="buttonClear" mnemonicParsing="false" text="Wyczyść" />
             <Button fx:id="buttonGenerate" mnemonicParsing="false" text="Wygeneruj" />
+            <Button fx:id="buttonShuffle" mnemonicParsing="false" text="Wymieszaj" />
+            <Button fx:id="buttonClear" mnemonicParsing="false" text="Wyczyść" />
             <Separator orientation="VERTICAL" />
             <Button fx:id="buttonSave" mnemonicParsing="false" text="Zapisz do pliku" />
             <Button fx:id="buttonRead" mnemonicParsing="false" text="Wczytaj z pliku" />

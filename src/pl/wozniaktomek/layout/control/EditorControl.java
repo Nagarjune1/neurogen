@@ -18,8 +18,9 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class EditorControl implements Initializable {
-    @FXML private Button buttonClear;
     @FXML private Button buttonGenerate;
+    @FXML private Button buttonShuffle;
+    @FXML private Button buttonClear;
     @FXML private Button buttonSave;
     @FXML private Button buttonRead;
     @FXML private Button buttonHelp;
@@ -60,7 +61,7 @@ public class EditorControl implements Initializable {
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
-            dataEditorWidget.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 200, ThesisApp.windowControl.getContentPane().getHeight() - 200);
+            dataEditorWidget.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 200, ThesisApp.windowControl.getContentPane().getHeight() - 192);
         };
 
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
@@ -81,11 +82,18 @@ public class EditorControl implements Initializable {
     }
 
     private void initializeButtonActions() {
-        buttonClear.setOnAction(event -> dataEditorWidget.clearChart());
         buttonGenerate.setOnAction(event -> {
             dataEditorWidget.setObjects(new DataService().generateObjects(dataEditorWidget.getChart()));
             dataEditorWidget.refresh();
         });
+
+        buttonShuffle.setOnAction(event -> {
+            dataEditorWidget.setObjects(new DataService().shuffleObjects(dataEditorWidget.getObjects()));
+            dataEditorWidget.refresh();
+        });
+
+        buttonClear.setOnAction(event -> dataEditorWidget.clearChart());
+
 
         buttonSave.setOnAction(event -> {
             new DataService().saveToFile(dataEditorWidget.getObjects());

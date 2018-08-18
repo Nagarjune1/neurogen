@@ -12,10 +12,28 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DataService {
     private final static String SEPARATOR = ";";
     private Integer classCounter;
+
+    public HashMap<Integer, ArrayList<Point2D>> shuffleObjects(HashMap<Integer, ArrayList<Point2D>> points) {
+        for (int i = 1; i < points.size() + 1; i++) {
+            ArrayList<Point2D> oldPoints = points.get(i);
+            ArrayList<Point2D> newPoints = new ArrayList<>();
+
+            for (Point2D point : oldPoints) {
+                newPoints.add(new Point2D(
+                        point.getX() + (ThreadLocalRandom.current().nextDouble(-0.2, 0.2)),
+                        point.getY() + (ThreadLocalRandom.current().nextDouble(-0.2, 0.2))));
+            }
+
+            points.replace(i, newPoints);
+        }
+
+        return points;
+    }
 
     public HashMap<Integer, ArrayList<Point2D>> generateObjects(ScatterChart chart) {
         DataGenerator dataGenerator = new DataGenerator(chart);
