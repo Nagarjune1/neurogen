@@ -1,5 +1,7 @@
 package pl.wozniaktomek.neural;
 
+import pl.wozniaktomek.service.data.DataObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,10 +10,17 @@ public class NeuralNetwork {
     private List<Connection> connections;
     private Boolean isBias;
 
+    private ArrayList<DataObject> objectsLearning;
+    private ArrayList<DataObject> objectsTesting;
+
     public NeuralNetwork() {
         layers = new ArrayList<>();
         connections = new ArrayList<>();
         isBias = false;
+    }
+
+    public void setDataLearning(ArrayList<DataObject> objectsLearning) {
+        this.objectsLearning = objectsLearning;
     }
 
     public void addLayer(Integer numberOfNeurons) {
@@ -19,7 +28,7 @@ public class NeuralNetwork {
         createConnections();
     }
 
-    public void createConnections() {
+    private void createConnections() {
         if (layers.size() > 1) {
             if (isBias) createConnectionsWithBias();
             else createConnectionsWithoutBias();

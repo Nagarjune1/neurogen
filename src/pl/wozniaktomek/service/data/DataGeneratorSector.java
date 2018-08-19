@@ -1,4 +1,4 @@
-package pl.wozniaktomek.service.util;
+package pl.wozniaktomek.service.data;
 
 public enum DataGeneratorSector {
     N(1, -4d, 4d, 2d, 8d),

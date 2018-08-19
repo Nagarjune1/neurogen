@@ -1,4 +1,4 @@
-package pl.wozniaktomek.service.util;
+package pl.wozniaktomek.service.data;
 
 import javafx.geometry.Point2D;
 

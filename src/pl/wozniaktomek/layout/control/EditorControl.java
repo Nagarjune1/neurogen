@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.layout.widget.DataEditorWidget;
-import pl.wozniaktomek.service.DataService;
+import pl.wozniaktomek.service.data.DataService;
 
 import java.net.URL;
 import java.util.ArrayList;

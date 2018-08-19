@@ -1,9 +1,8 @@
-package pl.wozniaktomek.service;
+package pl.wozniaktomek.service.data;
 
 import javafx.geometry.Point2D;
 import javafx.stage.FileChooser;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.service.util.DataGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,14 +126,18 @@ public class DataService {
             Point2D point = new Point2D(Double.valueOf(splitLine[0]), Double.valueOf(splitLine[1]));
             Integer classNumber = getClassNumber(splitLine);
 
-            if (objects.containsKey(classNumber)) {
-                ArrayList<Point2D> classPoints = objects.get(classNumber);
-                classPoints.add(point);
-                objects.replace(classNumber, classPoints);
+            if (classNumber != null) {
+                if (objects.containsKey(classNumber)) {
+                    ArrayList<Point2D> classPoints = objects.get(classNumber);
+                    classPoints.add(point);
+                    objects.replace(classNumber, classPoints);
+                } else {
+                    ArrayList<Point2D> classPoints = new ArrayList<>();
+                    classPoints.add(point);
+                    objects.put(classNumber, classPoints);
+                }
             } else {
-                ArrayList<Point2D> classPoints = new ArrayList<>();
-                classPoints.add(point);
-                objects.put(classNumber, classPoints);
+                return null;
             }
         }
 

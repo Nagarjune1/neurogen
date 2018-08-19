@@ -27,7 +27,7 @@
             <padding>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section-title" text="Nawigacja">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-section-title" text="Nawigacja">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
