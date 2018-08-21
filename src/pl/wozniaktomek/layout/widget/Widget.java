@@ -72,5 +72,5 @@ public abstract class Widget {
         mainContainer.getChildren().add(contentContainer);
     }
 
-    private enum WidgetStyle {PRIMARY, SECONDARY}
+    public enum WidgetStyle {PRIMARY, SECONDARY}
 }

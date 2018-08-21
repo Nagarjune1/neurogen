@@ -14,6 +14,10 @@ public class Layer {
         return neurons;
     }
 
+    public Integer getLayerSize() {
+        return neurons.size();
+    }
+
     public void addNeuron() {
         neurons.add(new Neuron());
     }

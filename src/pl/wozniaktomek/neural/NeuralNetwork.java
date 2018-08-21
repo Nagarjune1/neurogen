@@ -19,8 +19,9 @@ public class NeuralNetwork {
         isBias = false;
     }
 
-    public void setDataLearning(ArrayList<DataObject> objectsLearning) {
+    public void setObjects(ArrayList<DataObject> objectsLearning, ArrayList<DataObject> objectsTesting) {
         this.objectsLearning = objectsLearning;
+        this.objectsTesting = objectsTesting;
     }
 
     public void addLayer(Integer numberOfNeurons) {

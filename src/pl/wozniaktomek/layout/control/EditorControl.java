@@ -101,7 +101,7 @@ public class EditorControl implements Initializable {
         });
 
         buttonRead.setOnAction(event -> {
-            HashMap<Integer, ArrayList<Point2D>> objects = new DataService().readFromFile();
+            HashMap<Integer, ArrayList<Point2D>> objects = new DataService().parseListToMap(new DataService().readFromFile());
             if (objects != null) {
                 dataEditorWidget.setObjects(objects);
                 dataEditorWidget.refresh();

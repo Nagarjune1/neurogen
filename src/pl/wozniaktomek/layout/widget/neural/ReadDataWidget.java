@@ -1,16 +1,15 @@
 package pl.wozniaktomek.layout.widget.neural;
 
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.service.data.DataObject;
 import pl.wozniaktomek.service.data.DataService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ReadDataWidget extends Widget {
     private NeuralNetwork neuralNetwork;
@@ -21,8 +20,8 @@ public class ReadDataWidget extends Widget {
     private Text textLearningDataStatus;
     private Text textTestingDataStatus;
 
-    private HashMap<Integer, ArrayList<Point2D>> dataLearning;
-    private HashMap<Integer, ArrayList<Point2D>> dataTesting;
+    private ArrayList<DataObject> objectsLearning;
+    private ArrayList<DataObject> objectsTesting;
 
     public ReadDataWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
         this.neuralNetwork = neuralNetwork;
@@ -67,39 +66,54 @@ public class ReadDataWidget extends Widget {
 
     private void initializeButtonActions() {
         buttonLoadLearningData.setOnAction(event -> {
-            dataLearning = new DataService().readFromFile();
-            checkStatus(DataType.LEARNING);
+            objectsLearning = new DataService().readFromFile();
+            setStatus(objectsLearning, textLearningDataStatus);
+            validateObjects();
         });
 
         buttonLoadTestingData.setOnAction(event -> {
-            dataTesting = new DataService().readFromFile();
-            checkStatus(DataType.TESTING);
+            objectsTesting = new DataService().readFromFile();
+            setStatus(objectsTesting, textTestingDataStatus);
+            validateObjects();
         });
     }
 
-    private void checkStatus(DataType dataType) {
-        if (dataType.equals(DataType.LEARNING)) {
-            if (setStatus(dataLearning, textLearningDataStatus)) {
-                // neuralNetwork.addLearningData(dataLearning);
-            }
-        } else {
-            if (setStatus(dataTesting, textTestingDataStatus)) {
-                // neuralNetwork.addTestingData(dataTesting);
+
+    private void validateObjects() {
+        if (objectsLearning != null && objectsTesting != null) {
+            if (checkInputsSize()) {
+                neuralNetwork.setObjects(objectsLearning, objectsTesting);
             }
         }
     }
 
-    private boolean setStatus(HashMap<Integer, ArrayList<Point2D>> objects, Text textStatus) {
+    private boolean checkInputsSize() {
+        int inputSize = objectsLearning.get(0).getInputValues().size();
+
+        for (DataObject dataObject : objectsLearning) {
+            if (dataObject.getInputValues().size() != inputSize) {
+                return false;
+            }
+        }
+
+        for (DataObject dataObject : objectsTesting) {
+            if (dataObject.getInputValues().size() != inputSize) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void setStatus(ArrayList<DataObject> objects, Text textStatus) {
         if (objects != null) {
             textStatus.setText("DANE POPRAWNE");
             textStatus.getStyleClass().add("action-status-success");
             textStatus.getStyleClass().remove("action-status-failure");
-            return true;
         } else {
             textStatus.setText("DANE NIEPOPRAWNE");
             textStatus.getStyleClass().add("action-status-failure");
             textStatus.getStyleClass().remove("action-status-success");
-            return false;
         }
     }
 

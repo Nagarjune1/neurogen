@@ -28,11 +28,6 @@
                <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
             </children>
          </HBox>
-         <HBox fx:id="progressWidgetContainer" alignment="CENTER" styleClass="widget-pane-secondary">
-            <padding>
-               <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-            </padding>
-         </HBox>
       </VBox>
    </ScrollPane>
 </AnchorPane>

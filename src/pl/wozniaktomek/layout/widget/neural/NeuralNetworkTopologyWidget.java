@@ -1,10 +1,11 @@
-package pl.wozniaktomek.layout.widget;
+package pl.wozniaktomek.layout.widget.neural;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NeuralNetworkWidget {
+public class NeuralNetworkTopologyWidget extends Widget {
     private final static double DEFAULT_NEURON_RADIUS = 52d;
     private final static double DEFAULT_NEURON_SIZE = 60d;
     private Double neuronRadius, neuronSize, neuronMargin;
@@ -26,18 +27,16 @@ public class NeuralNetworkWidget {
 
     private HashMap<Integer, ArrayList<Point2D>> points;
 
-    public NeuralNetworkWidget(NeuralNetwork neuralNetwork) {
+    public NeuralNetworkTopologyWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
         this.neuralNetwork = neuralNetwork;
-    }
-
-    public Canvas getWidget() {
-        return canvas;
+        setTitle(widgetTitle);
     }
 
     public void drawNetwork(Double width) {
         analyzeNetwork();
         createCanvas(width);
         createGraphicContext();
+
         if (neuralNetwork.getLayers().size() > 1) {
             calculatePoints();
             drawNeurons();
@@ -55,10 +54,12 @@ public class NeuralNetworkWidget {
     }
 
     private void createCanvas(Double width) {
-        canvasWidth = width;
+        contentContainer.getChildren().clear();
+        canvasWidth = width - 48;
         calculateNeuronSize();
         double canvasHeight = (neuronSize * (layersAmount * 2) - (neuronSize));
         canvas = new Canvas(canvasWidth, canvasHeight);
+        contentContainer.getChildren().add(canvas);
     }
 
     private void createGraphicContext() {
