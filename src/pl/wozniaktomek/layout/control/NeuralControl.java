@@ -10,10 +10,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.layout.widget.Widget;
-import pl.wozniaktomek.layout.widget.neural.NeuralNetworkTopologyWidget;
-import pl.wozniaktomek.layout.widget.neural.NeuralNetworkSettingsWidget;
-import pl.wozniaktomek.layout.widget.neural.ReadDataWidget;
+import pl.wozniaktomek.widget.NeuralTopologyWidget;
+import pl.wozniaktomek.widget.NeuralSettingsWidget;
+import pl.wozniaktomek.widget.ReadDataWidget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
 import java.net.URL;
@@ -28,8 +27,8 @@ public class NeuralControl implements Initializable {
     private NeuralNetwork neuralNetwork;
 
     private ReadDataWidget readDataWidget;
-    private NeuralNetworkSettingsWidget neuralNetworkSettingsWidget;
-    private NeuralNetworkTopologyWidget neuralNetworkTopologyWidget;
+    private NeuralSettingsWidget neuralSettingsWidget;
+    private NeuralTopologyWidget neuralTopologyWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,13 +50,13 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeNetworkSettingsWidget() {
-        neuralNetworkSettingsWidget = new NeuralNetworkSettingsWidget(neuralNetwork, "Parametry sieci neuronowej");
-        contentContainer.getChildren().add(neuralNetworkSettingsWidget.getWidget());
+        neuralSettingsWidget = new NeuralSettingsWidget(neuralNetwork, "Parametry sieci neuronowej");
+        contentContainer.getChildren().add(neuralSettingsWidget.getWidget());
     }
 
     private void initializeNetworkTopologyWidget() {
-        neuralNetworkTopologyWidget = new NeuralNetworkTopologyWidget(neuralNetwork, "Topologia sieci neuronowej");
-        contentContainer.getChildren().add(neuralNetworkTopologyWidget.getWidget());
+        neuralTopologyWidget = new NeuralTopologyWidget(neuralNetwork, "Topologia sieci neuronowej");
+        contentContainer.getChildren().add(neuralTopologyWidget.getWidget());
     }
 
     private void initializeSizeListener() {
@@ -66,9 +65,9 @@ public class NeuralControl implements Initializable {
             contentContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth());
 
             if (isScrollBarVisible()) {
-                neuralNetworkTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 36);
+                neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 36);
             } else {
-                neuralNetworkTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 18);
+                neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 18);
             }
         };
 

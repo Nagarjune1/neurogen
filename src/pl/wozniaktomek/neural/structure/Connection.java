@@ -1,4 +1,4 @@
-package pl.wozniaktomek.neural;
+package pl.wozniaktomek.neural.structure;
 
 public class Connection {
     private Neuron neuronOutput;

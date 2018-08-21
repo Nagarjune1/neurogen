@@ -1,6 +1,8 @@
 package pl.wozniaktomek.neural;
 
-import pl.wozniaktomek.service.data.DataObject;
+import pl.wozniaktomek.neural.structure.Connection;
+import pl.wozniaktomek.neural.structure.Layer;
+import pl.wozniaktomek.neural.structure.Neuron;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +12,8 @@ public class NeuralNetwork {
     private List<Connection> connections;
     private Boolean isBias;
 
-    private ArrayList<DataObject> objectsLearning;
-    private ArrayList<DataObject> objectsTesting;
+    private ArrayList<NeuralObject> objectsLearning;
+    private ArrayList<NeuralObject> objectsTesting;
 
     public NeuralNetwork() {
         layers = new ArrayList<>();
@@ -19,7 +21,7 @@ public class NeuralNetwork {
         isBias = false;
     }
 
-    public void setObjects(ArrayList<DataObject> objectsLearning, ArrayList<DataObject> objectsTesting) {
+    public void setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
         this.objectsLearning = objectsLearning;
         this.objectsTesting = objectsTesting;
     }

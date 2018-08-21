@@ -1,8 +1,9 @@
-package pl.wozniaktomek.service.data;
+package pl.wozniaktomek.service;
 
 import javafx.geometry.Point2D;
 import javafx.stage.FileChooser;
 import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.neural.NeuralObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,31 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class DataService {
+public class DataTransferService {
     private final static String SEPARATOR = ";";
     private Integer classCounter;
-
-    public HashMap<Integer, ArrayList<Point2D>> shuffleObjects(HashMap<Integer, ArrayList<Point2D>> points) {
-        for (int i = 1; i < points.size() + 1; i++) {
-            ArrayList<Point2D> oldPoints = points.get(i);
-            ArrayList<Point2D> newPoints = new ArrayList<>();
-
-            for (Point2D point : oldPoints) {
-                newPoints.add(new Point2D(
-                        point.getX() + (ThreadLocalRandom.current().nextDouble(-0.2, 0.2)),
-                        point.getY() + (ThreadLocalRandom.current().nextDouble(-0.2, 0.2))));
-            }
-
-            points.replace(i, newPoints);
-        }
-
-        return points;
-    }
-
-    public HashMap<Integer, ArrayList<Point2D>> generateObjects() {
-        DataGenerator dataGenerator = new DataGenerator();
-        return dataGenerator.generateObjects(ThreadLocalRandom.current().nextInt(2, 5));
-    }
 
     public void saveToFile(HashMap<Integer, ArrayList<Point2D>> objects) {
         FileChooser fileChooser = createFileChooser();
@@ -53,7 +32,7 @@ public class DataService {
         }
     }
 
-    public ArrayList<DataObject> readFromFile() {
+    public ArrayList<NeuralObject> readFromFile() {
         FileChooser fileChooser = createFileChooser();
         File file = fileChooser.showOpenDialog(ThesisApp.stage);
 
@@ -121,7 +100,7 @@ public class DataService {
     }
 
     /* Parsing from file */
-    private ArrayList<DataObject> parseFromFile(File file) {
+    private ArrayList<NeuralObject> parseFromFile(File file) {
         List<String> lines = new ArrayList<>();
 
         try {
@@ -133,8 +112,8 @@ public class DataService {
         return getObjectsFromLines(lines);
     }
 
-    private ArrayList<DataObject> getObjectsFromLines(List<String> lines) {
-        ArrayList<DataObject> objects = new ArrayList<>();
+    private ArrayList<NeuralObject> getObjectsFromLines(List<String> lines) {
+        ArrayList<NeuralObject> objects = new ArrayList<>();
         Integer inputAmount = getInputAmount(lines.get(0));
 
         for (int i = 1; i < lines.size(); i++) {
@@ -143,7 +122,7 @@ public class DataService {
             Integer classNumber = getClassNumber(splitLine, inputAmount);
 
             if (inputValues != null && classNumber != null) {
-                objects.add(new DataObject(inputValues, classNumber));
+                objects.add(new NeuralObject(inputValues, classNumber));
             } else {
                 return null;
             }
@@ -186,13 +165,13 @@ public class DataService {
     }
 
     /* Parsing list to map */
-    public HashMap<Integer, ArrayList<Point2D>> parseListToMap(ArrayList<DataObject> objects) {
+    public HashMap<Integer, ArrayList<Point2D>> parseListToMap(ArrayList<NeuralObject> objects) {
         if (objects != null) {
             HashMap<Integer, ArrayList<Point2D>> objectsInMap = new HashMap<>();
 
             if (objects.size() > 0) {
                 if (objects.get(0).getInputValues().size() <= 2) {
-                    for (DataObject object : objects) {
+                    for (NeuralObject object : objects) {
                         Integer classNumber = object.getClassNumber();
 
                         if (objectsInMap.containsKey(classNumber)) {
@@ -218,8 +197,8 @@ public class DataService {
         }
     }
 
-    private Point2D getPoint(DataObject dataObject) {
-        return new Point2D(dataObject.getInputValues().get(0), dataObject.getInputValues().get(1));
+    private Point2D getPoint(NeuralObject neuralObject) {
+        return new Point2D(neuralObject.getInputValues().get(0), neuralObject.getInputValues().get(1));
     }
 
     private FileChooser createFileChooser() {

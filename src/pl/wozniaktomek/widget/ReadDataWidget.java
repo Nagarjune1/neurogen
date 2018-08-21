@@ -1,13 +1,12 @@
-package pl.wozniaktomek.layout.widget.neural;
+package pl.wozniaktomek.widget;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.service.data.DataObject;
-import pl.wozniaktomek.service.data.DataService;
+import pl.wozniaktomek.neural.NeuralObject;
+import pl.wozniaktomek.service.DataTransferService;
 
 import java.util.ArrayList;
 
@@ -20,8 +19,8 @@ public class ReadDataWidget extends Widget {
     private Text textLearningDataStatus;
     private Text textTestingDataStatus;
 
-    private ArrayList<DataObject> objectsLearning;
-    private ArrayList<DataObject> objectsTesting;
+    private ArrayList<NeuralObject> objectsLearning;
+    private ArrayList<NeuralObject> objectsTesting;
 
     public ReadDataWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
         this.neuralNetwork = neuralNetwork;
@@ -66,13 +65,13 @@ public class ReadDataWidget extends Widget {
 
     private void initializeButtonActions() {
         buttonLoadLearningData.setOnAction(event -> {
-            objectsLearning = new DataService().readFromFile();
+            objectsLearning = new DataTransferService().readFromFile();
             setStatus(objectsLearning, textLearningDataStatus);
             validateObjects();
         });
 
         buttonLoadTestingData.setOnAction(event -> {
-            objectsTesting = new DataService().readFromFile();
+            objectsTesting = new DataTransferService().readFromFile();
             setStatus(objectsTesting, textTestingDataStatus);
             validateObjects();
         });
@@ -90,14 +89,14 @@ public class ReadDataWidget extends Widget {
     private boolean checkInputsSize() {
         int inputSize = objectsLearning.get(0).getInputValues().size();
 
-        for (DataObject dataObject : objectsLearning) {
-            if (dataObject.getInputValues().size() != inputSize) {
+        for (NeuralObject neuralObject : objectsLearning) {
+            if (neuralObject.getInputValues().size() != inputSize) {
                 return false;
             }
         }
 
-        for (DataObject dataObject : objectsTesting) {
-            if (dataObject.getInputValues().size() != inputSize) {
+        for (NeuralObject neuralObject : objectsTesting) {
+            if (neuralObject.getInputValues().size() != inputSize) {
                 return false;
             }
         }
@@ -105,7 +104,7 @@ public class ReadDataWidget extends Widget {
         return true;
     }
 
-    private void setStatus(ArrayList<DataObject> objects, Text textStatus) {
+    private void setStatus(ArrayList<NeuralObject> objects, Text textStatus) {
         if (objects != null) {
             textStatus.setText("DANE POPRAWNE");
             textStatus.getStyleClass().add("action-status-success");

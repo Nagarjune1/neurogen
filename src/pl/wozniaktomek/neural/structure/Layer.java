@@ -1,4 +1,4 @@
-package pl.wozniaktomek.neural;
+package pl.wozniaktomek.neural.structure;
 
 import java.util.ArrayList;
 import java.util.List;

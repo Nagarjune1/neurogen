@@ -1,4 +1,4 @@
-package pl.wozniaktomek.neural;
+package pl.wozniaktomek.neural.structure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ public class Neuron {
     private List<Connection> connectionsInput;
     private List<Connection> connectionsOutput;
 
-    public Neuron() {
+    Neuron() {
         number = 0;
         connectionsInput = new ArrayList<>();
         connectionsOutput = new ArrayList<>();

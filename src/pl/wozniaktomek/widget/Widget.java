@@ -1,4 +1,4 @@
-package pl.wozniaktomek.layout.widget;
+package pl.wozniaktomek.widget;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,13 +8,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public abstract class Widget {
-    protected VBox mainContainer;
-    protected VBox contentContainer;
+    private VBox mainContainer;
+    VBox contentContainer;
 
     private Text title;
     private HBox titleContainer;
 
-    public Widget() {
+    Widget() {
         initializeMainContainer();
         initializeTitleContainer();
         initializeContentContainer();
@@ -38,7 +38,7 @@ public abstract class Widget {
         }
     }
 
-    public void setTitle(String titleText) {
+    void setTitle(String titleText) {
         title.setText(titleText);
     }
 

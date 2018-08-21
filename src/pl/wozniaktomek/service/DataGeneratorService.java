@@ -1,16 +1,17 @@
-package pl.wozniaktomek.service.data;
+package pl.wozniaktomek.service;
 
 import javafx.geometry.Point2D;
+import pl.wozniaktomek.util.DataGeneratorSector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class DataGenerator {
+class DataGeneratorService {
     private ArrayList<DataGeneratorSector> usedSectors;
 
-    public HashMap<Integer, ArrayList<Point2D>> generateObjects(Integer classes) {
+    HashMap<Integer, ArrayList<Point2D>> generateObjects(Integer classes) {
         switch (classes) {
             case 2:
                 return generateTwoClasses();

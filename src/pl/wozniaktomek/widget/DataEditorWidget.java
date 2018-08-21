@@ -1,4 +1,4 @@
-package pl.wozniaktomek.layout.widget;
+package pl.wozniaktomek.widget;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Side;

@@ -9,8 +9,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.layout.widget.DataEditorWidget;
-import pl.wozniaktomek.service.data.DataService;
+import pl.wozniaktomek.service.DataEditorService;
+import pl.wozniaktomek.widget.DataEditorWidget;
+import pl.wozniaktomek.service.DataTransferService;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -83,12 +84,12 @@ public class EditorControl implements Initializable {
 
     private void initializeButtonActions() {
         buttonGenerate.setOnAction(event -> {
-            dataEditorWidget.setObjects(new DataService().generateObjects());
+            dataEditorWidget.setObjects(new DataEditorService().generateObjects());
             dataEditorWidget.refresh();
         });
 
         buttonShuffle.setOnAction(event -> {
-            dataEditorWidget.setObjects(new DataService().shuffleObjects(dataEditorWidget.getObjects()));
+            dataEditorWidget.setObjects(new DataEditorService().shuffleObjects(dataEditorWidget.getObjects()));
             dataEditorWidget.refresh();
         });
 
@@ -96,12 +97,12 @@ public class EditorControl implements Initializable {
 
 
         buttonSave.setOnAction(event -> {
-            new DataService().saveToFile(dataEditorWidget.getObjects());
+            new DataTransferService().saveToFile(dataEditorWidget.getObjects());
             dataEditorWidget.refresh();
         });
 
         buttonRead.setOnAction(event -> {
-            HashMap<Integer, ArrayList<Point2D>> objects = new DataService().parseListToMap(new DataService().readFromFile());
+            HashMap<Integer, ArrayList<Point2D>> objects = new DataTransferService().parseListToMap(new DataTransferService().readFromFile());
             if (objects != null) {
                 dataEditorWidget.setObjects(objects);
                 dataEditorWidget.refresh();

@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.layout.widget.ProgressWidget;
+import pl.wozniaktomek.widget.ProgressWidget;
 
 import java.net.URL;
 import java.util.ResourceBundle;

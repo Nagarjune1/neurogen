@@ -1,4 +1,4 @@
-package pl.wozniaktomek.layout.widget;
+package pl.wozniaktomek.widget;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;

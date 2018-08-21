@@ -1,18 +1,17 @@
-package pl.wozniaktomek.layout.widget.neural;
+package pl.wozniaktomek.widget;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
-public class NeuralNetworkSettingsWidget extends Widget {
+public class NeuralSettingsWidget extends Widget {
     private HBox mainPane;
     private NeuralNetwork neuralNetwork;
 
-    public NeuralNetworkSettingsWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
+    public NeuralSettingsWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
         this.neuralNetwork = neuralNetwork;
         setTitle(widgetTitle);
         initialize();

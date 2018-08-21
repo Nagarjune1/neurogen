@@ -1,12 +1,12 @@
-package pl.wozniaktomek.service.data;
+package pl.wozniaktomek.neural;
 
 import java.util.ArrayList;
 
-public class DataObject {
+public class NeuralObject {
     private ArrayList<Double> inputValues;
     private Integer classNumber;
 
-    public DataObject(ArrayList<Double> inputValues, Integer classNumber) {
+    public NeuralObject(ArrayList<Double> inputValues, Integer classNumber) {
         this.inputValues = inputValues;
         this.classNumber = classNumber;
     }
