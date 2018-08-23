@@ -45,7 +45,7 @@ public class NeuralSettingsWidget extends Widget {
         vBox.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         vBox.setPadding(new Insets(12));
         vBox.setSpacing(12);
-        vBox.getStyleClass().add("widget-pane-primary");
+        vBox.getStyleClass().add("widget-primary");
         mainPane.getChildren().add(vBox);
         return vBox;
     }

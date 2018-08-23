@@ -83,15 +83,15 @@ public class DataEditorWidget {
     private void refreshSummary() {
         objectAmount = objects.values().stream().mapToInt(ArrayList::size).sum();
 
-        String summary = "Podsumowanie";
+        String summary = "";
 
         for (int i = 1; i < 6; i++) {
             if (objects.get(i) != null)
-                summary = summary.concat("\n     klasa " + i + ":  " + objects.get(i).size() + " / " + objectAmount);
+                summary = summary.concat("\nklasa " + i + ":  " + objects.get(i).size() + " / " + objectAmount);
         }
 
         if (objectAmount.equals(0))
-            summary = summary.concat("\n     brak obiektów...");
+            summary = summary.concat("\nbrak obiektów...");
 
         textSummary.setText(summary);
     }

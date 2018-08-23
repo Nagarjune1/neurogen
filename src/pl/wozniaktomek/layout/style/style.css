@@ -23,38 +23,52 @@
     -fx-fill: rgba(54, 69, 79, 1.0);
 }
 
-.widget-pane-primary {
+.widget > Text {
+    -fx-fill: rgba(54, 69, 79, 1.0);
+}
+
+.widget-primary {
     -fx-border-color: rgba(54, 69, 79, 1.0);
     -fx-border-radius: 4px;
 }
 
-.widget-pane-primary-background {
+.widget-primary-background {
     -fx-background-color: rgba(54, 69, 79, 0.01);
 }
 
-.widget-pane-primary-background-fill {
+.widget-primary-background-fill {
     -fx-background-color: rgba(54, 69, 79, 1.0);
 }
 
-.widget-pane-primary > Text {
-    -fx-fill: rgba(54, 69, 79, 1.0);
-}
-
-.widget-pane-secondary {
+.widget-secondary {
     -fx-border-color: rgba(113, 140, 158, 1.0);
     -fx-border-radius: 4px;
 }
 
-.widget-pane-secondary-background {
+.widget-secondary-background {
     -fx-background-color: rgba(113, 140, 158, 0.1);
 }
 
-.widget-pane-secondary-background-fill {
+.widget-secondary-background-fill {
     -fx-background-color: rgba(113, 140, 158, 1.0);
 }
 
-.widget-pane-secondary > Text {
-    -fx-fill: rgba(113, 140, 158, 1.0);
+.widget-success {
+    -fx-border-color: rgba(0, 128, 0, 1.0);
+    -fx-border-radius: 4px;
+}
+
+.widget-success-background-fill {
+    -fx-background-color: rgba(0, 128, 0, 1.0);
+}
+
+.widget-failure {
+    -fx-border-color: rgba(145, 8, 12, 1.0);
+    -fx-border-radius: 4px;
+}
+
+.widget-failure-background-fill {
+    -fx-background-color: rgba(145, 8, 12, 1.0);
 }
 
 /* Main controls */

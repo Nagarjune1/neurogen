@@ -122,7 +122,7 @@ public class WindowControl implements Initializable {
         }
     }
 
-    AnchorPane getContentPane() {
+    public AnchorPane getContentPane() {
         return contentPane;
     }
 

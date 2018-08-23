@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NeuralNetwork {
+    private NeuralOperations neuralOperations;
+
     private List<Layer> layers;
     private List<Connection> connections;
     private Boolean isBias;
@@ -19,6 +21,8 @@ public class NeuralNetwork {
         layers = new ArrayList<>();
         connections = new ArrayList<>();
         isBias = false;
+
+        neuralOperations = new NeuralOperations(layers, connections);
     }
 
     public void setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
@@ -33,49 +37,11 @@ public class NeuralNetwork {
 
     private void createConnections() {
         if (layers.size() > 1) {
-            if (isBias) createConnectionsWithBias();
-            else createConnectionsWithoutBias();
+            if (isBias) neuralOperations.createConnectionsWithBias();
+            else neuralOperations.createConnectionsWithoutBias();
         }
 
         setNeuronNumbers();
-    }
-
-    private void createConnectionsWithBias() {
-        for (int i = 0; i < layers.size() - 2; i++) {
-            for (Neuron neuron : layers.get(i).getNeurons()) {
-                List<Neuron> nextNeurons = layers.get(i + 1).getNeurons();
-                for (int k = 0; k < nextNeurons.size() - 1; k++) {
-                    createConnection(neuron, nextNeurons.get(k));
-                }
-            }
-        }
-
-        for (Neuron neuron : layers.get(layers.size() - 2).getNeurons()) {
-            for (Neuron nextNeuron : layers.get(layers.size() - 1).getNeurons()) {
-                createConnection(neuron, nextNeuron);
-            }
-        }
-    }
-
-    private void createConnectionsWithoutBias() {
-        for (int i = 0; i < layers.size() - 1; i++) {
-            for (Neuron neuron : layers.get(i).getNeurons()) {
-                for (Neuron nextNeuron : layers.get(i + 1).getNeurons()) {
-                    createConnection(neuron, nextNeuron);
-                }
-            }
-        }
-    }
-
-    private void createConnection(Neuron neuronFrom, Neuron neuronTo) {
-        Connection connection = new Connection();
-        connection.setNeuronInput(neuronFrom);
-        connection.setNeuronOutput(neuronTo);
-
-        neuronFrom.getConnectionsOutput().add(connection);
-        neuronTo.getConnectionsInput().add(connection);
-
-        connections.add(connection);
     }
 
     public void addBias() {
