@@ -153,13 +153,17 @@
     -fx-fill: rgba(54, 69, 79, 0.5);
 }
 
-.action-status-success {
+.action-bold-status {
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-fill: rgba(54, 69, 79, 0.5);
+}
+
+.action-status-success {
     -fx-fill: rgba(0, 128, 0, 1.0);
 }
 
 .action-status-failure {
-    -fx-font-weight: bold;
     -fx-fill: rgba(145, 8, 12, 1.0);
 }
 

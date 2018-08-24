@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.widget.NeuralTopologyWidget;
 import pl.wozniaktomek.widget.NeuralSettingsWidget;
-import pl.wozniaktomek.widget.ReadDataWidget;
+import pl.wozniaktomek.widget.NeuralDataWidget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
 import java.net.URL;
@@ -26,7 +26,7 @@ public class NeuralControl implements Initializable {
 
     private NeuralNetwork neuralNetwork;
 
-    private ReadDataWidget readDataWidget;
+    private NeuralDataWidget neuralDataWidget;
     private NeuralSettingsWidget neuralSettingsWidget;
     private NeuralTopologyWidget neuralTopologyWidget;
 
@@ -45,8 +45,8 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeReadDataWidget() {
-        readDataWidget = new ReadDataWidget(neuralNetwork, "Dane wejściowe");
-        contentContainer.getChildren().add(readDataWidget.getWidget());
+        neuralDataWidget = new NeuralDataWidget(neuralNetwork, "Dane wejściowe");
+        contentContainer.getChildren().add(neuralDataWidget.getWidget());
     }
 
     private void initializeNetworkSettingsWidget() {

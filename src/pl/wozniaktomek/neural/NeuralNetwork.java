@@ -25,9 +25,14 @@ public class NeuralNetwork {
         neuralOperations = new NeuralOperations(layers, connections);
     }
 
-    public void setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        this.objectsLearning = objectsLearning;
-        this.objectsTesting = objectsTesting;
+    public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
+        if (neuralOperations.validateObjects(objectsLearning, objectsTesting)) {
+            this.objectsLearning = objectsLearning;
+            this.objectsTesting = objectsTesting;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void addLayer(Integer numberOfNeurons) {
