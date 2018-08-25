@@ -95,7 +95,6 @@ public class NeuralDataWidget extends Widget {
         });
     }
 
-
     private void validateObjects() {
         if (!textLearningFileStatus.getText().equals("nie wybrano pliku...") && !textTestingFileStatus.getText().equals("nie wybrano pliku...")) {
             if (neuralNetwork.setObjects(objectsLearning, objectsTesting)) {
@@ -132,11 +131,12 @@ public class NeuralDataWidget extends Widget {
 
     private void setStatusClass(DataStatus dataStatus, Text text) {
         if (dataStatus.equals(DataStatus.OK)) {
-            text.getStyleClass().add("action-status-success");
             text.getStyleClass().remove("action-status-failure");
+            text.getStyleClass().add("action-status-success");
+
         } else {
-            text.getStyleClass().add("action-status-failure");
             text.getStyleClass().remove("action-status-success");
+            text.getStyleClass().add("action-status-failure");
         }
     }
 

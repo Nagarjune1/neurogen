@@ -44,7 +44,7 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeNetworkSettingsWidget() {
-        neuralSettingsWidget = new NeuralSettingsWidget(neuralNetwork, "Ustawienia sieci neuronowej");
+        neuralSettingsWidget = new NeuralSettingsWidget(neuralNetwork, "Ustawienia sieci neuronowej", this);
         contentContainer.getChildren().add(neuralSettingsWidget.getWidget());
     }
 

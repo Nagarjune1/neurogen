@@ -14,6 +14,10 @@ public class Layer {
         return neurons;
     }
 
+    public void setNumberOfNeurons(Integer numberOfNeurons) {
+        createLayer(numberOfNeurons);
+    }
+
     public Integer getLayerSize() {
         return neurons.size();
     }

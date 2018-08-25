@@ -20,15 +20,28 @@ public class NeuralStructure {
         clearStructure();
     }
 
-    public void clearStructure() {
+    void clearStructure() {
         layers = new ArrayList<>();
         connections = new ArrayList<>();
         isBias = false;
     }
 
     public void addLayer(Integer numberOfNeurons) {
-        layers.add(new Layer(numberOfNeurons));
+        if (layers.size() >= 2) {
+            Layer lastLayer = layers.get(layers.size() - 1);
+            layers.remove(lastLayer);
+
+            layers.add(new Layer(numberOfNeurons));
+            layers.add(lastLayer);
+        } else {
+            layers.add(new Layer(numberOfNeurons));
+        }
+
         createConnections();
+    }
+
+    public void deleteLayer(Integer layerNumber) {
+        layers.remove(layerNumber.intValue());
     }
 
     public void addBias() {

@@ -22,6 +22,10 @@ public class NeuralNetwork {
         return neuralStructure;
     }
 
+    public NeuralParameters getNeuralParameters() {
+        return neuralParameters;
+    }
+
     public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
         return neuralParameters.setObjects(objectsLearning, objectsTesting);
     }
