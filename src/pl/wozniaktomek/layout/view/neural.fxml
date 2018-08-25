@@ -9,24 +9,21 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.NeuralControl">
-   <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" style="-fx-background-color: transparent;" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
       </padding>
       <VBox fx:id="contentContainer" spacing="12.0">
          <HBox alignment="CENTER_LEFT">
-            <children>
-               <HBox fx:id="titleContainer" alignment="CENTER_LEFT">
-                  <children>
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Sieć neuronowa">
-                        <HBox.margin>
-                           <Insets right="6.0" />
-                        </HBox.margin>
-                     </Text>
-                  </children>
-               </HBox>
-               <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
-            </children>
+            <HBox fx:id="titleContainer" alignment="CENTER_LEFT">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Sieć neuronowa">
+                  <HBox.margin>
+                     <Insets right="6.0"/>
+                  </HBox.margin>
+               </Text>
+            </HBox>
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?"/>
          </HBox>
       </VBox>
    </ScrollPane>
