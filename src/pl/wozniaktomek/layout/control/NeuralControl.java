@@ -45,7 +45,7 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeReadDataWidget() {
-        neuralDataWidget = new NeuralDataWidget(neuralNetwork, "Dane wejściowe");
+        neuralDataWidget = new NeuralDataWidget(this, neuralNetwork, "Dane wejściowe");
         contentContainer.getChildren().add(neuralDataWidget.getWidget());
     }
 
@@ -63,12 +63,7 @@ public class NeuralControl implements Initializable {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
             contentContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth());
-
-            if (isScrollBarVisible()) {
-                neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 36);
-            } else {
-                neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 18);
-            }
+            refreshTopologyWidget();
         };
 
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
@@ -91,5 +86,17 @@ public class NeuralControl implements Initializable {
         }
 
         return false;
+    }
+
+    public void refreshSettingsWidget() {
+        neuralSettingsWidget.refreshWidget();
+    }
+
+    public void refreshTopologyWidget() {
+        if (isScrollBarVisible()) {
+            neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 36);
+        } else {
+            neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 18);
+        }
     }
 }

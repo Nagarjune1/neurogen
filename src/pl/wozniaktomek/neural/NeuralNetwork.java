@@ -1,5 +1,7 @@
 package pl.wozniaktomek.neural;
 
+import pl.wozniaktomek.neural.manage.NeuralParameters;
+import pl.wozniaktomek.neural.manage.NeuralStructure;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
@@ -8,80 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NeuralNetwork {
-    private NeuralOperations neuralOperations;
-
-    private List<Layer> layers;
-    private List<Connection> connections;
-    private Boolean isBias;
-
-    private ArrayList<NeuralObject> objectsLearning;
-    private ArrayList<NeuralObject> objectsTesting;
+    private NeuralStructure neuralStructure;
+    private NeuralParameters neuralParameters;
 
     public NeuralNetwork() {
-        layers = new ArrayList<>();
-        connections = new ArrayList<>();
-        isBias = false;
+        neuralStructure = new NeuralStructure(this);
+        neuralParameters = new NeuralParameters(this);
+    }
 
-        neuralOperations = new NeuralOperations(layers, connections);
+    public NeuralStructure getNeuralStructure() {
+        return neuralStructure;
     }
 
     public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        if (neuralOperations.validateObjects(objectsLearning, objectsTesting)) {
-            this.objectsLearning = objectsLearning;
-            this.objectsTesting = objectsTesting;
-            return true;
-        } else {
-            return false;
-        }
+        return neuralParameters.setObjects(objectsLearning, objectsTesting);
     }
 
     public void addLayer(Integer numberOfNeurons) {
-        layers.add(new Layer(numberOfNeurons));
-        createConnections();
-    }
-
-    private void createConnections() {
-        if (layers.size() > 1) {
-            if (isBias) neuralOperations.createConnectionsWithBias();
-            else neuralOperations.createConnectionsWithoutBias();
-        }
-
-        setNeuronNumbers();
+        neuralStructure.addLayer(numberOfNeurons);
     }
 
     public void addBias() {
-        for (int i = 0; i < layers.size() - 1; i++) {
-            layers.get(i).addNeuron();
-        }
-
-        isBias = true;
-        createConnections();
+        neuralStructure.addBias();
     }
 
     public void deleteBias() {
-        for (int i = 0; i < layers.size() - 1; i++) {
-            layers.get(i).getNeurons().remove(layers.get(i).getNeurons().size() - 1);
-        }
-
-        isBias = false;
-        createConnections();
-    }
-
-    public Boolean isBias() {
-        return isBias;
-    }
-
-    public List<Layer> getLayers() {
-        return layers;
-    }
-
-    private void setNeuronNumbers() {
-        int number = 0;
-        for (Layer layer : layers) {
-            for (Neuron neuron : layer.getNeurons()) {
-                neuron.setNumber(++number);
-            }
-        }
+        neuralStructure.deleteBias();
     }
 
     /* just for debug */
@@ -89,6 +43,7 @@ public class NeuralNetwork {
         System.out.println("## NETWORK ##");
 
         System.out.println("\n # NEURONS");
+        List<Layer> layers = neuralStructure.getLayers();
         for (Layer layer : layers) {
             for (Neuron neuron : layer.getNeurons()) {
                 System.out.println("Neuron number " + neuron.getNumber());
@@ -96,6 +51,7 @@ public class NeuralNetwork {
         }
 
         System.out.println("\n # CONNECTIONS");
+        List<Connection> connections = neuralStructure.getConnections();
         for (Connection connection : connections) {
             System.out.println("Connection between " + connection.getNeuronInput().getNumber() + " and " + connection.getNeuronOutput().getNumber());
         }

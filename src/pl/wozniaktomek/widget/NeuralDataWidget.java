@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.NeuralObject;
 import pl.wozniaktomek.service.DataTransferService;
@@ -12,6 +13,7 @@ import pl.wozniaktomek.service.DataTransferService;
 import java.util.ArrayList;
 
 public class NeuralDataWidget extends Widget {
+    private NeuralControl neuralControl;
     private NeuralNetwork neuralNetwork;
 
     private Button buttonLoadLearningData;
@@ -24,7 +26,8 @@ public class NeuralDataWidget extends Widget {
     private ArrayList<NeuralObject> objectsLearning;
     private ArrayList<NeuralObject> objectsTesting;
 
-    public NeuralDataWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
+    public NeuralDataWidget(NeuralControl neuralControl, NeuralNetwork neuralNetwork, String widgetTitle) {
+        this.neuralControl = neuralControl;
         this.neuralNetwork = neuralNetwork;
         setTitle(widgetTitle);
         initialize();
@@ -97,8 +100,12 @@ public class NeuralDataWidget extends Widget {
         if (!textLearningFileStatus.getText().equals("nie wybrano pliku...") && !textTestingFileStatus.getText().equals("nie wybrano pliku...")) {
             if (neuralNetwork.setObjects(objectsLearning, objectsTesting)) {
                 setGeneralDataStatus(DataStatus.OK);
+                neuralControl.refreshSettingsWidget();
+                neuralControl.refreshTopologyWidget();
             } else {
                 setGeneralDataStatus(DataStatus.BAD);
+                neuralControl.refreshSettingsWidget();
+                neuralControl.refreshTopologyWidget();
             }
         }
     }

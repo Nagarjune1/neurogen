@@ -36,7 +36,7 @@ public class NeuralTopologyWidget extends Widget {
         createCanvas(width);
         createGraphicContext();
 
-        if (neuralNetwork.getLayers().size() > 1) {
+        if (neuralNetwork.getNeuralStructure().getLayers().size() > 1) {
             calculatePoints();
             drawNeurons();
             drawConnections();
@@ -45,11 +45,11 @@ public class NeuralTopologyWidget extends Widget {
 
     private void analyzeNetwork() {
         mostNeuronsInLayer = 0;
-        for (Layer layer : neuralNetwork.getLayers())
+        for (Layer layer : neuralNetwork.getNeuralStructure().getLayers())
             if (layer.getNeurons().size() > mostNeuronsInLayer)
                 mostNeuronsInLayer = layer.getNeurons().size();
 
-        layersAmount = neuralNetwork.getLayers().size();
+        layersAmount = neuralNetwork.getNeuralStructure().getLayers().size();
     }
 
     private void createCanvas(Double width) {
@@ -88,10 +88,10 @@ public class NeuralTopologyWidget extends Widget {
         points = new HashMap<>();
 
         double height = neuronSize / 2d;
-        for (int i = 1; i < neuralNetwork.getLayers().size() + 1; i++) {
+        for (int i = 1; i < neuralNetwork.getNeuralStructure().getLayers().size() + 1; i++) {
             ArrayList<Point2D> listOfPoints = new ArrayList<>();
 
-            Layer layer = neuralNetwork.getLayers().get(i - 1);
+            Layer layer = neuralNetwork.getNeuralStructure().getLayers().get(i - 1);
             int neuronsAmount = layer.getNeurons().size();
             double halfNeuronsAmount = Math.floor(neuronsAmount / 2d);
 
@@ -118,7 +118,7 @@ public class NeuralTopologyWidget extends Widget {
         drawInputNeurons();
         drawHiddenLayers();
 
-        if (neuralNetwork.isBias())
+        if (neuralNetwork.getNeuralStructure().isBias())
             drawBias();
     }
 
@@ -155,7 +155,7 @@ public class NeuralTopologyWidget extends Widget {
             ArrayList<Point2D> nextLayerPoints = points.get(i + 1);
 
             for (Point2D point : layerPoints) {
-                if (neuralNetwork.isBias()) {
+                if (neuralNetwork.getNeuralStructure().isBias()) {
                     for (int j = 0; j < nextLayerPoints.size() - 1; j++) {
                         graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoints.get(j).getX(), nextLayerPoints.get(j).getY() - neuronRadius / 2);
                     }
