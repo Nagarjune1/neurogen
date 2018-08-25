@@ -3,6 +3,7 @@ package pl.wozniaktomek.widget;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
@@ -57,6 +58,7 @@ public class NeuralSettingsWidget extends Widget {
     public void refreshWidget() {
         refreshTopology();
         refreshSettings();
+        neuralControl.refreshTopologyWidget();
     }
 
     private void refreshTopology() {
@@ -67,13 +69,23 @@ public class NeuralSettingsWidget extends Widget {
             refreshHiddenLayers();
             refreshOutputLayer();
         } else {
-            topologyWidget.contentContainer.getChildren().clear();
+            topologyWidget.contentContainer.getChildren().add(getActionBoldText("wczytaj dane uczące oraz dane testowe"));
+        }
+    }
+
+    private void refreshSettings() {
+        parametersWidget.contentContainer.getChildren().clear();
+
+        if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
+            refreshBiasSetting();
+        } else {
+            parametersWidget.contentContainer.getChildren().add(getActionBoldText("wczytaj dane uczące oraz dane testowe"));
         }
     }
 
     private void refreshInputLayer() {
         HBox hBox = getInputHBox();
-        hBox.getChildren().add(getLayerName("Warstwa wejściowa"));
+        hBox.getChildren().add(getActionText("Warstwa wejściowa"));
 
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
@@ -84,8 +96,15 @@ public class NeuralSettingsWidget extends Widget {
     private void refreshHiddenLayers() {
         for (int i = 1; i < neuralNetwork.getNeuralStructure().getLayers().size() - 1; i++) {
             HBox hBox = getInputHBox();
-            hBox.getChildren().add(getLayerName("Warstwa ukryta  (" + i + ")"));
-            Spinner spinner = getSpinner(false, neuralNetwork.getNeuralStructure().getLayers().get(i).getLayerSize(), i + 1);
+            hBox.getChildren().add(getActionText("Warstwa ukryta  (" + i + ")"));
+
+            Spinner spinner;
+            if (neuralNetwork.getNeuralStructure().isBias()) {
+                spinner = getSpinner(false, neuralNetwork.getNeuralStructure().getLayers().get(i).getLayerSize() - 1, i + 1);
+            } else {
+                spinner = getSpinner(false, neuralNetwork.getNeuralStructure().getLayers().get(i).getLayerSize(), i + 1);
+            }
+
             hBox.getChildren().add(spinner);
             hBox.getChildren().add(getDeleteLayerButton(i + 1));
             topologyWidget.contentContainer.getChildren().add(hBox);
@@ -96,7 +115,7 @@ public class NeuralSettingsWidget extends Widget {
 
     private void refreshOutputLayer() {
         HBox hBox = getInputHBox();
-        hBox.getChildren().add(getLayerName("Warstwa wyjściowa"));
+        hBox.getChildren().add(getActionText("Warstwa wyjściowa"));
 
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getOutputSize(), 1);
         hBox.getChildren().add(spinner);
@@ -104,20 +123,31 @@ public class NeuralSettingsWidget extends Widget {
         topologyWidget.contentContainer.getChildren().add(hBox);
     }
 
-    private void refreshSettings() {
+    private void refreshBiasSetting() {
+        HBox hBox = getInputHBox();
+        hBox.getChildren().add(getActionBoldText("Bias"));
+        hBox.getChildren().add(getBiasCheckbox());
+
+        parametersWidget.contentContainer.getChildren().add(hBox);
     }
 
     private HBox getInputHBox() {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(2, 12, 2, 12));
-        hBox.setSpacing(8);
+        hBox.setSpacing(12);
         return hBox;
     }
 
-    private Text getLayerName(String name) {
+    private Text getActionText(String name) {
         Text text = new Text(name);
         text.getStyleClass().add("action-status");
+        return text;
+    }
+
+    private Text getActionBoldText(String name) {
+        Text text = new Text(name);
+        text.getStyleClass().add("action-bold-status");
         return text;
     }
 
@@ -129,8 +159,13 @@ public class NeuralSettingsWidget extends Widget {
         spinner.setPrefWidth(64d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            neuralNetwork.getNeuralStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
-            neuralControl.refreshTopologyWidget();
+            if (neuralNetwork.getNeuralStructure().isBias()) {
+                neuralNetwork.getNeuralStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue + 1);
+            } else {
+                neuralNetwork.getNeuralStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
+            }
+
+            refreshWidget();
         }));
 
         return spinner;
@@ -143,7 +178,6 @@ public class NeuralSettingsWidget extends Widget {
 
         button.setOnAction(event -> {
             neuralNetwork.getNeuralStructure().deleteLayer(getLayerNumber(layerNumber));
-            neuralControl.refreshTopologyWidget();
             refreshWidget();
         });
 
@@ -155,8 +189,12 @@ public class NeuralSettingsWidget extends Widget {
         button.setText("Dodaj warstwę");
 
         button.setOnAction(event -> {
-            neuralNetwork.getNeuralStructure().addLayer(1);
-            neuralControl.refreshTopologyWidget();
+            if (neuralNetwork.getNeuralStructure().isBias()) {
+                neuralNetwork.getNeuralStructure().addLayer(2);
+            } else {
+                neuralNetwork.getNeuralStructure().addLayer(1);
+            }
+
             refreshWidget();
         });
 
@@ -171,5 +209,22 @@ public class NeuralSettingsWidget extends Widget {
         } else {
             return number - 1;
         }
+    }
+
+    private CheckBox getBiasCheckbox() {
+        CheckBox checkBox = new CheckBox();
+        checkBox.setSelected(neuralNetwork.getNeuralStructure().isBias());
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                neuralNetwork.addBias();
+            } else {
+                neuralNetwork.deleteBias();
+            }
+
+            refreshWidget();
+        });
+
+        return checkBox;
     }
 }
