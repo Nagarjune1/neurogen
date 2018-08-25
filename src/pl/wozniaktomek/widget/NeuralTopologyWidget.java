@@ -3,6 +3,7 @@ package pl.wozniaktomek.widget;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import pl.wozniaktomek.neural.structure.Layer;
@@ -65,6 +66,12 @@ public class NeuralTopologyWidget extends Widget {
         graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.setStroke(Color.rgb(113, 140, 158, 1.0));
         graphicsContext.setLineWidth(2);
+
+        BoxBlur blur = new BoxBlur();
+        blur.setWidth(1);
+        blur.setHeight(1);
+        blur.setIterations(1);
+        graphicsContext.setEffect(blur);
     }
 
     private void calculateNeuronSize() {
