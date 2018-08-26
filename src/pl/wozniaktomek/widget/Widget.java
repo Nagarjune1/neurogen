@@ -6,6 +6,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,11 +32,7 @@ public abstract class Widget {
         return mainContainer;
     }
 
-    void setTitle(String titleText) {
-        title.setText(titleText);
-    }
-
-    public void setStyle(WidgetStyle widgetStyle) {
+    void setStyle(WidgetStyle widgetStyle) {
         for (WidgetStyle style : WidgetStyle.values()) {
             if (widgetStyle.equals(style)) {
                 mainContainer.getStyleClass().add(styles.get(style).get(0));
@@ -44,6 +42,10 @@ public abstract class Widget {
                 titleContainer.getStyleClass().remove(styles.get(style).get(1));
             }
         }
+    }
+
+    void setTitle(String titleText) {
+        title.setText(titleText);
     }
 
     private void initializeStyles() {
@@ -74,7 +76,6 @@ public abstract class Widget {
         mainContainer = new VBox();
         mainContainer.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         mainContainer.setAlignment(Pos.TOP_LEFT);
-
     }
 
     private void initializeTitleContainer() {
@@ -99,6 +100,32 @@ public abstract class Widget {
         mainContainer.getChildren().add(contentContainer);
     }
 
+    HBox getHBoxContainer() {
+        HBox hBox = new HBox();
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        hBox.setPadding(new Insets(2, 12, 2, 12));
+        hBox.setSpacing(12);
+        return hBox;
+    }
+
+    TextFlow getActionText(String name) {
+        TextFlow textFlow = new TextFlow();
+        textFlow.setPrefWidth(96d);
+        textFlow.setPadding(new Insets(6, 0, 6, 0));
+        textFlow.setTextAlignment(TextAlignment.LEFT);
+
+        Text text = new Text(name);
+        text.getStyleClass().add("action-status");
+
+        textFlow.getChildren().add(text);
+        return textFlow;
+    }
+
+    Text getActionBoldText(String name) {
+        Text text = new Text(name);
+        text.getStyleClass().add("action-bold-status");
+        return text;
+    }
 
     public enum WidgetStyle {PRIMARY, SECONDARY, SUCCESS, FAILURE}
 }

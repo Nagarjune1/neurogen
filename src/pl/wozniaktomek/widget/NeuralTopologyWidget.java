@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.widget.Widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -9,6 +9,7 @@ import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.NeuralObject;
 import pl.wozniaktomek.service.DataTransferService;
+import pl.wozniaktomek.widget.Widget;
 
 import java.util.ArrayList;
 

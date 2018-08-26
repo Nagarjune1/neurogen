@@ -26,6 +26,11 @@ public class DataEditorWidget {
         initializeEvent();
     }
 
+    public void refreshWidget() {
+        refreshChart();
+        refreshSummary();
+    }
+
     private void initializeData() {
         classNumber = 1;
         objectAmount = 0;
@@ -94,11 +99,6 @@ public class DataEditorWidget {
             summary = summary.concat("\nbrak obiektów...");
 
         textSummary.setText(summary);
-    }
-
-    public void refresh() {
-        refreshChart();
-        refreshSummary();
     }
 
     public void clearChart() {

@@ -85,12 +85,12 @@ public class EditorControl implements Initializable {
     private void initializeButtonActions() {
         buttonGenerate.setOnAction(event -> {
             dataEditorWidget.setObjects(new DataEditorService().generateObjects());
-            dataEditorWidget.refresh();
+            dataEditorWidget.refreshWidget();
         });
 
         buttonShuffle.setOnAction(event -> {
             dataEditorWidget.setObjects(new DataEditorService().shuffleObjects(dataEditorWidget.getObjects()));
-            dataEditorWidget.refresh();
+            dataEditorWidget.refreshWidget();
         });
 
         buttonClear.setOnAction(event -> dataEditorWidget.clearChart());
@@ -98,14 +98,14 @@ public class EditorControl implements Initializable {
 
         buttonSave.setOnAction(event -> {
             new DataTransferService().saveToFile(dataEditorWidget.getObjects());
-            dataEditorWidget.refresh();
+            dataEditorWidget.refreshWidget();
         });
 
         buttonRead.setOnAction(event -> {
             HashMap<Integer, ArrayList<Point2D>> objects = new DataTransferService().parseListToMap(new DataTransferService().readFromFile());
             if (objects != null) {
                 dataEditorWidget.setObjects(objects);
-                dataEditorWidget.refresh();
+                dataEditorWidget.refreshWidget();
             }
         });
     }
@@ -114,6 +114,6 @@ public class EditorControl implements Initializable {
         dataEditorWidget = new DataEditorWidget();
         dataEditorWidget.setTextSummary(textSummaryContent);
         chartContainer.getChildren().add(dataEditorWidget.getChart());
-        dataEditorWidget.refresh();
+        dataEditorWidget.refreshWidget();
     }
 }
