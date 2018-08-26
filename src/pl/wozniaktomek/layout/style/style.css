@@ -54,12 +54,12 @@
 }
 
 .widget-success {
-    -fx-border-color: rgba(0, 128, 0, 1.0);
+    -fx-border-color: rgba(16, 66, 16, 1.0);
     -fx-border-radius: 4px;
 }
 
 .widget-success-background-fill {
-    -fx-background-color: rgba(0, 128, 0, 1.0);
+    -fx-background-color: rgba(16, 66, 16, 1.0);
 }
 
 .widget-failure {
@@ -104,6 +104,16 @@
 .button-secondary-filled:hover {
     -fx-background-color: rgba(255, 255, 255, 1.0);
     -fx-text-fill: rgba(113, 140, 158, 1.0);
+}
+
+.button-white {
+    -fx-border-color: rgba(255, 255, 255, 1.0);
+    -fx-text-fill: rgba(255, 255, 255, 1.0);
+}
+
+.button-white:hover {
+    -fx-background-color: rgba(255, 255, 255, 1.0);
+    -fx-text-fill: rgba(0, 0, 0, 1.0);
 }
 
 .radio-button .radio {
@@ -202,7 +212,7 @@
 }
 
 .action-status-success {
-    -fx-fill: rgba(0, 128, 0, 1.0);
+    -fx-fill: rgba(16, 66, 16, 1.0);
 }
 
 .action-status-failure {

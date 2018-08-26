@@ -44,6 +44,7 @@ public class NeuralSettingsWidget extends Widget {
     private void initializeTopologyPane() {
         settingsTopologyWidget = new NeuralSettingsTopologyWidget(neuralNetwork, this, "Topologia sieci");
         settingsTopologyWidget.setStyle(WidgetStyle.SECONDARY);
+        settingsTopologyWidget.setMinimizationVisibility(false);
         settingsTopologyWidget.contentContainer.setPrefWidth(960d);
         mainPane.getChildren().add(settingsTopologyWidget.getWidget());
     }
@@ -51,6 +52,7 @@ public class NeuralSettingsWidget extends Widget {
     private void initializeParametersPane() {
         settingsParametersWidget = new NeuralSettingsParametersWidget(neuralNetwork, this, "Parametry sieci");
         settingsParametersWidget.setStyle(WidgetStyle.SECONDARY);
+        settingsParametersWidget.setMinimizationVisibility(false);
         settingsParametersWidget.contentContainer.setPrefWidth(960d);
         mainPane.getChildren().add(settingsParametersWidget.getWidget());
     }

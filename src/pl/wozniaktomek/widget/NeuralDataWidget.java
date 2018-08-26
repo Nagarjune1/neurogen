@@ -37,7 +37,7 @@ public class NeuralDataWidget extends Widget {
     private void initialize() {
         initializeReadDataContainer(DataType.LEARNING);
         initializeReadDataContainer(DataType.TESTING);
-        initializeDataStatus();
+        // initializeDataStatus();
         initializeButtonActions();
     }
 
@@ -70,6 +70,7 @@ public class NeuralDataWidget extends Widget {
         contentContainer.getChildren().add(hBox);
     }
 
+    /*
     private void initializeDataStatus() {
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(0, 0, 0, 2));
@@ -81,6 +82,7 @@ public class NeuralDataWidget extends Widget {
         hBox.getChildren().add(textDataStatus);
         contentContainer.getChildren().add(hBox);
     }
+    */
 
     private void initializeButtonActions() {
         buttonLoadLearningData.setOnAction(event -> {
@@ -99,17 +101,18 @@ public class NeuralDataWidget extends Widget {
     private void validateObjects() {
         if (!textLearningFileStatus.getText().equals("nie wybrano pliku...") && !textTestingFileStatus.getText().equals("nie wybrano pliku...")) {
             if (neuralNetwork.setObjects(objectsLearning, objectsTesting)) {
-                setGeneralDataStatus(DataStatus.OK);
+                this.setStyle(WidgetStyle.SUCCESS);
                 neuralControl.refreshSettingsWidget();
                 neuralControl.refreshTopologyWidget();
             } else {
-                setGeneralDataStatus(DataStatus.BAD);
+                this.setStyle(WidgetStyle.FAILURE);
                 neuralControl.refreshSettingsWidget();
                 neuralControl.refreshTopologyWidget();
             }
         }
     }
 
+    /*
     private void setGeneralDataStatus(DataStatus dataStatus) {
         if (dataStatus.equals(DataStatus.OK)) {
             textDataStatus.setText("Dane POPRAWNE");
@@ -119,6 +122,7 @@ public class NeuralDataWidget extends Widget {
             setStatusClass(dataStatus, textDataStatus);
         }
     }
+    */
 
     private void setFileDataStatus(Text textStatus, ArrayList<NeuralObject> objects) {
         if (objects != null) {
