@@ -226,15 +226,20 @@
     -fx-background-color: rgba(54, 69, 79, 1.0);
     -fx-border-color: rgba(167, 184, 195, 1.0);
     -fx-border-radius: 4px;
-    -fx-text-fill: rgba(167, 184, 195, 0.75);
-    -fx-font-size: 16px;
-}
-
-.nav-button-active {
     -fx-text-fill: rgba(167, 184, 195, 1.0);
+    -fx-font-size: 16px;
 }
 
 .nav-button:hover {
     -fx-background-color: rgba(167, 184, 195, 1.0);
     -fx-text-fill: rgba(54, 69, 79, 1.0);
+}
+
+.nav-button-active {
+    -fx-text-fill: rgba(255, 255, 255, 1.0);
+    -fx-border-color: rgba(255, 255, 255, 1.0);
+}
+
+.nav-button-active:hover {
+    -fx-border-color: rgba(167, 184, 195, 1.0);
 }

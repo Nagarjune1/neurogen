@@ -33,7 +33,7 @@
                </VBox.margin>
             </Text>
             <Button fx:id="buttonNavHome" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EKRAN GŁÓWNY" />
-            <Button fx:id="buttonNavDataEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
+            <Button fx:id="buttonNavEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

@@ -11,6 +11,7 @@ import pl.wozniaktomek.ThesisApp;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class WindowControl implements Initializable {
@@ -22,22 +23,26 @@ public class WindowControl implements Initializable {
     private AnchorPane neuralPane;
 
     @FXML private Button buttonNavHome;
-    @FXML private Button buttonNavDataEditor;
+    @FXML private Button buttonNavEditor;
     @FXML private Button buttonNavGenetic;
     @FXML private Button buttonNavNeural;
     @FXML private Button buttonNavExit;
 
+    private ArrayList<AnchorPane> panels;
+    private ArrayList<Button> buttons;
+
     private enum ActivePane {HOME, EDITOR, GENETIC, NEURAL}
+    private ActivePane activePane = ActivePane.EDITOR;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
+    public void initialize(URL location, ResourceBundle resources) {}
 
     public void initialization() {
         initializePanels();
+        initializeCollections();
         initializeSizeListener();
         initializeButtonActions();
+        switchPanels(ActivePane.HOME);
     }
 
     private void initializePanels() {
@@ -65,9 +70,25 @@ public class WindowControl implements Initializable {
             e.printStackTrace();
         }
 
+
+
         contentPane.getChildren().addAll(homePane, editorPane, geneticPane, neuralPane);
-        switchPanels(ActivePane.HOME);
     }
+
+    private void initializeCollections() {
+        panels = new ArrayList<>();
+        panels.add(homePane);
+        panels.add(editorPane);
+        panels.add(geneticPane);
+        panels.add(neuralPane);
+
+        buttons = new ArrayList<>();
+        buttons.add(buttonNavHome);
+        buttons.add(buttonNavEditor);
+        buttons.add(buttonNavGenetic);
+        buttons.add(buttonNavNeural);
+    }
+
 
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
@@ -84,7 +105,7 @@ public class WindowControl implements Initializable {
 
     private void initializeButtonActions() {
         buttonNavHome.setOnAction(event -> switchPanels(ActivePane.HOME));
-        buttonNavDataEditor.setOnAction(event -> switchPanels(ActivePane.EDITOR));
+        buttonNavEditor.setOnAction(event -> switchPanels(ActivePane.EDITOR));
         buttonNavGenetic.setOnAction(event -> switchPanels(ActivePane.GENETIC));
         buttonNavNeural.setOnAction(event -> switchPanels(ActivePane.NEURAL));
         buttonNavExit.setOnAction(event -> closeProgram());
@@ -93,36 +114,64 @@ public class WindowControl implements Initializable {
     private void switchPanels(ActivePane activePanel) {
         switch (activePanel) {
             case HOME:
-                homePane.setVisible(true);
-                editorPane.setVisible(false);
-                geneticPane.setVisible(false);
-                neuralPane.setVisible(false);
+                if (!activePane.equals(ActivePane.HOME)) {
+                    setActivePane(homePane);
+                    setActiveButton(buttonNavHome);
+                    activePane = ActivePane.HOME;
+                }
+
                 break;
 
             case EDITOR:
-                homePane.setVisible(false);
-                editorPane.setVisible(true);
-                geneticPane.setVisible(false);
-                neuralPane.setVisible(false);
+                if (!activePane.equals(ActivePane.EDITOR)) {
+                    setActivePane(editorPane);
+                    setActiveButton(buttonNavEditor);
+                    activePane = ActivePane.EDITOR;
+                }
+
                 break;
 
             case GENETIC:
-                homePane.setVisible(false);
-                editorPane.setVisible(false);
-                geneticPane.setVisible(true);
-                neuralPane.setVisible(false);
+                if (!activePane.equals(ActivePane.GENETIC)) {
+                    setActivePane(geneticPane);
+                    setActiveButton(buttonNavGenetic);
+                    activePane = ActivePane.GENETIC;
+                }
+
                 break;
 
             case NEURAL:
-                homePane.setVisible(false);
-                editorPane.setVisible(false);
-                geneticPane.setVisible(false);
-                neuralPane.setVisible(true);
+                if (!activePane.equals(ActivePane.NEURAL)) {
+                    setActivePane(neuralPane);
+                    setActiveButton(buttonNavNeural);
+                    activePane = ActivePane.NEURAL;
+                }
+
                 break;
         }
     }
 
-    public AnchorPane getContentPane() {
+    private void setActivePane(AnchorPane activePane) {
+        for (AnchorPane anchorPane : panels) {
+            if (anchorPane.equals(activePane)) {
+                anchorPane.setVisible(true);
+            } else {
+                anchorPane.setVisible(false);
+            }
+        }
+    }
+
+    private void setActiveButton(Button activeButton) {
+        for (Button button : buttons) {
+            if (button.equals(activeButton)) {
+                button.getStyleClass().add("nav-button-active");
+            } else {
+                button.getStyleClass().remove("nav-button-active");
+            }
+        }
+    }
+
+    AnchorPane getContentPane() {
         return contentPane;
     }
 
