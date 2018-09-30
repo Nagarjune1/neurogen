@@ -56,7 +56,7 @@ public class NeuralDataWidget extends Widget {
         }
 
         Text text = new Text("nie wybrano pliku...");
-        text.getStyleClass().add("action-status");
+        text.getStyleClass().addAll("action-status", "text-color-status");
 
         if (dataType.equals(DataType.LEARNING)) {
             buttonLoadLearningData = button;
@@ -136,12 +136,12 @@ public class NeuralDataWidget extends Widget {
 
     private void setStatusClass(DataStatus dataStatus, Text text) {
         if (dataStatus.equals(DataStatus.OK)) {
-            text.getStyleClass().remove("action-status-failure");
-            text.getStyleClass().add("action-status-success");
+            text.getStyleClass().remove("text-color-failure");
+            text.getStyleClass().add("text-color-success");
 
         } else {
-            text.getStyleClass().remove("action-status-success");
-            text.getStyleClass().add("action-status-failure");
+            text.getStyleClass().remove("text-color-success");
+            text.getStyleClass().add("text-color-failure");
         }
     }
 

@@ -3,6 +3,7 @@ package pl.wozniaktomek.widget;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.service.LayoutService;
 
 class NeuralSettingsParametersWidget extends Widget {
     private NeuralNetwork neuralNetwork;
@@ -20,15 +21,13 @@ class NeuralSettingsParametersWidget extends Widget {
         if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
             refreshBiasSetting();
         } else {
-            contentContainer.getChildren().add(getActionBoldText("wczytaj dane uczące oraz dane testowe"));
+            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.ACTION));
         }
     }
 
     private void refreshBiasSetting() {
-        HBox hBox = getHBoxContainer();
-        hBox.getChildren().add(getActionBoldText("Bias"));
-        hBox.getChildren().add(getBiasCheckbox());
-
+        HBox hBox = layoutService.getHBox(2d, 12d, 12d);
+        hBox.getChildren().addAll(layoutService.getText("Bias", LayoutService.TextStyle.ACTION), getBiasCheckbox());
         contentContainer.getChildren().add(hBox);
     }
 

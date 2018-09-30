@@ -52,6 +52,7 @@ public class NeuralParameters {
         this.objectsLearning = objectsLearning;
         this.objectsTesting = objectsTesting;
 
+        neuralNetwork.getNeuralStructure().clearStructure();
         neuralNetwork.getNeuralStructure().addLayer(inputSize);
         neuralNetwork.getNeuralStructure().addLayer(outputSize);
     }

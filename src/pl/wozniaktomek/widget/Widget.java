@@ -1,20 +1,18 @@
 package pl.wozniaktomek.widget;
 
 import javafx.beans.value.ChangeListener;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
+import pl.wozniaktomek.service.LayoutService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Widget {
+    protected LayoutService layoutService;
     private HashMap<WidgetStyle, ArrayList<String>> styles;
 
     private VBox mainContainer;
@@ -27,14 +25,16 @@ public abstract class Widget {
     private Button minimizationButton;
 
     Widget() {
+        layoutService = new LayoutService();
+
         initializeStyles();
-        initializeMainContainer();
-        initializeTitleContainer();
-        initializeTitleTextContainer();
-        initializeMinimizationButton();
-        initializeContentContainer();
+        initializeContainers();
         initializeWidgetSizeListener();
+
+        initializeTitle();
+        initializeMinimizationButton();
         setMinimizationVisibility(true);
+
         setStyle(WidgetStyle.PRIMARY);
     }
 
@@ -64,7 +64,7 @@ public abstract class Widget {
 
     private void minimizeWidget() {
         contentContainer.setVisible(false);
-        setMainContainerHeight(96d);
+        setMainContainerHeight(45d);
         minimizationButton.setText("+");
         isMinimized = true;
     }
@@ -77,47 +77,28 @@ public abstract class Widget {
     }
 
     private void initializeStyles() {
-        styles = new HashMap<>();
-
-        ArrayList<String> styleClasses = new ArrayList<>();
-        styleClasses.add("widget-primary");
-        styleClasses.add("widget-primary-background-fill");
-        styles.put(WidgetStyle.PRIMARY, styleClasses);
-
-        styleClasses = new ArrayList<>();
-        styleClasses.add("widget-secondary");
-        styleClasses.add("widget-secondary-background-fill");
-        styles.put(WidgetStyle.SECONDARY, styleClasses);
-
-        styleClasses = new ArrayList<>();
-        styleClasses.add("widget-success");
-        styleClasses.add("widget-success-background-fill");
-        styles.put(WidgetStyle.SUCCESS, styleClasses);
-
-        styleClasses = new ArrayList<>();
-        styleClasses.add("widget-failure");
-        styleClasses.add("widget-failure-background-fill");
-        styles.put(WidgetStyle.FAILURE, styleClasses);
+        styles = layoutService.getWidgetStyles();
     }
 
-    private void initializeMainContainer() {
-        mainContainer = new VBox();
-        mainContainer.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        mainContainer.setAlignment(Pos.TOP_LEFT);
+    private void initializeContainers() {
+        mainContainer = layoutService.getVBox(null, null, null);
         isMinimized = false;
-    }
 
-    private void initializeTitleContainer() {
-        titleContainer = new HBox();
-        titleContainer.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        titleContainer.setPadding(new Insets(12));
-        titleContainer.setSpacing(12d);
+        titleContainer = layoutService.getHBox(6d, 12d, 12d);
         mainContainer.getChildren().add(titleContainer);
+
+        contentContainer = layoutService.getVBox(6d, 12d, 12d);
+        mainContainer.getChildren().add(contentContainer);
+
+        titleTextContainer = layoutService.getHBox(null, null, null);
     }
 
-    private void initializeTitleTextContainer() {
-        titleTextContainer = new HBox();
+    private void initializeWidgetSizeListener() {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> titleTextContainer.setPrefWidth(contentContainer.getWidth() - 64);
+        contentContainer.widthProperty().addListener(stageSizeListener);
+    }
 
+    private void initializeTitle() {
         title = new Text("Widget");
         title.getStyleClass().add("section-title-background");
 
@@ -125,10 +106,9 @@ public abstract class Widget {
         titleContainer.getChildren().add(titleTextContainer);
     }
 
-
     private void initializeMinimizationButton() {
-        minimizationButton = getButton("-", 32d);
-        minimizationButton.getStyleClass().add("button-white");
+        minimizationButton = layoutService.getButton("-", 32d, 32d, LayoutService.ButtonStyle.WHITE);
+
         minimizationButton.setOnAction(event -> {
             if (isMinimized) {
                 maximizeWidget();
@@ -138,21 +118,6 @@ public abstract class Widget {
         });
 
         titleContainer.getChildren().add(minimizationButton);
-    }
-
-
-    private void initializeContentContainer() {
-        contentContainer = new VBox();
-        contentContainer.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        contentContainer.setPadding(new Insets(12));
-        contentContainer.setSpacing(12d);
-
-        mainContainer.getChildren().add(contentContainer);
-    }
-
-    private void initializeWidgetSizeListener() {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> titleTextContainer.setPrefWidth(contentContainer.getWidth() - 72);
-        contentContainer.widthProperty().addListener(stageSizeListener);
     }
 
     private void setMainContainerHeight(Double height) {
@@ -165,45 +130,6 @@ public abstract class Widget {
             mainContainer.setMinHeight(Region.USE_COMPUTED_SIZE);
             mainContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
         }
-
-    }
-
-    HBox getHBoxContainer() {
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(2, 12, 2, 12));
-        hBox.setSpacing(12);
-        return hBox;
-    }
-
-    Button getButton(String text, Double size) {
-        Button button = new Button();
-        button.setText(text);
-
-        if (size != null) {
-            button.setPrefSize(size, size);
-        }
-
-        return button;
-    }
-
-    TextFlow getActionText(String name) {
-        TextFlow textFlow = new TextFlow();
-        textFlow.setPrefWidth(96d);
-        textFlow.setPadding(new Insets(6, 0, 6, 0));
-        textFlow.setTextAlignment(TextAlignment.LEFT);
-
-        Text text = new Text(name);
-        text.getStyleClass().add("action-status");
-
-        textFlow.getChildren().add(text);
-        return textFlow;
-    }
-
-    Text getActionBoldText(String name) {
-        Text text = new Text(name);
-        text.getStyleClass().add("action-bold-status");
-        return text;
     }
 
     public enum WidgetStyle {PRIMARY, SECONDARY, SUCCESS, FAILURE}

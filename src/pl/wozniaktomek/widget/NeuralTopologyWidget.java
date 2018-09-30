@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.service.LayoutService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ public class NeuralTopologyWidget extends Widget {
             drawNeurons();
             drawConnections();
         } else {
-            contentContainer.getChildren().add(getActionBoldText("wczytaj dane uczące oraz dane testowe"));
+            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.ACTION));
         }
     }
 

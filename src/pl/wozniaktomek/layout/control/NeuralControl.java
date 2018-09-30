@@ -6,9 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.widget.NeuralTopologyWidget;
-import pl.wozniaktomek.widget.NeuralSettingsWidget;
-import pl.wozniaktomek.widget.NeuralDataWidget;
+import pl.wozniaktomek.widget.*;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
 import java.net.URL;

@@ -59,12 +59,11 @@
                <HBox.margin>
                   <Insets top="14.0" />
                </HBox.margin>
-               <HBox styleClass="widget-primary-background-fill">
+               <HBox styleClass="widget-primary-background">
                   <padding>
-                     <Insets bottom="6.0" left="6.0" right="6.0" top="6.0"/>
+                     <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                   </padding>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section-title-background"
-                        text="Podsumowanie"/>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section-title-background" text="Podsumowanie" />
                </HBox>
                <TextFlow fx:id="textSummary">
                   <padding>
