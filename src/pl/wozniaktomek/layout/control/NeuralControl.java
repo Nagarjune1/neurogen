@@ -18,6 +18,7 @@ public class NeuralControl implements Initializable {
 
     private NeuralNetwork neuralNetwork;
 
+    private NeuralControlWidget neuralControlWidget;
     private NeuralDataWidget neuralDataWidget;
     private NeuralSettingsWidget neuralSettingsWidget;
     private NeuralTopologyWidget neuralTopologyWidget;
@@ -25,6 +26,8 @@ public class NeuralControl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNeuralNetwork();
+
+        initializeNeuralControlWidget();
         initializeReadDataWidget();
         initializeNetworkSettingsWidget();
         initializeNetworkTopologyWidget();
@@ -34,6 +37,11 @@ public class NeuralControl implements Initializable {
 
     private void initializeNeuralNetwork() {
         neuralNetwork = new NeuralNetwork();
+    }
+
+    private void initializeNeuralControlWidget() {
+        neuralControlWidget = new NeuralControlWidget("Panel kontrolny");
+        contentContainer.getChildren().add(neuralControlWidget.getWidget());
     }
 
     private void initializeReadDataWidget() {

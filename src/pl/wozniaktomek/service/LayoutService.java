@@ -75,12 +75,37 @@ public class LayoutService {
         return vBox;
     }
 
+    public VBox getInfoPane(String paneTitle) {
+        VBox vBox = getVBox(6d, 12d, 6d);
+
+        VBox titleBox = getVBox(2d, 6d, 0d);
+        titleBox.getStyleClass().add("info-pane");
+        Text text = getText(paneTitle, TextStyle.HEADING);
+
+        titleBox.getChildren().add(text);
+        vBox.getChildren().add(titleBox);
+
+        return vBox;
+    }
+
     public Text getText(String content, TextStyle textStyle) {
         Text text = new Text(content);
 
         switch (textStyle) {
-            case ACTION:
-                text.getStyleClass().add("action-status");
+            case SECTION_PRIMARY:
+                text.getStyleClass().add("section-title-primary");
+                break;
+
+            case SECTION_BACKGROUND:
+                text.getStyleClass().add("section-title-background");
+                break;
+
+            case HEADING:
+                text.getStyleClass().add("text-heading");
+                break;
+
+            case STATUS:
+                text.getStyleClass().add("text-status");
                 break;
         }
 
@@ -129,9 +154,10 @@ public class LayoutService {
         styleClasses.add("widget-failure");
         styleClasses.add("widget-failure-background");
         styles.put(Widget.WidgetStyle.FAILURE, styleClasses);
+
         return styles;
     }
 
-    public enum TextStyle {ACTION}
-    public enum ButtonStyle{SECONDARY, WHITE}
+    public enum TextStyle {SECTION_PRIMARY, SECTION_BACKGROUND, HEADING, STATUS}
+    public enum ButtonStyle {SECONDARY, WHITE}
 }

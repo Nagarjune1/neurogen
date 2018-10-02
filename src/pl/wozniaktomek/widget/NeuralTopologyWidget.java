@@ -31,6 +31,7 @@ public class NeuralTopologyWidget extends Widget {
     public NeuralTopologyWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
         this.neuralNetwork = neuralNetwork;
         setTitle(widgetTitle);
+        minimizeWidget();
     }
 
     public void drawNetwork(Double width) {
@@ -43,7 +44,7 @@ public class NeuralTopologyWidget extends Widget {
             drawNeurons();
             drawConnections();
         } else {
-            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.ACTION));
+            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
     }
 

@@ -25,13 +25,13 @@ class NeuralSettingsTopologyWidget extends Widget {
             refreshHiddenLayers();
             refreshOutputLayer();
         } else {
-            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.ACTION));
+            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
     }
 
     private void refreshInputLayer() {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.ACTION)));
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.STATUS)));
 
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
@@ -46,7 +46,7 @@ class NeuralSettingsTopologyWidget extends Widget {
     private void refreshHiddenLayers() {
         for (int i = 1; i < neuralNetwork.getNeuralStructure().getLayers().size() - 1; i++) {
             HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-            hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.ACTION)));
+            hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.STATUS)));
 
             Spinner spinner;
             if (neuralNetwork.getNeuralStructure().isBias()) {
@@ -69,7 +69,7 @@ class NeuralSettingsTopologyWidget extends Widget {
 
     private void refreshOutputLayer() {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.ACTION)));
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
 
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getOutputSize(), 1);
         hBox.getChildren().add(spinner);

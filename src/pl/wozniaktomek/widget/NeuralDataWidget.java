@@ -1,6 +1,5 @@
 package pl.wozniaktomek.widget;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -9,7 +8,6 @@ import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.NeuralObject;
 import pl.wozniaktomek.service.DataTransferService;
-import pl.wozniaktomek.widget.Widget;
 
 import java.util.ArrayList;
 
@@ -22,7 +20,6 @@ public class NeuralDataWidget extends Widget {
 
     private Text textLearningFileStatus;
     private Text textTestingFileStatus;
-    private Text textDataStatus;
 
     private ArrayList<NeuralObject> objectsLearning;
     private ArrayList<NeuralObject> objectsTesting;
@@ -37,7 +34,6 @@ public class NeuralDataWidget extends Widget {
     private void initialize() {
         initializeReadDataContainer(DataType.LEARNING);
         initializeReadDataContainer(DataType.TESTING);
-        // initializeDataStatus();
         initializeButtonActions();
     }
 
@@ -70,20 +66,6 @@ public class NeuralDataWidget extends Widget {
         contentContainer.getChildren().add(hBox);
     }
 
-    /*
-    private void initializeDataStatus() {
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(0, 0, 0, 2));
-        hBox.setAlignment(Pos.CENTER_LEFT);
-
-        textDataStatus = new Text("Nie załadowano wszystkich danych");
-        textDataStatus.getStyleClass().add("action-bold-status");
-
-        hBox.getChildren().add(textDataStatus);
-        contentContainer.getChildren().add(hBox);
-    }
-    */
-
     private void initializeButtonActions() {
         buttonLoadLearningData.setOnAction(event -> {
             objectsLearning = new DataTransferService().readFromFile();
@@ -104,6 +86,7 @@ public class NeuralDataWidget extends Widget {
                 this.setStyle(WidgetStyle.SUCCESS);
                 neuralControl.refreshSettingsWidget();
                 neuralControl.refreshTopologyWidget();
+                minimizeWidget();
             } else {
                 this.setStyle(WidgetStyle.FAILURE);
                 neuralControl.refreshSettingsWidget();
@@ -111,18 +94,6 @@ public class NeuralDataWidget extends Widget {
             }
         }
     }
-
-    /*
-    private void setGeneralDataStatus(DataStatus dataStatus) {
-        if (dataStatus.equals(DataStatus.OK)) {
-            textDataStatus.setText("Dane POPRAWNE");
-            setStatusClass(dataStatus, textDataStatus);
-        } else {
-            textDataStatus.setText("Dane NIEPOPRAWNE (w celu pomocy naciśnij przycisk w prawym górnym rogu)");
-            setStatusClass(dataStatus, textDataStatus);
-        }
-    }
-    */
 
     private void setFileDataStatus(Text textStatus, ArrayList<NeuralObject> objects) {
         if (objects != null) {

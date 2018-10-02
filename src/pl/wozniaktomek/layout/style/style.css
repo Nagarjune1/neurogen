@@ -23,6 +23,11 @@
     -fx-fill: rgba(54, 69, 79, 1.0);
 }
 
+.info-pane {
+    -fx-border-color: rgba(113, 140, 158, 0.5);
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
 /* Widget */
 .widget > Text {
     -fx-fill: rgba(54, 69, 79, 1.0);
@@ -173,22 +178,18 @@
     -fx-fill: rgba(54, 69, 79, 1.0);
 }
 
-.section-title-secondary {
-    -fx-font-size: 18px;
-    -fx-fill: rgba(113, 140, 158, 1.0);
-}
-
 .section-title-background {
     -fx-font-size: 18px;
     -fx-fill: rgba(255, 255, 255, 1.0);
 }
 
-.row-section-title {
-    -fx-font-size: 20px;
-    -fx-fill: rgba(113, 140, 158, 1.0);
+.text-heading {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: rgba(113, 140, 158, 0.75);
 }
 
-.action-status {
+.text-status {
     -fx-font-size: 12px;
     -fx-fill: rgba(54, 69, 79, 0.5);
 }

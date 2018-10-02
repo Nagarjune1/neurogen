@@ -21,13 +21,13 @@ class NeuralSettingsParametersWidget extends Widget {
         if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
             refreshBiasSetting();
         } else {
-            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.ACTION));
+            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
     }
 
     private void refreshBiasSetting() {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-        hBox.getChildren().addAll(layoutService.getText("Bias", LayoutService.TextStyle.ACTION), getBiasCheckbox());
+        hBox.getChildren().addAll(layoutService.getText("Bias", LayoutService.TextStyle.STATUS), getBiasCheckbox());
         contentContainer.getChildren().add(hBox);
     }
 

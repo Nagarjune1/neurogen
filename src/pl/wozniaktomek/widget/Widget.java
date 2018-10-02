@@ -62,14 +62,14 @@ public abstract class Widget {
         minimizationButton.setVisible(isButtonVisible);
     }
 
-    private void minimizeWidget() {
+    void minimizeWidget() {
         contentContainer.setVisible(false);
         setMainContainerHeight(45d);
         minimizationButton.setText("+");
         isMinimized = true;
     }
 
-    private void maximizeWidget() {
+   void maximizeWidget() {
         contentContainer.setVisible(true);
         setMainContainerHeight(null);
         minimizationButton.setText("-");
@@ -99,9 +99,7 @@ public abstract class Widget {
     }
 
     private void initializeTitle() {
-        title = new Text("Widget");
-        title.getStyleClass().add("section-title-background");
-
+        title = layoutService.getText("Widget", LayoutService.TextStyle.SECTION_BACKGROUND);
         titleTextContainer.getChildren().add(title);
         titleContainer.getChildren().add(titleTextContainer);
     }
