@@ -1,4 +1,4 @@
-package pl.wozniaktomek.widget;
+package pl.wozniaktomek.layout.widget;
 
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Button;
@@ -18,58 +18,64 @@ public abstract class Widget {
     private VBox mainContainer;
     private HBox titleContainer;
     private HBox titleTextContainer;
-    VBox contentContainer;
+    protected VBox contentContainer;
 
-    private Text title;
+    private Text widgetTitle;
     private boolean isMinimized;
     private Button minimizationButton;
 
-    Widget() {
+    protected Widget() {
         layoutService = new LayoutService();
 
         initializeStyles();
         initializeContainers();
         initializeWidgetSizeListener();
+    }
 
-        initializeTitle();
+    protected void createPrimaryWidget(String title) {
+        initializeTitle(title, LayoutService.TextStyle.WIDGET_PRIMARY_TITLE);
+        setStyle(WidgetStyle.PRIMARY);
         initializeMinimizationButton();
         setMinimizationVisibility(true);
+    }
 
-        setStyle(WidgetStyle.PRIMARY);
+    protected void createSecondaryWidget(String title) {
+        initializeTitle(title, LayoutService.TextStyle.WIDGET_SECONDARY_TITLE);
+        setStyle(WidgetStyle.SECONDARY);
+        initializeMinimizationButton();
+        setMinimizationVisibility(false);
     }
 
     public VBox getWidget() {
         return mainContainer;
     }
 
-    void setStyle(WidgetStyle widgetStyle) {
+    private void setStyle(WidgetStyle widgetStyle) {
         for (WidgetStyle style : WidgetStyle.values()) {
             if (widgetStyle.equals(style)) {
                 mainContainer.getStyleClass().add(styles.get(style).get(0));
                 titleContainer.getStyleClass().add(styles.get(style).get(1));
+                widgetTitle.getStyleClass().add(styles.get(style).get(2));
             } else {
                 mainContainer.getStyleClass().remove(styles.get(style).get(0));
                 titleContainer.getStyleClass().remove(styles.get(style).get(1));
+                widgetTitle.getStyleClass().remove(styles.get(style).get(2));
             }
         }
     }
 
-    void setTitle(String titleText) {
-        title.setText(titleText);
-    }
-
-    void setMinimizationVisibility(boolean isButtonVisible) {
+    private void setMinimizationVisibility(boolean isButtonVisible) {
         minimizationButton.setVisible(isButtonVisible);
     }
 
-    void minimizeWidget() {
+    private void minimizeWidget() {
         contentContainer.setVisible(false);
-        setMainContainerHeight(45d);
+        setMainContainerHeight(64d);
         minimizationButton.setText("+");
         isMinimized = true;
     }
 
-   void maximizeWidget() {
+    private void maximizeWidget() {
         contentContainer.setVisible(true);
         setMainContainerHeight(null);
         minimizationButton.setText("-");
@@ -84,10 +90,10 @@ public abstract class Widget {
         mainContainer = layoutService.getVBox(null, null, null);
         isMinimized = false;
 
-        titleContainer = layoutService.getHBox(6d, 12d, 12d);
+        titleContainer = layoutService.getHBox(16d, 16d, 12d);
         mainContainer.getChildren().add(titleContainer);
 
-        contentContainer = layoutService.getVBox(6d, 12d, 12d);
+        contentContainer = layoutService.getVBox(12d, 24d, 12d);
         mainContainer.getChildren().add(contentContainer);
 
         titleTextContainer = layoutService.getHBox(null, null, null);
@@ -98,9 +104,9 @@ public abstract class Widget {
         contentContainer.widthProperty().addListener(stageSizeListener);
     }
 
-    private void initializeTitle() {
-        title = layoutService.getText("Widget", LayoutService.TextStyle.SECTION_BACKGROUND);
-        titleTextContainer.getChildren().add(title);
+    private void initializeTitle(String title, LayoutService.TextStyle textStyle) {
+        widgetTitle = layoutService.getText(title, textStyle);
+        titleTextContainer.getChildren().add(widgetTitle);
         titleContainer.getChildren().add(titleTextContainer);
     }
 
@@ -130,5 +136,5 @@ public abstract class Widget {
         }
     }
 
-    public enum WidgetStyle {PRIMARY, SECONDARY, SUCCESS, FAILURE}
+    public enum WidgetStyle {PRIMARY, SECONDARY}
 }

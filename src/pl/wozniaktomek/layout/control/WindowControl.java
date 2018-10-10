@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 public class WindowControl implements Initializable {
     @FXML private AnchorPane navPane;
     @FXML private AnchorPane contentPane;
+
     private AnchorPane homePane;
     private AnchorPane editorPane;
     private AnchorPane geneticPane;
@@ -70,8 +71,6 @@ public class WindowControl implements Initializable {
             e.printStackTrace();
         }
 
-
-
         contentPane.getChildren().addAll(homePane, editorPane, geneticPane, neuralPane);
     }
 
@@ -89,10 +88,10 @@ public class WindowControl implements Initializable {
         buttons.add(buttonNavNeural);
     }
 
-
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             contentPane.setPrefSize(ThesisApp.stage.getWidth() - navPane.getWidth() - 16, ThesisApp.stage.getHeight() - 38);
+
             homePane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             editorPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             geneticPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());

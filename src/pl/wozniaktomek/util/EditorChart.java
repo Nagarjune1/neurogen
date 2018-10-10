@@ -1,4 +1,4 @@
-package pl.wozniaktomek.widget;
+package pl.wozniaktomek.util;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Side;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataEditorWidget {
+public class EditorChart {
     private Text textSummary;
 
     private ScatterChart<Number, Number> chart;
@@ -20,7 +20,7 @@ public class DataEditorWidget {
     private Integer classNumber;
     private Integer objectAmount;
 
-    public DataEditorWidget() {
+    public EditorChart() {
         initializeData();
         initializeChart();
         initializeEvent();
@@ -41,7 +41,7 @@ public class DataEditorWidget {
         xAxis = new NumberAxis(-10, 10, 1);
         yAxis = new NumberAxis(-10, 10, 1);
         chart = new ScatterChart<>(xAxis, yAxis);
-        chart.setLegendSide(Side.RIGHT);
+        chart.setLegendSide(Side.BOTTOM);
         chart.setPrefSize(854, 480);
         chart.setAnimated(false);
     }
@@ -55,15 +55,17 @@ public class DataEditorWidget {
                     Math.round(yAxis.getValueForDisplay(yAxis.sceneToLocal(pointScene).getY()).doubleValue() * 1000.0) / 1000.0
             );
 
-            if (objects.containsKey(classNumber)) {
-                ArrayList<Point2D> classPoints = objects.get(classNumber);
-                if (!classPoints.contains(pointClass))
+            if (pointClass.getX() >= xAxis.getLowerBound() && pointClass.getX() <= xAxis.getUpperBound() && pointClass.getY() >= yAxis.getLowerBound() && pointClass.getY() <= yAxis.getUpperBound()) {
+                if (objects.containsKey(classNumber)) {
+                    ArrayList<Point2D> classPoints = objects.get(classNumber);
+                    if (!classPoints.contains(pointClass))
+                        classPoints.add(pointClass);
+                    objects.replace(classNumber, classPoints);
+                } else {
+                    ArrayList<Point2D> classPoints = new ArrayList<>();
                     classPoints.add(pointClass);
-                objects.replace(classNumber, classPoints);
-            } else {
-                ArrayList<Point2D> classPoints = new ArrayList<>();
-                classPoints.add(pointClass);
-                objects.put(classNumber, classPoints);
+                    objects.put(classNumber, classPoints);
+                }
             }
 
             refreshChart();

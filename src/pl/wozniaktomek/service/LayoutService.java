@@ -8,7 +8,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import pl.wozniaktomek.widget.Widget;
+import pl.wozniaktomek.layout.widget.Widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,17 +21,19 @@ public class LayoutService {
         if (width != null) {
             button.setPrefWidth(width);
             button.setMinWidth(width);
-        } else if (height != null) {
-            button.setPrefHeight(height);
-            button.setMinHeight(height);
-        } else {
-            button.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         }
 
-        if (buttonStyle.equals(ButtonStyle.SECONDARY)) {
-            button.getStyleClass().add("button-secondary");
-        } else if (buttonStyle.equals(ButtonStyle.WHITE)) {
-            button.getStyleClass().add("button-white");
+        if (height != null) {
+            button.setPrefHeight(height);
+            button.setMinHeight(height);
+        }
+
+        if (buttonStyle != null) {
+            if (buttonStyle.equals(ButtonStyle.SECONDARY)) {
+                button.getStyleClass().add("button-secondary");
+            } else if (buttonStyle.equals(ButtonStyle.WHITE)) {
+                button.getStyleClass().add("button-white");
+            }
         }
 
         return button;
@@ -45,8 +47,6 @@ public class LayoutService {
 
         if (paddingHorizontal != null && paddingVertical != null) {
             hBox.setPadding(new Insets(paddingVertical, paddingHorizontal, paddingVertical, paddingHorizontal));
-        } else if (paddingVertical != null) {
-            hBox.setPadding(new Insets(paddingVertical, paddingVertical * 2, paddingVertical, paddingVertical * 2));
         }
 
         if (spacing != null) {
@@ -64,8 +64,6 @@ public class LayoutService {
 
         if (paddingHorizontal != null && paddingVertical != null) {
             vBox.setPadding(new Insets(paddingVertical, paddingHorizontal, paddingVertical, paddingHorizontal));
-        } else if (paddingVertical != null) {
-            vBox.setPadding(new Insets(paddingVertical, paddingVertical * 2, paddingVertical, paddingVertical * 2));
         }
 
         if (spacing != null) {
@@ -75,29 +73,16 @@ public class LayoutService {
         return vBox;
     }
 
-    public VBox getInfoPane(String paneTitle) {
-        VBox vBox = getVBox(6d, 12d, 6d);
-
-        VBox titleBox = getVBox(2d, 6d, 0d);
-        titleBox.getStyleClass().add("info-pane");
-        Text text = getText(paneTitle, TextStyle.HEADING);
-
-        titleBox.getChildren().add(text);
-        vBox.getChildren().add(titleBox);
-
-        return vBox;
-    }
-
     public Text getText(String content, TextStyle textStyle) {
         Text text = new Text(content);
 
         switch (textStyle) {
-            case SECTION_PRIMARY:
-                text.getStyleClass().add("section-title-primary");
+            case WIDGET_PRIMARY_TITLE:
+                text.getStyleClass().add("widget-primary-title");
                 break;
 
-            case SECTION_BACKGROUND:
-                text.getStyleClass().add("section-title-background");
+            case WIDGET_SECONDARY_TITLE:
+                text.getStyleClass().add("widget-secondary-title");
                 break;
 
             case HEADING:
@@ -137,27 +122,20 @@ public class LayoutService {
 
         ArrayList<String> styleClasses = new ArrayList<>();
         styleClasses.add("widget-primary");
-        styleClasses.add("widget-primary-background");
+        styleClasses.add("widget-primary-header");
+        styleClasses.add("widget-primary-title");
         styles.put(Widget.WidgetStyle.PRIMARY, styleClasses);
 
         styleClasses = new ArrayList<>();
         styleClasses.add("widget-secondary");
-        styleClasses.add("widget-secondary-background");
+        styleClasses.add("widget-secondary-header");
+        styleClasses.add("widget-secondary-title");
         styles.put(Widget.WidgetStyle.SECONDARY, styleClasses);
-
-        styleClasses = new ArrayList<>();
-        styleClasses.add("widget-success");
-        styleClasses.add("widget-success-background");
-        styles.put(Widget.WidgetStyle.SUCCESS, styleClasses);
-
-        styleClasses = new ArrayList<>();
-        styleClasses.add("widget-failure");
-        styleClasses.add("widget-failure-background");
-        styles.put(Widget.WidgetStyle.FAILURE, styleClasses);
 
         return styles;
     }
 
-    public enum TextStyle {SECTION_PRIMARY, SECTION_BACKGROUND, HEADING, STATUS}
+    public enum TextStyle {WIDGET_PRIMARY_TITLE, WIDGET_SECONDARY_TITLE, HEADING, STATUS}
+
     public enum ButtonStyle {SECONDARY, WHITE}
 }

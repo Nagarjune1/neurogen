@@ -10,43 +10,53 @@
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.WindowControl">
    <AnchorPane fx:id="navPane" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="224.0" styleClass="left-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <VBox spacing="10.0" styleClass="left-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <padding>
-            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-         </padding>
          <VBox alignment="CENTER_LEFT" spacing="10.0">
             <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               <Insets bottom="10.0" left="10.0" right="10.0" top="16.0" />
             </padding>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="NeuroGen">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="logo" text="NeuroGen">
                <font>
                   <Font size="42.0" />
                </font>
             </Text>
          </VBox>
-         <VBox alignment="CENTER_LEFT" spacing="10.0">
+         <VBox alignment="CENTER_LEFT">
             <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               <Insets bottom="10.0" top="10.0" />
             </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-section-title" text="Nawigacja">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </Text>
-            <Button fx:id="buttonNavHome" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EKRAN GŁÓWNY" />
-            <Button fx:id="buttonNavEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Button>
-            <Button fx:id="buttonNavGenetic" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="ALGORYTM GENETYCZNY" />
-            <Button fx:id="buttonNavNeural" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="SIEĆ NEURONOWA" />
-            <Button fx:id="buttonNavExit" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="ZAMKNIJ PROGRAM" />
+            <VBox>
+               <padding>
+                  <Insets left="12.0" right="12.0"/>
+               </padding>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-section-title" text="Nawigacja">
+                  <VBox.margin>
+                     <Insets bottom="10.0"/>
+                  </VBox.margin>
+               </Text>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT">
+               <Button fx:id="buttonNavHome" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
+                       prefWidth="256.0" styleClass="nav-button" text="EKRAN GŁÓWNY"/>
+               <Button fx:id="buttonNavEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
+                       prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
+                  <VBox.margin>
+                     <Insets/>
+                  </VBox.margin>
+               </Button>
+               <Button fx:id="buttonNavGenetic" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
+                       prefWidth="256.0" styleClass="nav-button" text="ALGORYTM GENETYCZNY"/>
+               <Button fx:id="buttonNavNeural" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
+                       prefWidth="256.0" styleClass="nav-button" text="SIEĆ NEURONOWA"/>
+               <Button fx:id="buttonNavExit" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
+                       prefWidth="256.0" styleClass="nav-button" text="ZAMKNIJ PROGRAM"/>
+            </VBox>
          </VBox>
       </VBox>
    </AnchorPane>
-   <AnchorPane fx:id="contentPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <padding>
-         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-      </padding>
-   </AnchorPane>
+   <AnchorPane fx:id="contentPane" layoutX="224.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="version 0.2" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="224.0">
+      <font>
+         <Font name="Roboto Condensed Regular" size="10.0" />
+      </font>
+   </Text>
 </AnchorPane>

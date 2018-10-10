@@ -9,34 +9,22 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.GeneticControl">
-   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <padding>
-         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         <Insets bottom="20.0" left="20.0" right="20.0" top="26.0" />
       </padding>
       <VBox spacing="10.0">
          <HBox alignment="CENTER_LEFT">
-            <children>
-               <HBox fx:id="titleContainer">
-                  <children>
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Algorytm genetyczny">
-                        <HBox.margin>
-                           <Insets right="6.0" />
-                        </HBox.margin>
-                     </Text>
-                  </children>
-               </HBox>
-               <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
-            </children>
+            <HBox fx:id="titleContainer">
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Algorytm genetyczny">
+                  <HBox.margin>
+                     <Insets right="6.0" />
+                  </HBox.margin>
+               </Text>
+            </HBox>
+            <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
          </HBox>
-         <VBox alignment="TOP_CENTER">
-            <children>
-               <HBox fx:id="progressContainer" alignment="TOP_CENTER">
-                  <VBox.margin>
-                     <Insets bottom="12.0" top="12.0" />
-                  </VBox.margin>
-               </HBox>
-            </children>
-         </VBox>
+         <VBox alignment="TOP_CENTER" />
       </VBox>
    </ScrollPane>
 </AnchorPane>

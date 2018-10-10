@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.service.DataEditorService;
-import pl.wozniaktomek.widget.DataEditorWidget;
+import pl.wozniaktomek.util.EditorChart;
 import pl.wozniaktomek.service.DataTransferService;
 
 import java.net.URL;
@@ -39,7 +39,7 @@ public class EditorControl implements Initializable {
     @FXML private TextFlow textSummary;
     private Text textSummaryContent;
 
-    private DataEditorWidget dataEditorWidget;
+    private EditorChart editorChart;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,7 +62,7 @@ public class EditorControl implements Initializable {
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
-            dataEditorWidget.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 200, ThesisApp.windowControl.getContentPane().getHeight() - 192);
+            editorChart.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 282, ThesisApp.windowControl.getContentPane().getHeight() - 98);
         };
 
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
@@ -71,49 +71,53 @@ public class EditorControl implements Initializable {
 
     private void initializeToggleListener() {
         dataClassToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                dataEditorWidget.setClassNumber(Integer.valueOf(dataClassToggleGroup.getSelectedToggle().getUserData().toString())));
+                editorChart.setClassNumber(Integer.valueOf(dataClassToggleGroup.getSelectedToggle().getUserData().toString())));
     }
 
     private void initializeSummaryListener() {
         textSummaryContent = new Text();
+
         textSummaryContent.textProperty().addListener((observable, oldValue, newValue) -> {
             textSummary.getChildren().clear();
-            textSummary.getChildren().add(new Text(newValue));
+            textSummaryContent = new Text(newValue);
+            textSummaryContent.getStyleClass().add("text-status");
+
+            textSummary.getChildren().add(textSummaryContent);
         });
     }
 
     private void initializeButtonActions() {
         buttonGenerate.setOnAction(event -> {
-            dataEditorWidget.setObjects(new DataEditorService().generateObjects());
-            dataEditorWidget.refreshWidget();
+            editorChart.setObjects(new DataEditorService().generateObjects());
+            editorChart.refreshWidget();
         });
 
         buttonShuffle.setOnAction(event -> {
-            dataEditorWidget.setObjects(new DataEditorService().shuffleObjects(dataEditorWidget.getObjects()));
-            dataEditorWidget.refreshWidget();
+            editorChart.setObjects(new DataEditorService().shuffleObjects(editorChart.getObjects()));
+            editorChart.refreshWidget();
         });
 
-        buttonClear.setOnAction(event -> dataEditorWidget.clearChart());
+        buttonClear.setOnAction(event -> editorChart.clearChart());
 
 
         buttonSave.setOnAction(event -> {
-            new DataTransferService().saveToFile(dataEditorWidget.getObjects());
-            dataEditorWidget.refreshWidget();
+            new DataTransferService().saveToFile(editorChart.getObjects());
+            editorChart.refreshWidget();
         });
 
         buttonRead.setOnAction(event -> {
             HashMap<Integer, ArrayList<Point2D>> objects = new DataTransferService().parseListToMap(new DataTransferService().readFromFile());
             if (objects != null) {
-                dataEditorWidget.setObjects(objects);
-                dataEditorWidget.refreshWidget();
+                editorChart.setObjects(objects);
+                editorChart.refreshWidget();
             }
         });
     }
 
     private void initializeWidget() {
-        dataEditorWidget = new DataEditorWidget();
-        dataEditorWidget.setTextSummary(textSummaryContent);
-        chartContainer.getChildren().add(dataEditorWidget.getChart());
-        dataEditorWidget.refreshWidget();
+        editorChart = new EditorChart();
+        editorChart.setTextSummary(textSummaryContent);
+        chartContainer.getChildren().add(editorChart.getChart());
+        editorChart.refreshWidget();
     }
 }

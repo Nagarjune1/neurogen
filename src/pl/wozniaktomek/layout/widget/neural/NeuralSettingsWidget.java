@@ -1,37 +1,68 @@
-package pl.wozniaktomek.widget;
+package pl.wozniaktomek.layout.widget.neural;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import pl.wozniaktomek.layout.control.NeuralControl;
+import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.service.LayoutService;
 
-class NeuralSettingsTopologyWidget extends Widget {
+public class NeuralSettingsWidget extends Widget {
     private NeuralNetwork neuralNetwork;
-    private NeuralSettingsWidget neuralSettingsWidget;
+    private NeuralControl neuralControl;
 
-    NeuralSettingsTopologyWidget(NeuralNetwork neuralNetwork, NeuralSettingsWidget neuralSettingsWidget, String title) {
+    private VBox topologyContainer;
+    private VBox parametersContainer;
+
+    public NeuralSettingsWidget(NeuralNetwork neuralNetwork, NeuralControl neuralControl) {
         this.neuralNetwork = neuralNetwork;
-        this.neuralSettingsWidget = neuralSettingsWidget;
-        setTitle(title);
+        this.neuralControl = neuralControl;
+        createPrimaryWidget("Parametry sieci");
+        initializeContainers();
     }
 
-    void refreshWidget() {
-        contentContainer.getChildren().clear();
+    private void initializeContainers() {
+        HBox localContentContainer = layoutService.getHBox(0d, 0d, 0d);
+        contentContainer.getChildren().add(localContentContainer);
+
+        topologyContainer = layoutService.getVBox(4d, 8d, 8d);
+        topologyContainer.setMinWidth(356d);
+
+        parametersContainer = layoutService.getVBox(4d, 8d, 8d);
+        localContentContainer.getChildren().addAll(topologyContainer, parametersContainer);
+    }
+
+    public void refreshWidget() {
+        refreshTopology();
+        refreshParameters();
+    }
+
+    private void refreshTopology() {
+        topologyContainer.getChildren().clear();
+        topologyContainer.getChildren().add(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING));
 
         if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
             refreshInputLayer();
             refreshHiddenLayers();
             refreshOutputLayer();
         } else {
-            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
+            topologyContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
+
+        neuralControl.refreshTopology();
+    }
+
+    private void refreshParameters() {
+        parametersContainer.getChildren().clear();
+        parametersContainer.getChildren().add(layoutService.getText("PARAMETRY", LayoutService.TextStyle.HEADING));
     }
 
     private void refreshInputLayer() {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.STATUS)));
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.STATUS)));
 
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
@@ -40,13 +71,13 @@ class NeuralSettingsTopologyWidget extends Widget {
             hBox.getChildren().add(getNewLayerButton());
         }
 
-        contentContainer.getChildren().add(hBox);
+        topologyContainer.getChildren().add(hBox);
     }
 
     private void refreshHiddenLayers() {
         for (int i = 1; i < neuralNetwork.getNeuralStructure().getLayers().size() - 1; i++) {
             HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-            hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.STATUS)));
+            hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.STATUS)));
 
             Spinner spinner;
             if (neuralNetwork.getNeuralStructure().isBias()) {
@@ -63,18 +94,18 @@ class NeuralSettingsTopologyWidget extends Widget {
 
             hBox.getChildren().add(getDeleteLayerButton(i + 1));
 
-            contentContainer.getChildren().add(hBox);
+            topologyContainer.getChildren().add(hBox);
         }
     }
 
     private void refreshOutputLayer() {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 96d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
 
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getOutputSize(), 1);
         hBox.getChildren().add(spinner);
 
-        contentContainer.getChildren().add(hBox);
+        topologyContainer.getChildren().add(hBox);
     }
 
 
@@ -83,7 +114,7 @@ class NeuralSettingsTopologyWidget extends Widget {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 64, value);
         spinner.setValueFactory(valueFactory);
         spinner.setDisable(isDisable);
-        spinner.setPrefWidth(72d);
+        spinner.setPrefWidth(64d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
             if (neuralNetwork.getNeuralStructure().isBias()) {
@@ -92,7 +123,8 @@ class NeuralSettingsTopologyWidget extends Widget {
                 neuralNetwork.getNeuralStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
             }
 
-            neuralSettingsWidget.refreshWidget();
+
+            refreshWidget();
         }));
 
         return spinner;
@@ -101,11 +133,13 @@ class NeuralSettingsTopologyWidget extends Widget {
     private Button getDeleteLayerButton(Integer layerNumber) {
         Button button = new Button();
         button.setText("-");
-        button.setPrefSize(32d, 32d);
+        button.setPrefSize(30d, 30d);
+        button.setMaxSize(30d, 30d);
+        button.setMinSize(30d, 30d);
 
         button.setOnAction(event -> {
             neuralNetwork.getNeuralStructure().deleteLayer(getLayerNumber(layerNumber));
-            neuralSettingsWidget.refreshWidget();
+            refreshWidget();
         });
 
         return button;
@@ -114,7 +148,9 @@ class NeuralSettingsTopologyWidget extends Widget {
     private Button getNewLayerButton() {
         Button button = new Button();
         button.setText("+");
-        button.setPrefSize(32d, 32d);
+        button.setPrefSize(30d, 30d);
+        button.setMaxSize(30d, 30d);
+        button.setMinSize(30d, 30d);
 
         button.setOnAction(event -> {
             if (neuralNetwork.getNeuralStructure().isBias()) {
@@ -123,7 +159,7 @@ class NeuralSettingsTopologyWidget extends Widget {
                 neuralNetwork.getNeuralStructure().addLayer(1);
             }
 
-            neuralSettingsWidget.refreshWidget();
+            refreshWidget();
         });
 
         return button;

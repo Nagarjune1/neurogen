@@ -1,4 +1,4 @@
-package pl.wozniaktomek.widget;
+package pl.wozniaktomek.layout.widget.neural;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -6,6 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.service.LayoutService;
@@ -28,10 +29,9 @@ public class NeuralTopologyWidget extends Widget {
 
     private HashMap<Integer, ArrayList<Point2D>> points;
 
-    public NeuralTopologyWidget(NeuralNetwork neuralNetwork, String widgetTitle) {
+    public NeuralTopologyWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        setTitle(widgetTitle);
-        minimizeWidget();
+        createPrimaryWidget("Wizualizacja topologii sieci");
     }
 
     public void drawNetwork(Double width) {
@@ -68,7 +68,7 @@ public class NeuralTopologyWidget extends Widget {
 
     private void createGraphicContext() {
         graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.setStroke(Color.rgb(113, 140, 158, 1.0));
+        graphicsContext.setStroke(Color.rgb(31, 64, 90, 0.75));
         graphicsContext.setLineWidth(2);
 
         BoxBlur blur = new BoxBlur();
@@ -134,7 +134,7 @@ public class NeuralTopologyWidget extends Widget {
     }
 
     private void drawInputNeurons() {
-        graphicsContext.setFill(Color.rgb(54, 69, 79, 1.0));
+        graphicsContext.setFill(Color.rgb(31, 64, 90, 1.0));
 
         for (Point2D point : points.get(1)) {
             graphicsContext.fillOval(point.getX() - neuronRadius / 2d, point.getY() - neuronRadius / 2, neuronRadius, neuronRadius);
@@ -150,7 +150,7 @@ public class NeuralTopologyWidget extends Widget {
     }
 
     private void drawBias() {
-        graphicsContext.setFill(Color.rgb(113, 140, 158, 1.0));
+        graphicsContext.setFill(Color.rgb(0, 195, 237, 0.5));
 
         for (int i = 1; i < points.size(); i++) {
             Point2D point = points.get(i).get(points.get(i).size() - 1);
