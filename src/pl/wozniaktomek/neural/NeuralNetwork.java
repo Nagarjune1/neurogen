@@ -30,24 +30,13 @@ public class NeuralNetwork {
         return neuralParameters.setObjects(objectsLearning, objectsTesting);
     }
 
-    public void addLayer(Integer numberOfNeurons) {
-        neuralStructure.addLayer(numberOfNeurons);
-    }
-
-    public void addBias() {
-        neuralStructure.addBias();
-    }
-
-    public void deleteBias() {
-        neuralStructure.deleteBias();
-    }
-
     /* just for debug */
     public void showNetwork() {
-        System.out.println("## NETWORK ##");
+        System.out.println("\n ## NETWORK ##");
 
         System.out.println("\n # NEURONS");
         List<Layer> layers = neuralStructure.getLayers();
+        System.out.println("Layers amount: " + layers.size());
         for (Layer layer : layers) {
             for (Neuron neuron : layer.getNeurons()) {
                 System.out.println("Neuron number " + neuron.getNumber());
@@ -56,6 +45,7 @@ public class NeuralNetwork {
 
         System.out.println("\n # CONNECTIONS");
         List<Connection> connections = neuralStructure.getConnections();
+        System.out.println("Connections amount: " + connections.size());
         for (Connection connection : connections) {
             System.out.println("Connection between " + connection.getNeuronInput().getNumber() + " and " + connection.getNeuronOutput().getNumber());
         }

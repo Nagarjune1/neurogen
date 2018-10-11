@@ -38,6 +38,8 @@ public class NeuralSettingsWidget extends Widget {
     public void refreshWidget() {
         refreshTopology();
         refreshParameters();
+        neuralNetwork.getNeuralStructure().createConnections();
+        neuralNetwork.showNetwork();
     }
 
     private void refreshTopology() {
@@ -67,10 +69,6 @@ public class NeuralSettingsWidget extends Widget {
         Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
 
-        if (neuralNetwork.getNeuralStructure().getLayers().size() <= 2) {
-            hBox.getChildren().add(getNewLayerButton());
-        }
-
         topologyContainer.getChildren().add(hBox);
     }
 
@@ -87,15 +85,12 @@ public class NeuralSettingsWidget extends Widget {
             }
 
             hBox.getChildren().add(spinner);
-
-            if (i == neuralNetwork.getNeuralStructure().getLayers().size() - 2) {
-                hBox.getChildren().add(getNewLayerButton());
-            }
-
             hBox.getChildren().add(getDeleteLayerButton(i + 1));
 
             topologyContainer.getChildren().add(hBox);
         }
+
+        topologyContainer.getChildren().add(getNewLayerButton());
     }
 
     private void refreshOutputLayer() {
@@ -132,10 +127,7 @@ public class NeuralSettingsWidget extends Widget {
 
     private Button getDeleteLayerButton(Integer layerNumber) {
         Button button = new Button();
-        button.setText("-");
-        button.setPrefSize(30d, 30d);
-        button.setMaxSize(30d, 30d);
-        button.setMinSize(30d, 30d);
+        button.setText("Usuń warstwę");
 
         button.setOnAction(event -> {
             neuralNetwork.getNeuralStructure().deleteLayer(getLayerNumber(layerNumber));
@@ -147,10 +139,7 @@ public class NeuralSettingsWidget extends Widget {
 
     private Button getNewLayerButton() {
         Button button = new Button();
-        button.setText("+");
-        button.setPrefSize(30d, 30d);
-        button.setMaxSize(30d, 30d);
-        button.setMinSize(30d, 30d);
+        button.setText("Dodaj nową warstwę ukrytą");
 
         button.setOnAction(event -> {
             if (neuralNetwork.getNeuralStructure().isBias()) {

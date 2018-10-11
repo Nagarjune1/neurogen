@@ -43,6 +43,7 @@ public class NeuralTopologyWidget extends Widget {
             calculatePoints();
             drawNeurons();
             drawConnections();
+            drawNeuronNumbers();
         } else {
             contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }

@@ -16,6 +16,7 @@ public class NeuralConnection {
         NeuralStructure neuralStructure = neuralNetwork.getNeuralStructure();
         this.layers = neuralStructure.getLayers();
         this.connections = neuralStructure.getConnections();
+        connections.clear();
     }
 
     public void createConnectionsWithBias() {

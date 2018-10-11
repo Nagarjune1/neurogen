@@ -74,7 +74,7 @@ public class NeuralStructure {
         return isBias;
     }
 
-    private void createConnections() {
+    public void createConnections() {
         NeuralConnection neuralConnection = new NeuralConnection(neuralNetwork);
 
         if (layers.size() > 1) {
@@ -83,9 +83,9 @@ public class NeuralStructure {
             } else {
                 neuralConnection.createConnectionsWithoutBias();
             }
-
-            setNeuronNumbers();
         }
+
+        setNeuronNumbers();
     }
 
     private void setNeuronNumbers() {
