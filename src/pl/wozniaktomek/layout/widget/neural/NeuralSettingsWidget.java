@@ -36,10 +36,9 @@ public class NeuralSettingsWidget extends Widget {
     }
 
     public void refreshWidget() {
+        neuralNetwork.getNeuralStructure().createConnections();
         refreshTopology();
         refreshParameters();
-        neuralNetwork.getNeuralStructure().createConnections();
-        neuralNetwork.showNetwork();
     }
 
     private void refreshTopology() {

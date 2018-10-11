@@ -7,12 +7,14 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import pl.wozniaktomek.layout.widget.Widget;
+import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.service.LayoutService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NeuralTopologyWidget extends Widget {
@@ -43,7 +45,6 @@ public class NeuralTopologyWidget extends Widget {
             calculatePoints();
             drawNeurons();
             drawConnections();
-            drawNeuronNumbers();
         } else {
             contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
@@ -162,31 +163,21 @@ public class NeuralTopologyWidget extends Widget {
     private void drawConnections() {
         graphicsContext.setLineWidth(0.5);
 
-        for (int i = 1; i < points.size(); i++) {
+        ArrayList<Point2D> allPoints = new ArrayList<>();
+        for (int i = 1; i < points.size() + 1; i++) {
             ArrayList<Point2D> layerPoints = points.get(i);
-            ArrayList<Point2D> nextLayerPoints = points.get(i + 1);
-
-            for (Point2D point : layerPoints) {
-                if (neuralNetwork.getNeuralStructure().isBias()) {
-                    for (int j = 0; j < nextLayerPoints.size() - 1; j++) {
-                        graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoints.get(j).getX(), nextLayerPoints.get(j).getY() - neuronRadius / 2);
-                    }
-                } else {
-                    for (Point2D nextLayerPoint : nextLayerPoints) {
-                        graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoint.getX(), nextLayerPoint.getY() - neuronRadius / 2);
-                    }
-                }
-            }
+            allPoints.addAll(layerPoints);
         }
 
-        // last layer
-        ArrayList<Point2D> layerPoints = points.get(points.size() - 1);
-        ArrayList<Point2D> nextLayerPoints = points.get(points.size());
+        System.out.println(points.toString());
+        System.out.println();
+        System.out.println(allPoints.toString());
 
-        for (Point2D point : layerPoints) {
-            for (Point2D nextLayerPoint : nextLayerPoints) {
-                graphicsContext.strokeLine(point.getX(), point.getY() + neuronRadius / 2, nextLayerPoint.getX(), nextLayerPoint.getY() - neuronRadius / 2);
-            }
+        List<Connection> connections = neuralNetwork.getNeuralStructure().getConnections();
+        for (Connection connection : connections) {
+            Point2D startPoint = allPoints.get(connection.getNeuronInput().getNumber() - 1);
+            Point2D endPoint = allPoints.get(connection.getNeuronOutput().getNumber() - 1);
+            graphicsContext.strokeLine(startPoint.getX(), startPoint.getY() + neuronRadius / 2, endPoint.getX(), endPoint.getY() - neuronRadius / 2);
         }
     }
 
