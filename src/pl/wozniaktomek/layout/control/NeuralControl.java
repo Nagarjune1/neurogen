@@ -8,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.layout.widget.neural.NeuralDataWidget;
+import pl.wozniaktomek.layout.widget.neural.NeuralLearningWidget;
 import pl.wozniaktomek.layout.widget.neural.NeuralSettingsWidget;
 import pl.wozniaktomek.layout.widget.neural.NeuralTopologyWidget;
 import pl.wozniaktomek.neural.NeuralNetwork;
@@ -32,6 +33,7 @@ public class NeuralControl implements Initializable {
     private NeuralDataWidget neuralDataWidget;
     private NeuralSettingsWidget neuralSettingsWidget;
     private NeuralTopologyWidget neuralTopologyWidget;
+    private NeuralLearningWidget neuralLearningWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -39,6 +41,7 @@ public class NeuralControl implements Initializable {
         initializeReadDataWidget();
         initializeSettingsWidget();
         initializeNetworkTopologyWidget();
+        initializeLearningWidget();
         initializeSizeListener();
     }
 
@@ -47,7 +50,7 @@ public class NeuralControl implements Initializable {
     }
 
     public void refreshTopology() {
-        neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 48);
+        neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 54);
     }
 
     private void initializeNeuralNetwork() {
@@ -67,6 +70,11 @@ public class NeuralControl implements Initializable {
     private void initializeNetworkTopologyWidget() {
         neuralTopologyWidget = new NeuralTopologyWidget(neuralNetwork);
         settingsTab.getChildren().add(neuralTopologyWidget.getWidget());
+    }
+
+    private void initializeLearningWidget() {
+        neuralLearningWidget = new NeuralLearningWidget(neuralNetwork);
+        learningTab.getChildren().add(neuralLearningWidget.getWidget());
     }
 
     private void initializeSizeListener() {

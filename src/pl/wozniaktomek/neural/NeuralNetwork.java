@@ -2,6 +2,7 @@ package pl.wozniaktomek.neural;
 
 import pl.wozniaktomek.neural.manage.NeuralParameters;
 import pl.wozniaktomek.neural.manage.NeuralStructure;
+import pl.wozniaktomek.neural.operation.NeuralLearning;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
@@ -12,6 +13,7 @@ import java.util.List;
 public class NeuralNetwork {
     private NeuralStructure neuralStructure;
     private NeuralParameters neuralParameters;
+    private NeuralLearning neuralLearning;
 
     public NeuralNetwork() {
         neuralStructure = new NeuralStructure(this);
@@ -28,6 +30,11 @@ public class NeuralNetwork {
 
     public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
         return neuralParameters.setObjects(objectsLearning, objectsTesting);
+    }
+
+    public void startLearning() {
+        neuralLearning = new NeuralLearning(this);
+        neuralLearning.run();
     }
 
     /* just for debug */

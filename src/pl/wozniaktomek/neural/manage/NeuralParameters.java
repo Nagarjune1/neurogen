@@ -32,6 +32,49 @@ public class NeuralParameters {
         }
     }
 
+    private void approveData(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
+        this.objectsLearning = objectsLearning;
+        this.objectsTesting = objectsTesting;
+
+        setCorrectAnswers(objectsLearning);
+        setCorrectAnswers(objectsTesting);
+
+        neuralNetwork.getNeuralStructure().clearStructure();
+        neuralNetwork.getNeuralStructure().addLayer(inputSize);
+        neuralNetwork.getNeuralStructure().addLayer(outputSize);
+    }
+
+    private void denyData() {
+        objectsLearning = null;
+        objectsTesting = null;
+        inputSize = outputSize = 0;
+        neuralNetwork.getNeuralStructure().clearStructure();
+    }
+
+    private void setCorrectAnswers(ArrayList<NeuralObject> neuralObjects) {
+        for (NeuralObject neuralObject : neuralObjects) {
+            ArrayList<Double> correctAnswer = new ArrayList<>();
+
+            for (int i = 1; i <= outputSize; i++) {
+                if (i == neuralObject.getClassNumber()) {
+                    correctAnswer.add(1.0);
+                } else {
+                    correctAnswer.add(0.0);
+                }
+            }
+
+            neuralObject.setCorrectAnswer(correctAnswer);
+        }
+    }
+
+    public ArrayList<NeuralObject> getObjectsLearning() {
+        return objectsLearning;
+    }
+
+    public ArrayList<NeuralObject> getObjectsTesting() {
+        return objectsTesting;
+    }
+
     public void setInputSize(Integer inputSize) {
         this.inputSize = inputSize;
     }
@@ -47,21 +90,4 @@ public class NeuralParameters {
     public Integer getOutputSize() {
         return outputSize;
     }
-
-    private void approveData(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        this.objectsLearning = objectsLearning;
-        this.objectsTesting = objectsTesting;
-
-        neuralNetwork.getNeuralStructure().clearStructure();
-        neuralNetwork.getNeuralStructure().addLayer(inputSize);
-        neuralNetwork.getNeuralStructure().addLayer(outputSize);
-    }
-
-    private void denyData() {
-        objectsLearning = null;
-        objectsTesting = null;
-        inputSize = outputSize = 0;
-        neuralNetwork.getNeuralStructure().clearStructure();
-    }
-
 }

@@ -16,7 +16,7 @@ public class NeuralConnection {
         NeuralStructure neuralStructure = neuralNetwork.getNeuralStructure();
         this.layers = neuralStructure.getLayers();
         this.connections = neuralStructure.getConnections();
-        connections.clear();
+        clearConnections();
     }
 
     public void createConnectionsWithBias() {
@@ -55,5 +55,16 @@ public class NeuralConnection {
         neuronTo.getConnectionsInput().add(connection);
 
         connections.add(connection);
+    }
+
+    private void clearConnections() {
+        connections.clear();
+
+        for (Layer layer : layers) {
+            for (Neuron neuron : layer.getNeurons()) {
+                neuron.getConnectionsInput().clear();
+                neuron.getConnectionsOutput().clear();
+            }
+        }
     }
 }

@@ -26,35 +26,30 @@
             </padding>
             <VBox>
                <padding>
-                  <Insets left="12.0" right="12.0"/>
+                  <Insets left="12.0" right="12.0" />
                </padding>
                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="nav-section-title" text="Nawigacja">
                   <VBox.margin>
-                     <Insets bottom="10.0"/>
+                     <Insets bottom="10.0" />
                   </VBox.margin>
                </Text>
             </VBox>
             <VBox alignment="CENTER_RIGHT">
-               <Button fx:id="buttonNavHome" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
-                       prefWidth="256.0" styleClass="nav-button" text="EKRAN GŁÓWNY"/>
-               <Button fx:id="buttonNavEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
-                       prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
+               <Button fx:id="buttonNavHome" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EKRAN GŁÓWNY" />
+               <Button fx:id="buttonNavEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
                   <VBox.margin>
-                     <Insets/>
+                     <Insets />
                   </VBox.margin>
                </Button>
-               <Button fx:id="buttonNavGenetic" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
-                       prefWidth="256.0" styleClass="nav-button" text="ALGORYTM GENETYCZNY"/>
-               <Button fx:id="buttonNavNeural" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
-                       prefWidth="256.0" styleClass="nav-button" text="SIEĆ NEURONOWA"/>
-               <Button fx:id="buttonNavExit" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false"
-                       prefWidth="256.0" styleClass="nav-button" text="ZAMKNIJ PROGRAM"/>
+               <Button fx:id="buttonNavGenetic" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="ALGORYTM GENETYCZNY" />
+               <Button fx:id="buttonNavNeural" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="SIEĆ NEURONOWA" />
+               <Button fx:id="buttonNavExit" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="ZAMKNIJ PROGRAM" />
             </VBox>
          </VBox>
       </VBox>
    </AnchorPane>
    <AnchorPane fx:id="contentPane" layoutX="224.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="version 0.2" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="224.0">
+   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="version 0.5" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="224.0">
       <font>
          <Font name="Roboto Condensed Regular" size="10.0" />
       </font>

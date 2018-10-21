@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class NeuralObject {
     private ArrayList<Double> inputValues;
+    private ArrayList<Double> correctAnswer;
     private Integer classNumber;
 
     public NeuralObject(ArrayList<Double> inputValues, Integer classNumber) {
@@ -17,5 +18,13 @@ public class NeuralObject {
 
     public Integer getClassNumber() {
         return classNumber;
+    }
+
+    public ArrayList<Double> getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(ArrayList<Double> correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }

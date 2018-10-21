@@ -169,10 +169,6 @@ public class NeuralTopologyWidget extends Widget {
             allPoints.addAll(layerPoints);
         }
 
-        System.out.println(points.toString());
-        System.out.println();
-        System.out.println(allPoints.toString());
-
         List<Connection> connections = neuralNetwork.getNeuralStructure().getConnections();
         for (Connection connection : connections) {
             Point2D startPoint = allPoints.get(connection.getNeuronInput().getNumber() - 1);
