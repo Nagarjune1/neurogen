@@ -27,9 +27,13 @@ public class Neuron {
             rawOutput += connection.getNeuronInput().getOutput() * connection.getWeight();
         }
 
-        output = layer.getActivationFunction().getOutput(rawOutput);
+        output = layer.getActivationFunction().getSigmoid(rawOutput);
 
         // System.out.println("Neuron [" + number + "] ma na wyjsciu: " + output);
+    }
+
+    public Layer getLayer() {
+        return layer;
     }
 
     public void setNumber(Integer number) {

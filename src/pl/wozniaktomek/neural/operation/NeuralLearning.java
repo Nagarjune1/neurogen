@@ -48,10 +48,15 @@ public class NeuralLearning extends Thread {
         if (isLearning) {
             while (conditions()) {
                 for (NeuralObject neuralObject : objectsLearning) {
+                    System.out.println();
                     putInputData(neuralObject);
+
                     countOutputs();
 
-                    countErrors(neuralObject);
+                    countLastLayerError(neuralObject);
+                    countHiddenLayersError();
+
+                    modifyWeights();
                 }
 
                 iteration++;
@@ -70,6 +75,10 @@ public class NeuralLearning extends Thread {
     private void initializeLearningParameters() {
         iteration = 1;
         isLearning = true;
+
+        if (neuralNetwork.getNeuralStructure().isBias()) {
+            initializeBiasOutput();
+        }
     }
 
     private void initializeConnectionWeights() {
@@ -80,6 +89,9 @@ public class NeuralLearning extends Thread {
 
             // System.out.println("Połączenie [" + (number++) + "] ma wagę " + connection.getWeight());
         }
+    }
+
+    private void initializeBiasOutput() {
     }
 
     /* Operations */
@@ -96,14 +108,15 @@ public class NeuralLearning extends Thread {
 
         for (int i = 1; i < layers.size(); i++) {
             for (Neuron neuron : layers.get(i).getNeurons()) {
-                neuron.countOutput();
+                double rawOutput = 0d;
+
+                for (Connection connection : neuron.getConnectionsInput()) {
+                    rawOutput += connection.getNeuronInput().getOutput() * connection.getWeight();
+                }
+
+                neuron.setOutput(neuron.getLayer().getActivationFunction().getSigmoid(rawOutput));
             }
         }
-    }
-
-    private void countErrors(NeuralObject neuralObject) {
-        countLastLayerError(neuralObject);
-        countHiddenLayersError(neuralObject);
     }
 
     private void countLastLayerError(NeuralObject neuralObject) {
@@ -111,12 +124,30 @@ public class NeuralLearning extends Thread {
         List<Double> correctAnswer = neuralObject.getCorrectAnswer();
 
         for (int i = 0; i < neurons.size(); i++) {
-            neurons.get(i).setOutputError(correctAnswer.get(i) - neurons.get(i).getOutput());
-            // System.out.println("Wyjscie: " + neurons.get(i).getOutput() + " / wartość oczekiwana: " + correctAnswer.get(i) + " / błąd: " + neurons.get(i).getOutputError());
+            neurons.get(i).setOutputError(Math.pow(correctAnswer.get(i) - neurons.get(i).getOutput(), 2));
+            System.out.println("Neuron " + neurons.get(i).getNumber() + " / wyjście: " + neurons.get(i).getOutput() + " / błąd: " + neurons.get(i).getOutputError() + " / oczekiwane: " + correctAnswer.get(i));
         }
     }
 
-    private void countHiddenLayersError(NeuralObject neuralObject) {
+    private void countHiddenLayersError() {
+        List<Layer> layers = neuralNetwork.getNeuralStructure().getLayers();
+
+        for (int i = layers.size() - 2; i >= 0; i--) {
+
+            for (Neuron neuron : layers.get(i).getNeurons()) {
+                double outputError = 0d;
+
+                for (Connection connection : neuron.getConnectionsOutput()) {
+                    outputError += connection.getNeuronOutput().getOutputError() * connection.getWeight();
+                }
+
+                neuron.setOutputError(outputError);
+                System.out.println("Neuron " + neuron.getNumber() + " / wyjście: " + neuron.getOutput() + " / błąd: " + neuron.getOutputError());
+            }
+        }
+    }
+
+    private void modifyWeights() {
 
     }
 

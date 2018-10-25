@@ -3,6 +3,7 @@ package pl.wozniaktomek.service;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -37,6 +38,18 @@ public class LayoutService {
         }
 
         return button;
+    }
+
+    public CheckBox getCheckBox(String text, Double size) {
+        CheckBox checkBox = new CheckBox();
+        checkBox.setText(text);
+        if (size != null) {
+            checkBox.setPrefSize(size, size);
+        } else {
+            checkBox.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        }
+
+        return checkBox;
     }
 
     public HBox getHBox(Double paddingVertical, Double paddingHorizontal, Double spacing) {

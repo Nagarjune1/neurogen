@@ -31,7 +31,7 @@ public class NeuralStructure {
 
     public void addLayer(Integer numberOfNeurons) {
         Layer newLayer = new Layer(numberOfNeurons);
-        newLayer.setActivationFunction(new ActivationFunction(ActivationFunction.FunctionType.SIGMOID));
+        newLayer.setActivationFunction(new ActivationFunction());
 
         if (layers.size() >= 2) {
             Layer lastLayer = layers.get(layers.size() - 1);

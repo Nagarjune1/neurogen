@@ -25,6 +25,15 @@
             <Button fx:id="buttonHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="42.0" prefWidth="42.0" text="?" />
          </HBox>
          <VBox alignment="TOP_CENTER" />
+         <VBox alignment="CENTER" styleClass="widget-primary">
+            <padding>
+               <Insets bottom="64.0" left="64.0" right="64.0" top="64.0"/>
+            </padding>
+            <VBox.margin>
+               <Insets/>
+            </VBox.margin>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="W BUDOWIE"/>
+         </VBox>
       </VBox>
    </ScrollPane>
 </AnchorPane>

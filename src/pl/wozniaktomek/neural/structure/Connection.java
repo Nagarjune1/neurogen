@@ -24,7 +24,7 @@ public class Connection {
         this.neuronInput = neuronInput;
     }
 
-    Double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 

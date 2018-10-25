@@ -1,6 +1,9 @@
 package pl.wozniaktomek.layout.widget.neural;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
@@ -30,8 +33,11 @@ public class NeuralSettingsWidget extends Widget {
 
         topologyContainer = layoutService.getVBox(4d, 8d, 8d);
         topologyContainer.setMinWidth(356d);
+        topologyContainer.getChildren().add(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING));
+        topologyContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
 
         parametersContainer = layoutService.getVBox(4d, 8d, 8d);
+        parametersContainer.getChildren().add(layoutService.getText("PARAMETRY", LayoutService.TextStyle.HEADING));
         localContentContainer.getChildren().addAll(topologyContainer, parametersContainer);
     }
 
@@ -59,6 +65,10 @@ public class NeuralSettingsWidget extends Widget {
     private void refreshParameters() {
         parametersContainer.getChildren().clear();
         parametersContainer.getChildren().add(layoutService.getText("PARAMETRY", LayoutService.TextStyle.HEADING));
+
+        if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
+            parametersContainer.getChildren().add(getBiasCheckbox());
+        }
     }
 
     private void refreshInputLayer() {
@@ -101,7 +111,6 @@ public class NeuralSettingsWidget extends Widget {
 
         topologyContainer.getChildren().add(hBox);
     }
-
 
     private Spinner getSpinner(Boolean isDisable, Integer value, Integer number) {
         Spinner<Integer> spinner = new Spinner<>();
@@ -161,5 +170,24 @@ public class NeuralSettingsWidget extends Widget {
         } else {
             return number - 1;
         }
+    }
+
+    private CheckBox getBiasCheckbox() {
+        CheckBox checkBox = layoutService.getCheckBox("Bias", null);
+        checkBox.setSelected(neuralNetwork.getNeuralStructure().isBias());
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            checkBox.setSelected(newValue);
+
+            if (newValue) {
+                neuralNetwork.getNeuralStructure().addBias();
+            } else {
+                neuralNetwork.getNeuralStructure().deleteBias();
+            }
+
+            refreshWidget();
+        });
+
+        return checkBox;
     }
 }

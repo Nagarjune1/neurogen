@@ -152,7 +152,7 @@ public class NeuralTopologyWidget extends Widget {
     }
 
     private void drawBias() {
-        graphicsContext.setFill(Color.rgb(0, 195, 237, 0.5));
+        graphicsContext.setFill(Color.rgb(0, 195, 237, 1.0));
 
         for (int i = 1; i < points.size(); i++) {
             Point2D point = points.get(i).get(points.get(i).size() - 1);

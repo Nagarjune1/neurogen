@@ -37,7 +37,7 @@ public class Layer {
         neurons.add(new Neuron(this));
     }
 
-    ActivationFunction getActivationFunction() {
+    public ActivationFunction getActivationFunction() {
         return activationFunction;
     }
 
