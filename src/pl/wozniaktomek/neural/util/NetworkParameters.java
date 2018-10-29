@@ -1,12 +1,11 @@
-package pl.wozniaktomek.neural.manage;
+package pl.wozniaktomek.neural.util;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.NeuralObject;
 import pl.wozniaktomek.neural.operation.NeuralValidation;
 
 import java.util.ArrayList;
 
-public class NeuralParameters {
+public class NetworkParameters {
     private NeuralNetwork neuralNetwork;
 
     private ArrayList<NeuralObject> objectsLearning;
@@ -15,7 +14,7 @@ public class NeuralParameters {
     private Integer inputSize;
     private Integer outputSize;
 
-    public NeuralParameters(NeuralNetwork neuralNetwork) {
+    public NetworkParameters(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         inputSize = outputSize = 0;
     }
@@ -39,16 +38,16 @@ public class NeuralParameters {
         setCorrectAnswers(objectsLearning);
         setCorrectAnswers(objectsTesting);
 
-        neuralNetwork.getNeuralStructure().clearStructure();
-        neuralNetwork.getNeuralStructure().addLayer(inputSize);
-        neuralNetwork.getNeuralStructure().addLayer(outputSize);
+        neuralNetwork.getStructure().clearStructure();
+        neuralNetwork.getStructure().addLayer(inputSize);
+        neuralNetwork.getStructure().addLayer(outputSize);
     }
 
     private void denyData() {
         objectsLearning = null;
         objectsTesting = null;
         inputSize = outputSize = 0;
-        neuralNetwork.getNeuralStructure().clearStructure();
+        neuralNetwork.getStructure().clearStructure();
     }
 
     private void setCorrectAnswers(ArrayList<NeuralObject> neuralObjects) {
@@ -67,6 +66,14 @@ public class NeuralParameters {
         }
     }
 
+    public void setInputSize(Integer inputSize) {
+        this.inputSize = inputSize;
+    }
+
+    public void setOutputSize(Integer outputSize) {
+        this.outputSize = outputSize;
+    }
+
     public ArrayList<NeuralObject> getObjectsLearning() {
         return objectsLearning;
     }
@@ -75,16 +82,8 @@ public class NeuralParameters {
         return objectsTesting;
     }
 
-    public void setInputSize(Integer inputSize) {
-        this.inputSize = inputSize;
-    }
-
     public Integer getInputSize() {
         return inputSize;
-    }
-
-    public void setOutputSize(Integer outputSize) {
-        this.outputSize = outputSize;
     }
 
     public Integer getOutputSize() {

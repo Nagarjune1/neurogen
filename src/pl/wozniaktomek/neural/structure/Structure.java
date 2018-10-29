@@ -1,16 +1,13 @@
-package pl.wozniaktomek.neural.manage;
+package pl.wozniaktomek.neural.structure;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.operation.ActivationFunction;
+import pl.wozniaktomek.neural.util.ActivationFunction;
 import pl.wozniaktomek.neural.operation.NeuralConnection;
-import pl.wozniaktomek.neural.structure.Connection;
-import pl.wozniaktomek.neural.structure.Layer;
-import pl.wozniaktomek.neural.structure.Neuron;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeuralStructure {
+public class Structure {
     private NeuralNetwork neuralNetwork;
 
     private List<Layer> layers;
@@ -18,20 +15,19 @@ public class NeuralStructure {
 
     private Boolean isBias;
 
-    public NeuralStructure(NeuralNetwork neuralNetwork) {
+    public Structure(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         clearStructure();
     }
 
-    void clearStructure() {
+    public void clearStructure() {
         layers = new ArrayList<>();
         connections = new ArrayList<>();
         isBias = false;
     }
 
     public void addLayer(Integer numberOfNeurons) {
-        Layer newLayer = new Layer(numberOfNeurons);
-        newLayer.setActivationFunction(new ActivationFunction());
+        Layer newLayer = new Layer(numberOfNeurons, new ActivationFunction(ActivationFunction.FunctionType.SIGMOID));
 
         if (layers.size() >= 2) {
             Layer lastLayer = layers.get(layers.size() - 1);

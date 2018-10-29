@@ -10,6 +10,7 @@ public class Neuron {
     private List<Connection> connectionsInput;
     private List<Connection> connectionsOutput;
 
+    private Double input;
     private Double output;
     private Double outputError;
 
@@ -19,29 +20,24 @@ public class Neuron {
         connectionsOutput = new ArrayList<>();
     }
 
-    public void countOutput() {
-        // showConnections();
-
-        double rawOutput = 0d;
-        for (Connection connection : connectionsInput) {
-            rawOutput += connection.getNeuronInput().getOutput() * connection.getWeight();
-        }
-
-        output = layer.getActivationFunction().getSigmoid(rawOutput);
-
-        // System.out.println("Neuron [" + number + "] ma na wyjsciu: " + output);
-    }
-
-    public Layer getLayer() {
-        return layer;
-    }
-
     public void setNumber(Integer number) {
         this.number = number;
     }
 
-    public Integer getNumber() {
-        return number;
+    public void setInput(Double input) {
+        this.input = input;
+    }
+
+    public void setOutput(Double output) {
+        this.output = output;
+    }
+
+    public void setOutputError(Double outputError) {
+        this.outputError = outputError;
+    }
+
+    public Layer getLayer() {
+        return layer;
     }
 
     public List<Connection> getConnectionsInput() {
@@ -52,9 +48,8 @@ public class Neuron {
         return connectionsOutput;
     }
 
-    public void setOutput(Double output) {
-        this.output = output;
-        // System.out.println("Neuron [" + number + "] dostaje na wejście " + output);
+    public Integer getNumber() {
+        return number;
     }
 
     public Double getOutput() {
@@ -65,8 +60,8 @@ public class Neuron {
         return outputError;
     }
 
-    public void setOutputError(Double outputError) {
-        this.outputError = outputError;
+    public Double getOutputSigmoidDerivative() {
+        return output * (1 - output);
     }
 
     /* just for debug */

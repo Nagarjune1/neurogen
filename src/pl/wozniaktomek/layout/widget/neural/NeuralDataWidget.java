@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.NeuralObject;
+import pl.wozniaktomek.neural.util.NeuralObject;
 import pl.wozniaktomek.service.DataTransferService;
 import pl.wozniaktomek.service.LayoutService;
 
@@ -21,7 +21,6 @@ public class NeuralDataWidget extends Widget {
 
     private Button buttonLoadLearningData;
     private Button buttonLoadTestingData;
-    private Button buttonLoadVerificationData;
 
     private Text textDataStatus;
     private Boolean learningDataStatus;
@@ -52,17 +51,13 @@ public class NeuralDataWidget extends Widget {
 
         statusContainer = layoutService.getHBox(0d, 4d, 8d);
 
-        contentContainer.getChildren().add(mainContainer);
-        contentContainer.getChildren().add(statusContainer);
+        contentContainer.getChildren().addAll(mainContainer, statusContainer);
     }
 
     private void initializeButtons() {
         buttonLoadLearningData = layoutService.getButton("Wczytaj dane uczące", null, 32d, null);
         buttonLoadTestingData = layoutService.getButton("Wczytaj dane testowe", null, 32d, null);
-        buttonLoadVerificationData = layoutService.getButton("Wczytaj dane weryfikujace", null, 32d, null);
-        buttonLoadVerificationData.setDisable(true);
-
-        buttonContainer.getChildren().addAll(buttonLoadLearningData, buttonLoadTestingData, buttonLoadVerificationData);
+        buttonContainer.getChildren().addAll(buttonLoadLearningData, buttonLoadTestingData);
     }
 
     private void initializeStatuses() {

@@ -40,6 +40,12 @@ public class LayoutService {
         return button;
     }
 
+    public Button getButton(String text) {
+        Button button = new Button();
+        button.setText(text);
+        return button;
+    }
+
     public CheckBox getCheckBox(String text, Double size) {
         CheckBox checkBox = new CheckBox();
         checkBox.setText(text);

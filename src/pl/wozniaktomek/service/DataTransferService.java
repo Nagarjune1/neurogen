@@ -3,7 +3,7 @@ package pl.wozniaktomek.service;
 import javafx.geometry.Point2D;
 import javafx.stage.FileChooser;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.neural.NeuralObject;
+import pl.wozniaktomek.neural.util.NeuralObject;
 
 import java.io.File;
 import java.io.IOException;

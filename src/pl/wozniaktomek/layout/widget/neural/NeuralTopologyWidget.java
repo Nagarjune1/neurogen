@@ -41,7 +41,7 @@ public class NeuralTopologyWidget extends Widget {
         createCanvas(width);
         createGraphicContext();
 
-        if (neuralNetwork.getNeuralStructure().getLayers().size() > 1) {
+        if (neuralNetwork.getStructure().getLayers().size() > 1) {
             calculatePoints();
             drawNeurons();
             drawConnections();
@@ -52,11 +52,11 @@ public class NeuralTopologyWidget extends Widget {
 
     private void analyzeNetwork() {
         mostNeuronsInLayer = 0;
-        for (Layer layer : neuralNetwork.getNeuralStructure().getLayers())
+        for (Layer layer : neuralNetwork.getStructure().getLayers())
             if (layer.getNeurons().size() > mostNeuronsInLayer)
                 mostNeuronsInLayer = layer.getNeurons().size();
 
-        layersAmount = neuralNetwork.getNeuralStructure().getLayers().size();
+        layersAmount = neuralNetwork.getStructure().getLayers().size();
     }
 
     private void createCanvas(Double width) {
@@ -101,10 +101,10 @@ public class NeuralTopologyWidget extends Widget {
         points = new HashMap<>();
 
         double height = neuronSize / 2d;
-        for (int i = 1; i < neuralNetwork.getNeuralStructure().getLayers().size() + 1; i++) {
+        for (int i = 1; i < neuralNetwork.getStructure().getLayers().size() + 1; i++) {
             ArrayList<Point2D> listOfPoints = new ArrayList<>();
 
-            Layer layer = neuralNetwork.getNeuralStructure().getLayers().get(i - 1);
+            Layer layer = neuralNetwork.getStructure().getLayers().get(i - 1);
             int neuronsAmount = layer.getNeurons().size();
             double halfNeuronsAmount = Math.floor(neuronsAmount / 2d);
 
@@ -131,7 +131,7 @@ public class NeuralTopologyWidget extends Widget {
         drawInputNeurons();
         drawHiddenLayers();
 
-        if (neuralNetwork.getNeuralStructure().isBias())
+        if (neuralNetwork.getStructure().isBias())
             drawBias();
     }
 
@@ -169,7 +169,7 @@ public class NeuralTopologyWidget extends Widget {
             allPoints.addAll(layerPoints);
         }
 
-        List<Connection> connections = neuralNetwork.getNeuralStructure().getConnections();
+        List<Connection> connections = neuralNetwork.getStructure().getConnections();
         for (Connection connection : connections) {
             Point2D startPoint = allPoints.get(connection.getNeuronInput().getNumber() - 1);
             Point2D endPoint = allPoints.get(connection.getNeuronOutput().getNumber() - 1);

@@ -1,7 +1,5 @@
 package pl.wozniaktomek.layout.widget.neural;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
@@ -42,7 +40,7 @@ public class NeuralSettingsWidget extends Widget {
     }
 
     public void refreshWidget() {
-        neuralNetwork.getNeuralStructure().createConnections();
+        neuralNetwork.getStructure().createConnections();
         refreshTopology();
         refreshParameters();
     }
@@ -51,7 +49,7 @@ public class NeuralSettingsWidget extends Widget {
         topologyContainer.getChildren().clear();
         topologyContainer.getChildren().add(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING));
 
-        if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
+        if (neuralNetwork.getStructure().getLayers().size() > 0) {
             refreshInputLayer();
             refreshHiddenLayers();
             refreshOutputLayer();
@@ -66,7 +64,7 @@ public class NeuralSettingsWidget extends Widget {
         parametersContainer.getChildren().clear();
         parametersContainer.getChildren().add(layoutService.getText("PARAMETRY", LayoutService.TextStyle.HEADING));
 
-        if (neuralNetwork.getNeuralStructure().getLayers().size() > 0) {
+        if (neuralNetwork.getStructure().getLayers().size() > 0) {
             parametersContainer.getChildren().add(getBiasCheckbox());
         }
     }
@@ -75,22 +73,22 @@ public class NeuralSettingsWidget extends Widget {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
         hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.STATUS)));
 
-        Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getInputSize(), 0);
+        Spinner spinner = getSpinner(true, neuralNetwork.getNetworkParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
 
         topologyContainer.getChildren().add(hBox);
     }
 
     private void refreshHiddenLayers() {
-        for (int i = 1; i < neuralNetwork.getNeuralStructure().getLayers().size() - 1; i++) {
+        for (int i = 1; i < neuralNetwork.getStructure().getLayers().size() - 1; i++) {
             HBox hBox = layoutService.getHBox(2d, 12d, 12d);
             hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.STATUS)));
 
             Spinner spinner;
-            if (neuralNetwork.getNeuralStructure().isBias()) {
-                spinner = getSpinner(false, neuralNetwork.getNeuralStructure().getLayers().get(i).getLayerSize() - 1, i + 1);
+            if (neuralNetwork.getStructure().isBias()) {
+                spinner = getSpinner(false, neuralNetwork.getStructure().getLayers().get(i).getLayerSize() - 1, i + 1);
             } else {
-                spinner = getSpinner(false, neuralNetwork.getNeuralStructure().getLayers().get(i).getLayerSize(), i + 1);
+                spinner = getSpinner(false, neuralNetwork.getStructure().getLayers().get(i).getLayerSize(), i + 1);
             }
 
             hBox.getChildren().add(spinner);
@@ -106,7 +104,7 @@ public class NeuralSettingsWidget extends Widget {
         HBox hBox = layoutService.getHBox(2d, 12d, 12d);
         hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
 
-        Spinner spinner = getSpinner(true, neuralNetwork.getNeuralParameters().getOutputSize(), 1);
+        Spinner spinner = getSpinner(true, neuralNetwork.getNetworkParameters().getOutputSize(), 1);
         hBox.getChildren().add(spinner);
 
         topologyContainer.getChildren().add(hBox);
@@ -120,10 +118,10 @@ public class NeuralSettingsWidget extends Widget {
         spinner.setPrefWidth(64d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            if (neuralNetwork.getNeuralStructure().isBias()) {
-                neuralNetwork.getNeuralStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue + 1);
+            if (neuralNetwork.getStructure().isBias()) {
+                neuralNetwork.getStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue + 1);
             } else {
-                neuralNetwork.getNeuralStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
+                neuralNetwork.getStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
             }
 
 
@@ -138,7 +136,7 @@ public class NeuralSettingsWidget extends Widget {
         button.setText("Usuń warstwę");
 
         button.setOnAction(event -> {
-            neuralNetwork.getNeuralStructure().deleteLayer(getLayerNumber(layerNumber));
+            neuralNetwork.getStructure().deleteLayer(getLayerNumber(layerNumber));
             refreshWidget();
         });
 
@@ -150,10 +148,10 @@ public class NeuralSettingsWidget extends Widget {
         button.setText("Dodaj nową warstwę ukrytą");
 
         button.setOnAction(event -> {
-            if (neuralNetwork.getNeuralStructure().isBias()) {
-                neuralNetwork.getNeuralStructure().addLayer(2);
+            if (neuralNetwork.getStructure().isBias()) {
+                neuralNetwork.getStructure().addLayer(2);
             } else {
-                neuralNetwork.getNeuralStructure().addLayer(1);
+                neuralNetwork.getStructure().addLayer(1);
             }
 
             refreshWidget();
@@ -166,7 +164,7 @@ public class NeuralSettingsWidget extends Widget {
         if (number.equals(0)) {
             return 0;
         } else if (number.equals(1)) {
-            return neuralNetwork.getNeuralStructure().getLayers().size() - 1;
+            return neuralNetwork.getStructure().getLayers().size() - 1;
         } else {
             return number - 1;
         }
@@ -174,15 +172,15 @@ public class NeuralSettingsWidget extends Widget {
 
     private CheckBox getBiasCheckbox() {
         CheckBox checkBox = layoutService.getCheckBox("Bias", null);
-        checkBox.setSelected(neuralNetwork.getNeuralStructure().isBias());
+        checkBox.setSelected(neuralNetwork.getStructure().isBias());
 
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             checkBox.setSelected(newValue);
 
             if (newValue) {
-                neuralNetwork.getNeuralStructure().addBias();
+                neuralNetwork.getStructure().addBias();
             } else {
-                neuralNetwork.getNeuralStructure().deleteBias();
+                neuralNetwork.getStructure().deleteBias();
             }
 
             refreshWidget();

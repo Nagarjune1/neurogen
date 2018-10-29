@@ -5,30 +5,27 @@ public class Connection {
     private Neuron neuronInput;
     private Double weight;
 
-    public Connection() {
-    }
-
-    public Neuron getNeuronOutput() {
-        return neuronOutput;
-    }
-
     public void setNeuronOutput(Neuron neuronOutput) {
         this.neuronOutput = neuronOutput;
-    }
-
-    public Neuron getNeuronInput() {
-        return neuronInput;
     }
 
     public void setNeuronInput(Neuron neuronInput) {
         this.neuronInput = neuronInput;
     }
 
-    public Double getWeight() {
-        return weight;
-    }
-
     public void setWeight(Double weight) {
         this.weight = weight;
+    }
+
+    public Neuron getNeuronOutput() {
+        return neuronOutput;
+    }
+
+    public Neuron getNeuronInput() {
+        return neuronInput;
+    }
+
+    public Double getWeight() {
+        return weight;
     }
 }

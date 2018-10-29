@@ -1,7 +1,7 @@
 package pl.wozniaktomek.neural.operation;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.manage.NeuralStructure;
+import pl.wozniaktomek.neural.structure.Structure;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
@@ -13,9 +13,9 @@ public class NeuralConnection {
     private List<Connection> connections;
 
     public NeuralConnection(NeuralNetwork neuralNetwork) {
-        NeuralStructure neuralStructure = neuralNetwork.getNeuralStructure();
-        this.layers = neuralStructure.getLayers();
-        this.connections = neuralStructure.getConnections();
+        Structure structure = neuralNetwork.getStructure();
+        this.layers = structure.getLayers();
+        this.connections = structure.getConnections();
         clearConnections();
     }
 

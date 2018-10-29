@@ -1,4 +1,4 @@
-package pl.wozniaktomek.neural;
+package pl.wozniaktomek.neural.util;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,10 @@ public class NeuralObject {
         this.classNumber = classNumber;
     }
 
+    void setCorrectAnswer(ArrayList<Double> correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
     public ArrayList<Double> getInputValues() {
         return inputValues;
     }
@@ -22,9 +26,5 @@ public class NeuralObject {
 
     public ArrayList<Double> getCorrectAnswer() {
         return correctAnswer;
-    }
-
-    public void setCorrectAnswer(ArrayList<Double> correctAnswer) {
-        this.correctAnswer = correctAnswer;
     }
 }
