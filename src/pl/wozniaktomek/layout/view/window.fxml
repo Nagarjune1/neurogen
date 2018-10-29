@@ -36,13 +36,12 @@
             </VBox>
             <VBox alignment="CENTER_RIGHT">
                <Button fx:id="buttonNavHome" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EKRAN GŁÓWNY" />
+               <Button fx:id="buttonNavNeural" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="SIEĆ NEURONOWA" />
                <Button fx:id="buttonNavEditor" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="EDYTOR DANYCH">
                   <VBox.margin>
                      <Insets />
                   </VBox.margin>
                </Button>
-               <Button fx:id="buttonNavGenetic" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="ALGORYTM GENETYCZNY" />
-               <Button fx:id="buttonNavNeural" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="SIEĆ NEURONOWA" />
                <Button fx:id="buttonNavExit" alignment="TOP_LEFT" contentDisplay="BOTTOM" mnemonicParsing="false" prefWidth="256.0" styleClass="nav-button" text="ZAMKNIJ PROGRAM" />
             </VBox>
          </VBox>

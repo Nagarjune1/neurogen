@@ -1,4 +1,4 @@
-package pl.wozniaktomek.neural.operation;
+package pl.wozniaktomek.neural.learning;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.structure.Connection;
@@ -6,100 +6,57 @@ import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class NeuralLearning extends Thread {
-    private NeuralNetwork neuralNetwork;
-
-    /* Data objects */
-    private ArrayList<NeuralObject> objectsLearning;
-    private ArrayList<NeuralObject> objectsTesting;
-
-    /* Status parameters */
-    private Boolean isLearning;
-    private Integer iteration;
-
+public class Backpropagation extends Learning {
     /* Learning parameters */
     private Double learningFactor;
-    private Double learningTolerance;
-    private Integer maxIterations;
 
-    public NeuralLearning(NeuralNetwork neuralNetwork) {
+    public Backpropagation(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        objectsLearning = neuralNetwork.getNetworkParameters().getObjectsLearning();
-        objectsTesting = neuralNetwork.getNetworkParameters().getObjectsTesting();
+        objectsLearning = neuralNetwork.getParameters().getObjectsLearning();
+        objectsTesting = neuralNetwork.getParameters().getObjectsTesting();
     }
 
-    public void setLearningParameters(Double learningFactor, Double learningTolerance, Integer maxIterations) {
+    public void setLearningParameters(Double learningFactor) {
         this.learningFactor = learningFactor;
-        this.learningTolerance = learningTolerance;
-        this.maxIterations = maxIterations;
     }
 
     /* Control */
     @Override
     public void run() {
-        isLearning = true;
         startLearning();
     }
 
-    private void startLearning() {
+    @Override
+    public void startLearning() {
         initializeLearningParameters();
         initializeConnectionWeights();
+        isLearning = true;
         learning();
     }
 
+    @Override
     public void stopLearning() {
         isLearning = false;
     }
 
-    /* Learning */
-    private void learning() {
+    @Override
+    void learning() {
         while (isLearning && conditions()) {
-            learningIteration();
-            iteration++;
+            for (NeuralObject neuralObject : objectsLearning) {
+                putInputData(neuralObject);
+                countOutputs();
+                countLastLayerError(neuralObject);
+                countHiddenLayersError();
+                modifyWeights();
+            }
 
-            // showIteration();
+            iteration++;
         }
 
         showIteration();
-    }
-
-    private void learningIteration() {
-        for (NeuralObject neuralObject : objectsLearning) {
-            learningObject(neuralObject);
-        }
-    }
-
-    private void learningObject(NeuralObject neuralObject) {
-        putInputData(neuralObject);
-        countOutputs();
-        countLastLayerError(neuralObject);
-        countHiddenLayersError();
-        modifyWeights();
-    }
-
-    /* Ending conditions */
-    private boolean conditions() {
-        return isIteration();
-    }
-
-    private boolean isIteration() {
-        return iteration < maxIterations;
-    }
-
-    private boolean isTolerance() {
-        List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons();
-
-        for (Neuron neuron : neurons) {
-            if (neuron.getOutputError() > learningTolerance) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /* Initialization */
@@ -125,9 +82,7 @@ public class NeuralLearning extends Thread {
         }
     }
 
-    /**
-     * Operations
-     */
+    /** Operations **/
     /* put new input vector x */
     private void putInputData(NeuralObject neuralObject) {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(0).getNeurons();
@@ -137,10 +92,7 @@ public class NeuralLearning extends Thread {
         }
     }
 
-    /* count outputs for every neuron
-     * net = sum(output * weight)
-     * out = f(net)
-     */
+    /* count outputs for every neuron */
     private void countOutputs() {
         List<Layer> layers = neuralNetwork.getStructure().getLayers();
 
@@ -157,9 +109,7 @@ public class NeuralLearning extends Thread {
         }
     }
 
-    /* count delta for neurons in last layer
-     * delta = 1/2 * (d - y)^2 * derivative
-     */
+    /* count delta for neurons in last layer */
     private void countLastLayerError(NeuralObject neuralObject) {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons();
         List<Double> correctAnswer = neuralObject.getCorrectAnswer();
@@ -169,9 +119,7 @@ public class NeuralLearning extends Thread {
         }
     }
 
-    /* count delta for neurons in every hidden layer
-     * delta = sum(outputError * weight) * derivative
-     */
+    /* count delta for neurons in every hidden layer */
     private void countHiddenLayersError() {
         List<Layer> layers = neuralNetwork.getStructure().getLayers();
 
@@ -188,6 +136,7 @@ public class NeuralLearning extends Thread {
         }
     }
 
+    /* modify weights in network */
     private void modifyWeights() {
         List<Connection> connections = neuralNetwork.getStructure().getConnections();
 

@@ -1,10 +1,9 @@
-package pl.wozniaktomek.layout.widget.neural;
+package pl.wozniaktomek.layout.widget;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import pl.wozniaktomek.layout.control.NeuralControl;
-import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.util.NeuralObject;
 import pl.wozniaktomek.service.DataTransferService;
@@ -12,7 +11,7 @@ import pl.wozniaktomek.service.LayoutService;
 
 import java.util.ArrayList;
 
-public class NeuralDataWidget extends Widget {
+public class ReadDataWidget extends Widget {
     private NeuralControl neuralControl;
     private NeuralNetwork neuralNetwork;
 
@@ -29,7 +28,7 @@ public class NeuralDataWidget extends Widget {
     private ArrayList<NeuralObject> objectsLearning;
     private ArrayList<NeuralObject> objectsTesting;
 
-    public NeuralDataWidget(NeuralControl neuralControl, NeuralNetwork neuralNetwork) {
+    public ReadDataWidget(NeuralControl neuralControl, NeuralNetwork neuralNetwork) {
         this.neuralControl = neuralControl;
         this.neuralNetwork = neuralNetwork;
         createPrimaryWidget("Dane wejściowe");

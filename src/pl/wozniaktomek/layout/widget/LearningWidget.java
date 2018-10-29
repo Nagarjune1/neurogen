@@ -1,4 +1,4 @@
-package pl.wozniaktomek.layout.widget.neural;
+package pl.wozniaktomek.layout.widget;
 
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -6,11 +6,11 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.learning.Learning;
 import pl.wozniaktomek.service.LayoutService;
 
-public class NeuralLearningWidget extends Widget {
+public class LearningWidget extends Widget {
     private NeuralNetwork neuralNetwork;
 
     private Button buttonStartLearning;
@@ -19,7 +19,7 @@ public class NeuralLearningWidget extends Widget {
     private Text iterations;
     private Text outputError;
 
-    public NeuralLearningWidget(NeuralNetwork neuralNetwork) {
+    public LearningWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         createPrimaryWidget("Panel kontrolny");
         initialize();
@@ -73,7 +73,10 @@ public class NeuralLearningWidget extends Widget {
     }
 
     private void startLearning() {
-        neuralNetwork.startLearning(0.1, 0.1, 2500);
+        neuralNetwork.createLearning(Learning.LearningMethod.BACKPROPAGATION);
+        neuralNetwork.setEndingParameters(1000, 1.0);
+        neuralNetwork.setLearningParameters(0.2);
+        neuralNetwork.startLearning();
         switchButtons(buttonStartLearning);
     }
 

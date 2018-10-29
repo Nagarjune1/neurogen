@@ -2,7 +2,7 @@ package pl.wozniaktomek.neural.structure;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.util.ActivationFunction;
-import pl.wozniaktomek.neural.operation.NeuralConnection;
+import pl.wozniaktomek.neural.service.ConnectionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,12 +67,12 @@ public class Structure {
     public void createConnections() {
         setNeuronNumbers();
 
-        NeuralConnection neuralConnection = new NeuralConnection(neuralNetwork);
+        ConnectionService connectionService = new ConnectionService(neuralNetwork);
         if (layers.size() > 1) {
             if (isBias) {
-                neuralConnection.createConnectionsWithBias();
+                connectionService.createConnectionsWithBias();
             } else {
-                neuralConnection.createConnectionsWithoutBias();
+                connectionService.createConnectionsWithoutBias();
             }
         }
     }

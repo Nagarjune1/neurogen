@@ -1,15 +1,15 @@
-package pl.wozniaktomek.neural.operation;
+package pl.wozniaktomek.neural.service;
 
 import pl.wozniaktomek.neural.util.NeuralObject;
-import pl.wozniaktomek.neural.util.NetworkParameters;
+import pl.wozniaktomek.neural.util.Parameters;
 
 import java.util.ArrayList;
 
-public class NeuralValidation {
-    private NetworkParameters networkParameters;
+public class ValidationService {
+    private Parameters parameters;
 
-    public NeuralValidation(NetworkParameters networkParameters) {
-        this.networkParameters = networkParameters;
+    public ValidationService(Parameters parameters) {
+        this.parameters = parameters;
     }
 
     public boolean validateObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
@@ -42,7 +42,7 @@ public class NeuralValidation {
             }
         }
 
-        networkParameters.setInputSize(inputSize);
+        parameters.setInputSize(inputSize);
         return true;
     }
 
@@ -63,7 +63,7 @@ public class NeuralValidation {
         }
 
         if (highestLearningClass == highestTestingClass) {
-            networkParameters.setOutputSize(highestLearningClass);
+            parameters.setOutputSize(highestLearningClass);
             return true;
         } else {
             return false;

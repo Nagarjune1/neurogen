@@ -1,4 +1,4 @@
-package pl.wozniaktomek.layout.widget.neural;
+package pl.wozniaktomek.layout.widget;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -6,7 +6,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.NeuralNetwork;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NeuralTopologyWidget extends Widget {
+public class TopologyWidget extends Widget {
     private final static double DEFAULT_NEURON_RADIUS = 52d;
     private final static double DEFAULT_NEURON_SIZE = 60d;
     private Double neuronRadius, neuronSize, neuronMargin;
@@ -31,7 +30,7 @@ public class NeuralTopologyWidget extends Widget {
 
     private HashMap<Integer, ArrayList<Point2D>> points;
 
-    public NeuralTopologyWidget(NeuralNetwork neuralNetwork) {
+    public TopologyWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         createPrimaryWidget("Wizualizacja topologii sieci");
     }

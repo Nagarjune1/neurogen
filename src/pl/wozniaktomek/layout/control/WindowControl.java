@@ -20,19 +20,17 @@ public class WindowControl implements Initializable {
 
     private AnchorPane homePane;
     private AnchorPane editorPane;
-    private AnchorPane geneticPane;
     private AnchorPane neuralPane;
 
     @FXML private Button buttonNavHome;
     @FXML private Button buttonNavEditor;
-    @FXML private Button buttonNavGenetic;
     @FXML private Button buttonNavNeural;
     @FXML private Button buttonNavExit;
 
     private ArrayList<AnchorPane> panels;
     private ArrayList<Button> buttons;
 
-    private enum ActivePane {HOME, EDITOR, GENETIC, NEURAL}
+    private enum ActivePane {HOME, EDITOR, NEURAL}
     private ActivePane activePane = ActivePane.EDITOR;
 
     @Override
@@ -60,31 +58,23 @@ public class WindowControl implements Initializable {
         }
 
         try {
-            geneticPane = FXMLLoader.load(getClass().getResource("../view/genetic.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
             neuralPane = FXMLLoader.load(getClass().getResource("../view/neural.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        contentPane.getChildren().addAll(homePane, editorPane, geneticPane, neuralPane);
+        contentPane.getChildren().addAll(homePane, editorPane, neuralPane);
     }
 
     private void initializeCollections() {
         panels = new ArrayList<>();
         panels.add(homePane);
         panels.add(editorPane);
-        panels.add(geneticPane);
         panels.add(neuralPane);
 
         buttons = new ArrayList<>();
         buttons.add(buttonNavHome);
         buttons.add(buttonNavEditor);
-        buttons.add(buttonNavGenetic);
         buttons.add(buttonNavNeural);
     }
 
@@ -94,7 +84,6 @@ public class WindowControl implements Initializable {
 
             homePane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             editorPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
-            geneticPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             neuralPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
         };
 
@@ -105,7 +94,6 @@ public class WindowControl implements Initializable {
     private void initializeButtonActions() {
         buttonNavHome.setOnAction(event -> switchPanels(ActivePane.HOME));
         buttonNavEditor.setOnAction(event -> switchPanels(ActivePane.EDITOR));
-        buttonNavGenetic.setOnAction(event -> switchPanels(ActivePane.GENETIC));
         buttonNavNeural.setOnAction(event -> switchPanels(ActivePane.NEURAL));
         buttonNavExit.setOnAction(event -> closeProgram());
 
@@ -126,15 +114,6 @@ public class WindowControl implements Initializable {
                     setActivePane(editorPane);
                     setActiveButton(buttonNavEditor);
                     activePane = ActivePane.EDITOR;
-                }
-
-                break;
-
-            case GENETIC:
-                if (!activePane.equals(ActivePane.GENETIC)) {
-                    setActivePane(geneticPane);
-                    setActiveButton(buttonNavGenetic);
-                    activePane = ActivePane.GENETIC;
                 }
 
                 break;

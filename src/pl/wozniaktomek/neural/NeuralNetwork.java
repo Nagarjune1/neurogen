@@ -1,8 +1,10 @@
 package pl.wozniaktomek.neural;
 
-import pl.wozniaktomek.neural.util.NetworkParameters;
+import pl.wozniaktomek.neural.learning.Backpropagation;
+import pl.wozniaktomek.neural.learning.GeneticLearning;
+import pl.wozniaktomek.neural.util.Parameters;
 import pl.wozniaktomek.neural.structure.Structure;
-import pl.wozniaktomek.neural.operation.NeuralLearning;
+import pl.wozniaktomek.neural.learning.Learning;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
@@ -13,38 +15,56 @@ import java.util.List;
 
 public class NeuralNetwork {
     private Structure structure;
-    private NetworkParameters networkParameters;
-    private NeuralLearning neuralLearning;
+    private Parameters parameters;
+    private Learning learning;
 
     public NeuralNetwork() {
         structure = new Structure(this);
-        networkParameters = new NetworkParameters(this);
+        parameters = new Parameters(this);
+        learning = null;
     }
 
     public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        return networkParameters.setObjects(objectsLearning, objectsTesting);
+        return parameters.setObjects(objectsLearning, objectsTesting);
     }
 
-    public void startLearning(Double learningFactor, Double learningTolerance, Integer maxIterations) {
-        neuralLearning = new NeuralLearning(this);
-        neuralLearning.setLearningParameters(learningFactor, learningTolerance, maxIterations);
-        neuralLearning.run();
+    public void createLearning(Learning.LearningMethod learningMethod) {
+        if (learningMethod.equals(Learning.LearningMethod.GENETIC)) {
+            learning = new GeneticLearning(this);
+        } else if (learningMethod.equals(Learning.LearningMethod.BACKPROPAGATION)) {
+            learning = new Backpropagation(this);
+        } else {
+            learning = null;
+        }
+    }
+
+    public void setEndingParameters(Integer maxIterations, Double learningTolerance) {
+        learning.setEndingParameters(maxIterations, learningTolerance);
+    }
+
+    public void setLearningParameters(Double learningFactor) {
+        ((Backpropagation) learning).setLearningParameters(learningFactor);
+    }
+
+    public void startLearning() {
+        learning.startLearning();
+        // #TODO replace by executor
     }
 
     public void stopLearning() {
-        neuralLearning.stopLearning();
+        learning.stopLearning();
     }
 
     public Structure getStructure() {
         return structure;
     }
 
-    public NetworkParameters getNetworkParameters() {
-        return networkParameters;
+    public Parameters getParameters() {
+        return parameters;
     }
 
-    public NeuralLearning getNeuralLearning() {
-        return neuralLearning;
+    public Learning getLearning() {
+        return learning;
     }
 
     /* just for debug */

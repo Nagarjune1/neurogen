@@ -1,24 +1,21 @@
-package pl.wozniaktomek.layout.widget.neural;
+package pl.wozniaktomek.layout.widget;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.layout.control.NeuralControl;
-import pl.wozniaktomek.layout.widget.Widget;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.learning.Learning;
 import pl.wozniaktomek.service.LayoutService;
 
-public class NeuralSettingsWidget extends Widget {
+public class SettingsWidget extends Widget {
     private NeuralNetwork neuralNetwork;
     private NeuralControl neuralControl;
 
-    private VBox topologyContainer;
-    private VBox parametersContainer;
+    private HBox topologyContainer;
+    private VBox learningContainer;
 
-    public NeuralSettingsWidget(NeuralNetwork neuralNetwork, NeuralControl neuralControl) {
+    public SettingsWidget(NeuralNetwork neuralNetwork, NeuralControl neuralControl) {
         this.neuralNetwork = neuralNetwork;
         this.neuralControl = neuralControl;
         createPrimaryWidget("Parametry sieci");
@@ -26,62 +23,86 @@ public class NeuralSettingsWidget extends Widget {
     }
 
     private void initializeContainers() {
-        HBox localContentContainer = layoutService.getHBox(0d, 0d, 0d);
+        VBox localContentContainer = layoutService.getVBox(0d, 0d, 12d);
         contentContainer.getChildren().add(localContentContainer);
 
-        topologyContainer = layoutService.getVBox(4d, 8d, 8d);
-        topologyContainer.setMinWidth(356d);
-        topologyContainer.getChildren().add(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING));
+        topologyContainer = layoutService.getHBox(0d, 8d, 8d);
         topologyContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
+        VBox mainTopologyContainer = layoutService.getVBox(8d, 8d, 8d);
+        mainTopologyContainer.getChildren().addAll(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING), topologyContainer);
 
-        parametersContainer = layoutService.getVBox(4d, 8d, 8d);
-        parametersContainer.getChildren().add(layoutService.getText("PARAMETRY", LayoutService.TextStyle.HEADING));
-        localContentContainer.getChildren().addAll(topologyContainer, parametersContainer);
+        learningContainer = layoutService.getVBox(4d, 8d, 8d);
+        learningContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
+        learningContainer.setMinWidth(256d);
+        VBox mainLearningContainer = layoutService.getVBox(8d, 8d, 8d);
+        mainLearningContainer.getChildren().addAll(layoutService.getText("METODA UCZENIA", LayoutService.TextStyle.HEADING), learningContainer);
+
+        localContentContainer.getChildren().addAll(mainTopologyContainer, mainLearningContainer);
     }
 
     public void refreshWidget() {
-        neuralNetwork.getStructure().createConnections();
-        refreshTopology();
-        refreshParameters();
+        refreshTopologySettings();
+        refreshLearningSettings();
     }
 
-    private void refreshTopology() {
+    private void refreshTopologySettings() {
         topologyContainer.getChildren().clear();
-        topologyContainer.getChildren().add(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING));
 
         if (neuralNetwork.getStructure().getLayers().size() > 0) {
-            refreshInputLayer();
-            refreshHiddenLayers();
-            refreshOutputLayer();
+            VBox vBox = layoutService.getVBox(0d, 12d, 12d);
+            topologyContainer.getChildren().add(vBox);
+            refreshInputLayer(vBox);
+            refreshOutputLayer(vBox);
+
+            vBox = layoutService.getVBox(0d, 12d, 12d);
+            vBox.setMinWidth(356d);
+            topologyContainer.getChildren().add(vBox);
+            refreshHiddenLayers(vBox);
+
+            vBox = layoutService.getVBox(6d, 12d, 12d);
+            topologyContainer.getChildren().add(vBox);
+            refreshTopologySettings(vBox);
         } else {
             topologyContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
 
+        neuralNetwork.getStructure().createConnections();
         neuralControl.refreshTopology();
     }
 
-    private void refreshParameters() {
-        parametersContainer.getChildren().clear();
-        parametersContainer.getChildren().add(layoutService.getText("PARAMETRY", LayoutService.TextStyle.HEADING));
+    private void refreshLearningSettings() {
+        learningContainer.getChildren().clear();
 
         if (neuralNetwork.getStructure().getLayers().size() > 0) {
-            parametersContainer.getChildren().add(getBiasCheckbox());
+            learningContainer.getChildren().add(getLearningMethodChoiceBox());
+        } else {
+            learningContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
     }
 
-    private void refreshInputLayer() {
-        HBox hBox = layoutService.getHBox(2d, 12d, 12d);
+    private void refreshInputLayer(VBox vBox) {
+        HBox hBox = layoutService.getHBox(2d, 0d, 12d);
         hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.STATUS)));
 
-        Spinner spinner = getSpinner(true, neuralNetwork.getNetworkParameters().getInputSize(), 0);
+        Spinner spinner = getSpinner(true, neuralNetwork.getParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
 
-        topologyContainer.getChildren().add(hBox);
+        vBox.getChildren().add(hBox);
     }
 
-    private void refreshHiddenLayers() {
+    private void refreshOutputLayer(VBox vBox) {
+        HBox hBox = layoutService.getHBox(2d, 0d, 12d);
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
+
+        Spinner spinner = getSpinner(true, neuralNetwork.getParameters().getOutputSize(), 1);
+        hBox.getChildren().add(spinner);
+
+        vBox.getChildren().add(hBox);
+    }
+
+    private void refreshHiddenLayers(VBox vBox) {
         for (int i = 1; i < neuralNetwork.getStructure().getLayers().size() - 1; i++) {
-            HBox hBox = layoutService.getHBox(2d, 12d, 12d);
+            HBox hBox = layoutService.getHBox(2d, 0d, 12d);
             hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.STATUS)));
 
             Spinner spinner;
@@ -94,20 +115,15 @@ public class NeuralSettingsWidget extends Widget {
             hBox.getChildren().add(spinner);
             hBox.getChildren().add(getDeleteLayerButton(i + 1));
 
-            topologyContainer.getChildren().add(hBox);
+            vBox.getChildren().add(hBox);
         }
 
-        topologyContainer.getChildren().add(getNewLayerButton());
+        vBox.getChildren().add(getNewLayerButton());
     }
 
-    private void refreshOutputLayer() {
-        HBox hBox = layoutService.getHBox(2d, 12d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
-
-        Spinner spinner = getSpinner(true, neuralNetwork.getNetworkParameters().getOutputSize(), 1);
-        hBox.getChildren().add(spinner);
-
-        topologyContainer.getChildren().add(hBox);
+    private void refreshTopologySettings(VBox vBox) {
+        vBox.getChildren().add(layoutService.getText("POZOSTAŁE PARAMETRY TOPOLOGII", LayoutService.TextStyle.STATUS));
+        vBox.getChildren().add(getBiasCheckbox());
     }
 
     private Spinner getSpinner(Boolean isDisable, Integer value, Integer number) {
@@ -123,7 +139,6 @@ public class NeuralSettingsWidget extends Widget {
             } else {
                 neuralNetwork.getStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
             }
-
 
             refreshWidget();
         }));
@@ -160,16 +175,6 @@ public class NeuralSettingsWidget extends Widget {
         return button;
     }
 
-    private Integer getLayerNumber(Integer number) {
-        if (number.equals(0)) {
-            return 0;
-        } else if (number.equals(1)) {
-            return neuralNetwork.getStructure().getLayers().size() - 1;
-        } else {
-            return number - 1;
-        }
-    }
-
     private CheckBox getBiasCheckbox() {
         CheckBox checkBox = layoutService.getCheckBox("Bias", null);
         checkBox.setSelected(neuralNetwork.getStructure().isBias());
@@ -187,5 +192,30 @@ public class NeuralSettingsWidget extends Widget {
         });
 
         return checkBox;
+    }
+
+    private ChoiceBox getLearningMethodChoiceBox() {
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        choiceBox.getItems().addAll("Algorytm genetyczny", "Algorytm wstecznej propagacji");
+
+        choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals("Algorytm genetyczny")) {
+                neuralNetwork.createLearning(Learning.LearningMethod.GENETIC);
+            } else {
+                neuralNetwork.createLearning(Learning.LearningMethod.BACKPROPAGATION);
+            }
+        });
+
+        return choiceBox;
+    }
+
+    private Integer getLayerNumber(Integer number) {
+        if (number.equals(0)) {
+            return 0;
+        } else if (number.equals(1)) {
+            return neuralNetwork.getStructure().getLayers().size() - 1;
+        } else {
+            return number - 1;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package pl.wozniaktomek.neural.operation;
+package pl.wozniaktomek.neural.service;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.structure.Structure;
@@ -8,11 +8,11 @@ import pl.wozniaktomek.neural.structure.Neuron;
 
 import java.util.List;
 
-public class NeuralConnection {
+public class ConnectionService {
     private List<Layer> layers;
     private List<Connection> connections;
 
-    public NeuralConnection(NeuralNetwork neuralNetwork) {
+    public ConnectionService(NeuralNetwork neuralNetwork) {
         Structure structure = neuralNetwork.getStructure();
         this.layers = structure.getLayers();
         this.connections = structure.getConnections();

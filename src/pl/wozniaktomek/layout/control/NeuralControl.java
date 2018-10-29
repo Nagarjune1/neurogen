@@ -7,10 +7,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.layout.widget.neural.NeuralDataWidget;
-import pl.wozniaktomek.layout.widget.neural.NeuralLearningWidget;
-import pl.wozniaktomek.layout.widget.neural.NeuralSettingsWidget;
-import pl.wozniaktomek.layout.widget.neural.NeuralTopologyWidget;
+import pl.wozniaktomek.layout.widget.ReadDataWidget;
+import pl.wozniaktomek.layout.widget.LearningWidget;
+import pl.wozniaktomek.layout.widget.SettingsWidget;
+import pl.wozniaktomek.layout.widget.TopologyWidget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
 import java.net.URL;
@@ -30,10 +30,10 @@ public class NeuralControl implements Initializable {
 
     private NeuralNetwork neuralNetwork;
 
-    private NeuralDataWidget neuralDataWidget;
-    private NeuralSettingsWidget neuralSettingsWidget;
-    private NeuralTopologyWidget neuralTopologyWidget;
-    private NeuralLearningWidget neuralLearningWidget;
+    private ReadDataWidget readDataWidget;
+    private SettingsWidget settingsWidget;
+    private TopologyWidget neuralTopologyWidget;
+    private LearningWidget learningWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +46,7 @@ public class NeuralControl implements Initializable {
     }
 
     public void refreshSettings() {
-        neuralSettingsWidget.refreshWidget();
+        settingsWidget.refreshWidget();
     }
 
     public void refreshTopology() {
@@ -58,23 +58,23 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeReadDataWidget() {
-        neuralDataWidget = new NeuralDataWidget(this, neuralNetwork);
-        settingsTab.getChildren().add(neuralDataWidget.getWidget());
+        readDataWidget = new ReadDataWidget(this, neuralNetwork);
+        settingsTab.getChildren().add(readDataWidget.getWidget());
     }
 
     private void initializeSettingsWidget() {
-        neuralSettingsWidget = new NeuralSettingsWidget(neuralNetwork, this);
-        settingsTab.getChildren().add(neuralSettingsWidget.getWidget());
+        settingsWidget = new SettingsWidget(neuralNetwork, this);
+        settingsTab.getChildren().add(settingsWidget.getWidget());
     }
 
     private void initializeNetworkTopologyWidget() {
-        neuralTopologyWidget = new NeuralTopologyWidget(neuralNetwork);
+        neuralTopologyWidget = new TopologyWidget(neuralNetwork);
         settingsTab.getChildren().add(neuralTopologyWidget.getWidget());
     }
 
     private void initializeLearningWidget() {
-        neuralLearningWidget = new NeuralLearningWidget(neuralNetwork);
-        learningTab.getChildren().add(neuralLearningWidget.getWidget());
+        learningWidget = new LearningWidget(neuralNetwork);
+        learningTab.getChildren().add(learningWidget.getWidget());
     }
 
     private void initializeSizeListener() {

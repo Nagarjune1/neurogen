@@ -1,11 +1,11 @@
 package pl.wozniaktomek.neural.util;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.operation.NeuralValidation;
+import pl.wozniaktomek.neural.service.ValidationService;
 
 import java.util.ArrayList;
 
-public class NetworkParameters {
+public class Parameters {
     private NeuralNetwork neuralNetwork;
 
     private ArrayList<NeuralObject> objectsLearning;
@@ -14,15 +14,15 @@ public class NetworkParameters {
     private Integer inputSize;
     private Integer outputSize;
 
-    public NetworkParameters(NeuralNetwork neuralNetwork) {
+    public Parameters(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         inputSize = outputSize = 0;
     }
 
     public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        NeuralValidation neuralValidation = new NeuralValidation(this);
+        ValidationService validationService = new ValidationService(this);
 
-        if (neuralValidation.validateObjects(objectsLearning, objectsTesting)) {
+        if (validationService.validateObjects(objectsLearning, objectsTesting)) {
             approveData(objectsLearning, objectsTesting);
             return true;
         } else {
