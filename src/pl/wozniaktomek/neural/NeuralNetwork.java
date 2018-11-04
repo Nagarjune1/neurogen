@@ -25,7 +25,12 @@ public class NeuralNetwork {
     }
 
     public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        return parameters.setObjects(objectsLearning, objectsTesting);
+        if (parameters.setObjects(objectsLearning, objectsTesting)) {
+            createLearning(Learning.LearningMethod.GENETIC);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void createLearning(Learning.LearningMethod learningMethod) {
@@ -36,10 +41,6 @@ public class NeuralNetwork {
         } else {
             learning = null;
         }
-    }
-
-    public void setEndingParameters(Integer maxIterations, Double learningTolerance) {
-        learning.setEndingParameters(maxIterations, learningTolerance);
     }
 
     public void setLearningParameters(Double learningFactor) {

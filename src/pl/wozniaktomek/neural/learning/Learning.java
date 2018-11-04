@@ -18,7 +18,7 @@ public abstract class Learning extends Thread {
     Double error;
 
     /* Ending parameters */
-    private Integer maxIterations;
+    private Integer iterationsAmount;
     private Double learningTolerance;
 
     /* Control */
@@ -30,18 +30,26 @@ public abstract class Learning extends Thread {
     abstract void learning();
 
     /* Initialization */
-    public void setEndingParameters(Integer maxIterations, Double learningTolerance) {
-        this.maxIterations = maxIterations;
-        this.learningTolerance = learningTolerance;
+    void initializeEndingParameters() {
+        iterationsAmount = 10000;
+        learningTolerance = 0.2;
     }
 
     /* Ending parameters */
+    public void setEndingIterations(Integer maxIterations) {
+        this.iterationsAmount = maxIterations;
+    }
+
+    public void setEndingLearningTolerance(Double learningTolerance) {
+        this.learningTolerance = learningTolerance;
+    }
+
     boolean conditions() {
         return isIteration() && isTolerance();
     }
 
     private boolean isIteration() {
-        return iteration < maxIterations;
+        return iteration < iterationsAmount;
     }
 
     private boolean isTolerance() {
@@ -49,6 +57,14 @@ public abstract class Learning extends Thread {
     }
 
     /* Getters */
+    public Integer getIterationsAmount() {
+        return iterationsAmount;
+    }
+
+    public Double getLearningTolerance() {
+        return learningTolerance;
+    }
+
     public Integer getIteration() {
         return iteration;
     }

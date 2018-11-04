@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.learning.Learning;
+import pl.wozniaktomek.neural.learning.GeneticLearning;
 import pl.wozniaktomek.service.LayoutService;
 
 public class LearningWidget extends Widget {
@@ -73,9 +73,10 @@ public class LearningWidget extends Widget {
     }
 
     private void startLearning() {
-        neuralNetwork.createLearning(Learning.LearningMethod.BACKPROPAGATION);
-        neuralNetwork.setEndingParameters(1000, 1.0);
-        neuralNetwork.setLearningParameters(0.2);
+        if (neuralNetwork.getLearning() instanceof GeneticLearning)
+            System.out.println("GENETIC");
+        else System.out.println("BACK");
+
         neuralNetwork.startLearning();
         switchButtons(buttonStartLearning);
     }

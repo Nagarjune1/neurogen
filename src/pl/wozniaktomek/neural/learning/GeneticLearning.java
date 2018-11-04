@@ -7,6 +7,7 @@ public class GeneticLearning extends Learning {
         this.neuralNetwork = neuralNetwork;
         objectsLearning = neuralNetwork.getParameters().getObjectsLearning();
         objectsTesting = neuralNetwork.getParameters().getObjectsTesting();
+        initializeEndingParameters();
     }
 
     /* Control */
