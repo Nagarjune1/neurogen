@@ -6,21 +6,37 @@ import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Backpropagation extends Learning {
+public class Backpropagation extends Thread {
+    private NeuralNetwork neuralNetwork;
+
     /* Learning parameters */
+    private ArrayList<NeuralObject> learningData;
     private Double learningFactor;
 
-    public Backpropagation(NeuralNetwork neuralNetwork) {
+    /* Ending conditions */
+    private Integer iterationsAmount;
+    private Double learningTolerance;
+
+    /* Status parameters */
+    private Integer iteration;
+    private Boolean isLearning;
+
+    Backpropagation(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        learningData = neuralNetwork.getParameters().getLearningData();
-        initializeEndingParameters();
         learningFactor = 0.1;
     }
 
-    public void setLearningParameters(Double learningFactor) {
+    /* Initialization */
+    void setEndingConditions(Integer iterationsAmount, Double learningTolerance) {
+        this.iterationsAmount = iterationsAmount;
+        this.learningTolerance = learningTolerance;
+    }
+
+    void setLearningParameters(Double learningFactor) {
         this.learningFactor = learningFactor;
     }
 
@@ -31,21 +47,19 @@ public class Backpropagation extends Learning {
         startLearning();
     }
 
-    @Override
-    public void startLearning() {
+    private void startLearning() {
+        initializeLearningData();
         initializeLearningParameters();
         initializeConnectionWeights();
         isLearning = true;
         learning();
     }
 
-    @Override
-    public void stopLearning() {
+    void stopLearning() {
         isLearning = false;
     }
 
-    @Override
-    void learning() {
+    private void learning() {
         while (isLearning && conditions()) {
             for (NeuralObject neuralObject : learningData) {
                 putInputData(neuralObject);
@@ -62,6 +76,10 @@ public class Backpropagation extends Learning {
     }
 
     /* Initialization */
+    private void initializeLearningData() {
+        learningData = neuralNetwork.getParameters().getLearningData();
+    }
+
     private void initializeLearningParameters() {
         iteration = 1;
 
@@ -72,7 +90,7 @@ public class Backpropagation extends Learning {
 
     private void initializeConnectionWeights() {
         for (Connection connection : neuralNetwork.getStructure().getConnections()) {
-            connection.setWeight(ThreadLocalRandom.current().nextDouble(-0.5, 0.5));
+            connection.setWeight(ThreadLocalRandom.current().nextDouble(-1.0, 1.0));
         }
     }
 
@@ -82,6 +100,15 @@ public class Backpropagation extends Learning {
         for (int i = 0; i < layers.size() - 2; i++) {
             layers.get(i).getNeurons().get(layers.get(i).getNeurons().size() - 1).setOutput(1d);
         }
+    }
+
+    /* Ending conditions */
+    private boolean conditions() {
+        return iterationConditions();
+    }
+
+    private boolean iterationConditions() {
+        return iteration < iterationsAmount;
     }
 
     /** Operations **/
@@ -111,7 +138,7 @@ public class Backpropagation extends Learning {
         }
     }
 
-    /* count delta for neurons in last layer */
+    /* count error for neurons in last layer */
     private void countLastLayerError(NeuralObject neuralObject) {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons();
         List<Double> correctAnswer = neuralObject.getCorrectAnswer();
@@ -121,7 +148,7 @@ public class Backpropagation extends Learning {
         }
     }
 
-    /* count delta for neurons in every hidden layer */
+    /* count error for neurons in every hidden layer */
     private void countHiddenLayersError() {
         List<Layer> layers = neuralNetwork.getStructure().getLayers();
 
@@ -146,6 +173,7 @@ public class Backpropagation extends Learning {
             connection.setWeight(connection.getWeight() + (2 * learningFactor * connection.getNeuronOutput().getOutputError() * connection.getNeuronInput().getOutput()));
         }
     }
+
 
     /* just for debug */
     private void showIteration() {

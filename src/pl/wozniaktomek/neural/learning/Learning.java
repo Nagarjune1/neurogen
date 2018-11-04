@@ -1,77 +1,104 @@
 package pl.wozniaktomek.neural.learning;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.util.NeuralObject;
 
-import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public abstract class Learning extends Thread {
-    protected NeuralNetwork neuralNetwork;
+public class Learning {
+    private NeuralNetwork neuralNetwork;
 
-    /* Data objects */
-    ArrayList<NeuralObject> learningData;
+    /* Learning methods */
+    private LearningMethod learningMethod;
+    private GeneticLearning geneticLearning;
+    private Backpropagation backpropagation;
 
-    /* Status parameters */
-    Boolean isLearning;
-    Integer iteration;
-    Double error;
-
-    /* Ending parameters */
+    /* General parameters */
     private Integer iterationsAmount;
     private Double learningTolerance;
 
-    /* Control */
-    public abstract void run();
-    public abstract void startLearning();
-    public abstract void stopLearning();
+    /* Executor */
+    private ExecutorService executorService;
 
-    /* Learning */
-    abstract void learning();
+    public Learning(NeuralNetwork neuralNetwork) {
+        this.neuralNetwork = neuralNetwork;
+        executorService = Executors.newSingleThreadExecutor();
 
-    /* Initialization */
-    void initializeEndingParameters() {
         iterationsAmount = 10000;
         learningTolerance = 0.2;
+        createLearning(LearningMethod.GENETIC);
     }
 
-    /* Ending parameters */
-    public void setEndingIterations(Integer maxIterations) {
-        this.iterationsAmount = maxIterations;
+    /* General initialization */
+    public void createLearning(LearningMethod learningMethod) {
+        this.learningMethod = learningMethod;
+
+        switch (learningMethod) {
+            case GENETIC:
+                geneticLearning = new GeneticLearning(neuralNetwork);
+                break;
+
+            case BACKPROPAGATION:
+                backpropagation = new Backpropagation(neuralNetwork);
+                break;
+        }
     }
 
-    public void setEndingLearningTolerance(Double learningTolerance) {
-        this.learningTolerance = learningTolerance;
+    /* Backpropagation initialization */
+    public void setLearningFactor(Double learningFactor) {
+        backpropagation.setLearningParameters(learningFactor);
     }
 
-    boolean conditions() {
-        return isIteration() && isTolerance();
+    /* Control */
+    public void startLearning() {
+        switch (learningMethod) {
+            case GENETIC:
+                geneticLearning.setEndingConditions(iterationsAmount, learningTolerance);
+                executorService.submit(geneticLearning);
+                break;
+
+            case BACKPROPAGATION:
+                backpropagation.setEndingConditions(iterationsAmount, learningTolerance);
+                executorService.submit(backpropagation);
+                break;
+        }
     }
 
-    private boolean isIteration() {
-        return iteration < iterationsAmount;
-    }
+    public void stopLearning() {
+        switch (learningMethod) {
+            case GENETIC:
+                geneticLearning.stopLearning();
+                break;
 
-    private boolean isTolerance() {
-        return true;
+            case BACKPROPAGATION:
+                backpropagation.stopLearning();
+                break;
+        }
     }
 
     /* Getters */
+    public LearningMethod getLearningMethod() {
+        return learningMethod;
+    }
+
     public Integer getIterationsAmount() {
         return iterationsAmount;
+    }
+
+    public void setIterationsAmount(Integer iterationsAmount) {
+        this.iterationsAmount = iterationsAmount;
     }
 
     public Double getLearningTolerance() {
         return learningTolerance;
     }
 
-    public Integer getIteration() {
-        return iteration;
-    }
-
-    public Double getError() {
-        return error;
+    public void setLearningTolerance(Double learningTolerance) {
+        this.learningTolerance = learningTolerance;
     }
 
     /* Learning method */
-    public enum LearningMethod {GENETIC, BACKPROPAGATION}
+    public enum LearningMethod {
+        GENETIC, BACKPROPAGATION
+    }
 }

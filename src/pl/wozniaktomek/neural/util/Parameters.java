@@ -12,7 +12,6 @@ public class Parameters {
 
     /* Learning data parameters */
     private ArrayList<NeuralObject> learningData;
-    private Learning.LearningMethod learningMethod;
 
     /* Structure parameters */
     private Integer inputSize;
@@ -21,7 +20,6 @@ public class Parameters {
     public Parameters(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         learningData = null;
-        learningMethod = null;
         inputSize = outputSize = 0;
     }
 
@@ -40,16 +38,16 @@ public class Parameters {
         }
     }
 
+    public ArrayList<NeuralObject> getLearningData() {
+        return learningData;
+    }
+
     public void setInputSize(Integer inputSize) {
         this.inputSize = inputSize;
     }
 
     public void setOutputSize(Integer outputSize) {
         this.outputSize = outputSize;
-    }
-
-    public ArrayList<NeuralObject> getLearningData() {
-        return learningData;
     }
 
     public Integer getInputSize() {

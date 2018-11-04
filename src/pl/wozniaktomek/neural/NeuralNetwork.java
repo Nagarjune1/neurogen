@@ -1,7 +1,5 @@
 package pl.wozniaktomek.neural;
 
-import pl.wozniaktomek.neural.learning.Backpropagation;
-import pl.wozniaktomek.neural.learning.GeneticLearning;
 import pl.wozniaktomek.neural.util.Parameters;
 import pl.wozniaktomek.neural.structure.Structure;
 import pl.wozniaktomek.neural.learning.Learning;
@@ -21,41 +19,28 @@ public class NeuralNetwork {
     public NeuralNetwork() {
         structure = new Structure(this);
         parameters = new Parameters(this);
-        learning = null;
+        learning = new Learning(this);
     }
 
+    /* Learning data */
     public boolean loadLearningData(ArrayList<NeuralObject> learningData) {
-        if (parameters.setLearningData(learningData)) {
-            createLearning(Learning.LearningMethod.GENETIC);
-            return true;
-        } else {
-            return false;
-        }
+        return parameters.setLearningData(learningData);
     }
 
+    /* Learning */
     public void createLearning(Learning.LearningMethod learningMethod) {
-        if (learningMethod.equals(Learning.LearningMethod.GENETIC)) {
-            learning = new GeneticLearning(this);
-        } else if (learningMethod.equals(Learning.LearningMethod.BACKPROPAGATION)) {
-            learning = new Backpropagation(this);
-        } else {
-            learning = null;
-        }
-    }
-
-    public void setLearningParameters(Double learningFactor) {
-        ((Backpropagation) learning).setLearningParameters(learningFactor);
+        learning.createLearning(learningMethod);
     }
 
     public void startLearning() {
         learning.startLearning();
-        // #TODO replace by executor
     }
 
     public void stopLearning() {
         learning.stopLearning();
     }
 
+    /* Getters */
     public Structure getStructure() {
         return structure;
     }

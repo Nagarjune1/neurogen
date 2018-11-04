@@ -5,7 +5,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.learning.Backpropagation;
 import pl.wozniaktomek.neural.learning.Learning;
 import pl.wozniaktomek.service.LayoutService;
 
@@ -168,11 +167,11 @@ public class SettingsWidget extends Widget {
 
     private Spinner getLearningIterationsSpinner() {
         Spinner<Integer> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100000, neuralNetwork.getLearning().getIterationsAmount(), 1));
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000000, neuralNetwork.getLearning().getIterationsAmount(), 1));
         spinner.setEditable(true);
         spinner.setPrefWidth(92d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setEndingIterations(newValue)));
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setIterationsAmount(newValue)));
         return spinner;
     }
 
@@ -182,7 +181,7 @@ public class SettingsWidget extends Widget {
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setEndingLearningTolerance(newValue)));
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningTolerance(newValue)));
         return spinner;
     }
 
@@ -201,10 +200,10 @@ public class SettingsWidget extends Widget {
             }
         });
 
-        if (neuralNetwork.getLearning() instanceof Backpropagation) {
-            choiceBox.getSelectionModel().select("Algorytm wstecznej propagacji");
-        } else {
+        if (neuralNetwork.getLearning().getLearningMethod().equals(Learning.LearningMethod.GENETIC)) {
             choiceBox.getSelectionModel().select("Algorytm genetyczny");
+        } else {
+            choiceBox.getSelectionModel().select("Algorytm wstecznej propagacji");
         }
 
         return choiceBox;
@@ -216,7 +215,7 @@ public class SettingsWidget extends Widget {
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> ((Backpropagation) neuralNetwork.getLearning()).setLearningParameters(newValue)));
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningFactor(newValue)));
         return spinner;
     }
 
