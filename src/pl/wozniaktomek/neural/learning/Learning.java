@@ -9,8 +9,7 @@ public abstract class Learning extends Thread {
     protected NeuralNetwork neuralNetwork;
 
     /* Data objects */
-    ArrayList<NeuralObject> objectsLearning;
-    ArrayList<NeuralObject> objectsTesting;
+    ArrayList<NeuralObject> learningData;
 
     /* Status parameters */
     Boolean isLearning;

@@ -5,8 +5,7 @@ import pl.wozniaktomek.neural.NeuralNetwork;
 public class GeneticLearning extends Learning {
     public GeneticLearning(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        objectsLearning = neuralNetwork.getParameters().getObjectsLearning();
-        objectsTesting = neuralNetwork.getParameters().getObjectsTesting();
+        learningData = neuralNetwork.getParameters().getLearningData();
         initializeEndingParameters();
     }
 

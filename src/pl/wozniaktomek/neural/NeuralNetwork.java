@@ -24,8 +24,8 @@ public class NeuralNetwork {
         learning = null;
     }
 
-    public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        if (parameters.setObjects(objectsLearning, objectsTesting)) {
+    public boolean loadLearningData(ArrayList<NeuralObject> learningData) {
+        if (parameters.setLearningData(learningData)) {
             createLearning(Learning.LearningMethod.GENETIC);
             return true;
         } else {

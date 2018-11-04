@@ -15,8 +15,7 @@ public class Backpropagation extends Learning {
 
     public Backpropagation(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        objectsLearning = neuralNetwork.getParameters().getObjectsLearning();
-        objectsTesting = neuralNetwork.getParameters().getObjectsTesting();
+        learningData = neuralNetwork.getParameters().getLearningData();
         initializeEndingParameters();
         learningFactor = 0.1;
     }
@@ -48,7 +47,7 @@ public class Backpropagation extends Learning {
     @Override
     void learning() {
         while (isLearning && conditions()) {
-            for (NeuralObject neuralObject : objectsLearning) {
+            for (NeuralObject neuralObject : learningData) {
                 putInputData(neuralObject);
                 countOutputs();
                 countLastLayerError(neuralObject);

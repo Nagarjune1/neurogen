@@ -1,6 +1,8 @@
 package pl.wozniaktomek.neural.util;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.learning.Learning;
+import pl.wozniaktomek.neural.service.ParametersService;
 import pl.wozniaktomek.neural.service.ValidationService;
 
 import java.util.ArrayList;
@@ -8,61 +10,33 @@ import java.util.ArrayList;
 public class Parameters {
     private NeuralNetwork neuralNetwork;
 
-    private ArrayList<NeuralObject> objectsLearning;
-    private ArrayList<NeuralObject> objectsTesting;
+    /* Learning data parameters */
+    private ArrayList<NeuralObject> learningData;
+    private Learning.LearningMethod learningMethod;
 
+    /* Structure parameters */
     private Integer inputSize;
     private Integer outputSize;
 
     public Parameters(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
+        learningData = null;
+        learningMethod = null;
         inputSize = outputSize = 0;
     }
 
-    public boolean setObjects(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
+    public boolean setLearningData(ArrayList<NeuralObject> learningData) {
         ValidationService validationService = new ValidationService(this);
+        ParametersService parametersService = new ParametersService(neuralNetwork);
 
-        if (validationService.validateObjects(objectsLearning, objectsTesting)) {
-            approveData(objectsLearning, objectsTesting);
+        if (validationService.validateObjects(learningData)) {
+            parametersService.approveData(learningData);
+            this.learningData = learningData;
             return true;
         } else {
-            denyData();
+            parametersService.denyData();
+            this.learningData = null;
             return false;
-        }
-    }
-
-    private void approveData(ArrayList<NeuralObject> objectsLearning, ArrayList<NeuralObject> objectsTesting) {
-        this.objectsLearning = objectsLearning;
-        this.objectsTesting = objectsTesting;
-
-        setCorrectAnswers(objectsLearning);
-        setCorrectAnswers(objectsTesting);
-
-        neuralNetwork.getStructure().clearStructure();
-        neuralNetwork.getStructure().addLayer(inputSize);
-        neuralNetwork.getStructure().addLayer(outputSize);
-    }
-
-    private void denyData() {
-        objectsLearning = null;
-        objectsTesting = null;
-        inputSize = outputSize = 0;
-        neuralNetwork.getStructure().clearStructure();
-    }
-
-    private void setCorrectAnswers(ArrayList<NeuralObject> neuralObjects) {
-        for (NeuralObject neuralObject : neuralObjects) {
-            ArrayList<Double> correctAnswer = new ArrayList<>();
-
-            for (int i = 1; i <= outputSize; i++) {
-                if (i == neuralObject.getClassNumber()) {
-                    correctAnswer.add(1.0);
-                } else {
-                    correctAnswer.add(0.0);
-                }
-            }
-
-            neuralObject.setCorrectAnswer(correctAnswer);
         }
     }
 
@@ -74,12 +48,8 @@ public class Parameters {
         this.outputSize = outputSize;
     }
 
-    public ArrayList<NeuralObject> getObjectsLearning() {
-        return objectsLearning;
-    }
-
-    public ArrayList<NeuralObject> getObjectsTesting() {
-        return objectsTesting;
+    public ArrayList<NeuralObject> getLearningData() {
+        return learningData;
     }
 
     public Integer getInputSize() {

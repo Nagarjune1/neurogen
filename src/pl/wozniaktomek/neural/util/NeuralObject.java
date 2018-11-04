@@ -12,7 +12,7 @@ public class NeuralObject {
         this.classNumber = classNumber;
     }
 
-    void setCorrectAnswer(ArrayList<Double> correctAnswer) {
+    public void setCorrectAnswer(ArrayList<Double> correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 

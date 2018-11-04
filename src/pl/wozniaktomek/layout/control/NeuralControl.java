@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.layout.widget.ReadDataWidget;
+import pl.wozniaktomek.layout.widget.LoadDataWidget;
 import pl.wozniaktomek.layout.widget.LearningWidget;
 import pl.wozniaktomek.layout.widget.SettingsWidget;
 import pl.wozniaktomek.layout.widget.TopologyWidget;
@@ -30,7 +30,7 @@ public class NeuralControl implements Initializable {
 
     private NeuralNetwork neuralNetwork;
 
-    private ReadDataWidget readDataWidget;
+    private LoadDataWidget loadDataWidget;
     private SettingsWidget settingsWidget;
     private TopologyWidget neuralTopologyWidget;
     private LearningWidget learningWidget;
@@ -58,8 +58,8 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeReadDataWidget() {
-        readDataWidget = new ReadDataWidget(this, neuralNetwork);
-        settingsTab.getChildren().add(readDataWidget.getWidget());
+        loadDataWidget = new LoadDataWidget(this, neuralNetwork);
+        settingsTab.getChildren().add(loadDataWidget.getWidget());
     }
 
     private void initializeSettingsWidget() {
