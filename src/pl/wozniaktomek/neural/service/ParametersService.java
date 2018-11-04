@@ -21,12 +21,16 @@ public class ParametersService {
         neuralNetwork.getStructure().clearStructure();
         neuralNetwork.getStructure().addLayer(parameters.getInputSize());
         neuralNetwork.getStructure().addLayer(parameters.getOutputSize());
+
+        neuralNetwork.getLearning().getLearningWidget().enableControls();
     }
 
     public void denyData() {
         parameters.setInputSize(0);
         parameters.setOutputSize(0);
         neuralNetwork.getStructure().clearStructure();
+
+        neuralNetwork.getLearning().getLearningWidget().disableControls();
     }
 
     private void setCorrectAnswers(ArrayList<NeuralObject> neuralObjects) {

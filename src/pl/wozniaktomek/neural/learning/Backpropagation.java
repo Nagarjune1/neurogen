@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Backpropagation extends Thread {
     private NeuralNetwork neuralNetwork;
+    private Learning learning;
 
     /* Learning parameters */
     private ArrayList<NeuralObject> learningData;
@@ -23,10 +24,12 @@ public class Backpropagation extends Thread {
 
     /* Status parameters */
     private Integer iteration;
+    private Double error;
     private Boolean isLearning;
 
     Backpropagation(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
+        learning = neuralNetwork.getLearning();
         learningFactor = 0.1;
     }
 
@@ -61,6 +64,8 @@ public class Backpropagation extends Thread {
 
     private void learning() {
         while (isLearning && conditions()) {
+            iteration++;
+
             for (NeuralObject neuralObject : learningData) {
                 putInputData(neuralObject);
                 countOutputs();
@@ -69,10 +74,11 @@ public class Backpropagation extends Thread {
                 modifyWeights();
             }
 
-            iteration++;
+            updateInterface();
         }
 
         showIteration();
+        endLearning();
     }
 
     /* Initialization */
@@ -81,7 +87,7 @@ public class Backpropagation extends Thread {
     }
 
     private void initializeLearningParameters() {
-        iteration = 1;
+        iteration = 0;
 
         if (neuralNetwork.getStructure().isBias()) {
             initializeBiasOutput();
@@ -143,8 +149,11 @@ public class Backpropagation extends Thread {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons();
         List<Double> correctAnswer = neuralObject.getCorrectAnswer();
 
+        error = 0d;
         for (int i = 0; i < neurons.size(); i++) {
-            neurons.get(i).setOutputError((Math.pow(correctAnswer.get(i) - neurons.get(i).getOutput(), 2)) /* * neurons.get(i).getOutputSigmoidDerivative() */);
+            double neuronError = Math.pow(correctAnswer.get(i) - neurons.get(i).getOutput(), 2);
+            error += neuronError;
+            neurons.get(i).setOutputError((neuronError));
         }
     }
 
@@ -174,6 +183,14 @@ public class Backpropagation extends Thread {
         }
     }
 
+    /* interface update */
+    private void updateInterface() {
+        learning.getLearningWidget().updateInterface(iteration, error);
+    }
+
+    private void endLearning() {
+        learning.getLearningWidget().endLearning();
+    }
 
     /* just for debug */
     private void showIteration() {

@@ -1,5 +1,6 @@
 package pl.wozniaktomek.layout.widget;
 
+import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
@@ -16,7 +17,7 @@ public class LearningWidget extends Widget {
     private Button buttonStopLearning;
 
     private Text iterations;
-    private Text outputError;
+    private Text error;
 
     public LearningWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -28,6 +29,9 @@ public class LearningWidget extends Widget {
         initializeStatisticsContainer();
         initializeControlsContainer();
         initializeButtonActions();
+        disableControls();
+
+        neuralNetwork.getLearning().setLearningWidget(this);
     }
 
     private void initializeStatisticsContainer() {
@@ -45,15 +49,15 @@ public class LearningWidget extends Widget {
         mainHBox.getChildren().add(new Separator(Orientation.VERTICAL));
 
         hBox = layoutService.getHBox(0d, 8d, 4d);
-        outputError = layoutService.getText("nie uruchomiono sieci...", LayoutService.TextStyle.STATUS);
-        hBox.getChildren().addAll(layoutService.getText("Błąd całkowity:", LayoutService.TextStyle.STATUS), outputError);
+        error = layoutService.getText("nie uruchomiono sieci...", LayoutService.TextStyle.STATUS);
+        hBox.getChildren().addAll(layoutService.getText("Błąd całkowity:", LayoutService.TextStyle.STATUS), error);
         mainHBox.getChildren().add(hBox);
 
         contentContainer.getChildren().add(vBox);
     }
 
     private void initializeControlsContainer() {
-        VBox vBox = layoutService.getVBox(0d, 0d, 12d);
+        VBox vBox = layoutService.getVBox(0d, 0d, 16d);
         vBox.getChildren().add(layoutService.getText("KONTROLA UCZENIA", LayoutService.TextStyle.HEADING));
         contentContainer.getChildren().add(vBox);
 
@@ -73,12 +77,12 @@ public class LearningWidget extends Widget {
 
     private void startLearning() {
         neuralNetwork.startLearning();
-        // switchButtons(buttonStartLearning);
+        switchButtons(buttonStartLearning);
     }
 
     private void stopLearning() {
         neuralNetwork.stopLearning();
-        // switchButtons(buttonStopLearning);
+        switchButtons(buttonStopLearning);
     }
 
     private void switchButtons(Button button) {
@@ -89,5 +93,25 @@ public class LearningWidget extends Widget {
             buttonStartLearning.setDisable(false);
             buttonStopLearning.setDisable(true);
         }
+    }
+
+    /* Interface control */
+    public void disableControls() {
+        buttonStartLearning.setDisable(true);
+        buttonStopLearning.setDisable(true);
+    }
+
+    public void enableControls() {
+        buttonStartLearning.setDisable(false);
+    }
+
+    /* Interface update */
+    public void updateInterface(Integer iterations, Double error) {
+        Platform.runLater(() -> this.iterations.setText(String.valueOf(iterations)));
+        Platform.runLater(() -> this.error.setText(String.valueOf(error)));
+    }
+
+    public void endLearning() {
+        switchButtons(buttonStopLearning);
     }
 }

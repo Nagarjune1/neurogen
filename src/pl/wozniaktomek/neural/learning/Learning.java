@@ -1,5 +1,6 @@
 package pl.wozniaktomek.neural.learning;
 
+import pl.wozniaktomek.layout.widget.LearningWidget;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
 import java.util.concurrent.ExecutorService;
@@ -19,6 +20,9 @@ public class Learning {
 
     /* Executor */
     private ExecutorService executorService;
+
+    /* Interface */
+    private LearningWidget learningWidget;
 
     public Learning(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -74,6 +78,15 @@ public class Learning {
                 backpropagation.stopLearning();
                 break;
         }
+    }
+
+    /* Interface */
+    public void setLearningWidget(LearningWidget learningWidget) {
+        this.learningWidget = learningWidget;
+    }
+
+    public LearningWidget getLearningWidget() {
+        return learningWidget;
     }
 
     /* Getters */
