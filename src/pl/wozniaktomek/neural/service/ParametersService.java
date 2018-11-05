@@ -33,7 +33,7 @@ public class ParametersService {
         neuralNetwork.getLearning().getLearningWidget().disableControls();
     }
 
-    private void setCorrectAnswers(ArrayList<NeuralObject> neuralObjects) {
+    public void setCorrectAnswers(ArrayList<NeuralObject> neuralObjects) {
         for (NeuralObject neuralObject : neuralObjects) {
             ArrayList<Double> correctAnswer = new ArrayList<>();
 

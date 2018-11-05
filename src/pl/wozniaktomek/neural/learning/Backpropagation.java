@@ -1,6 +1,7 @@
 package pl.wozniaktomek.neural.learning;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.service.LearningService;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
@@ -13,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Backpropagation extends Thread {
     private NeuralNetwork neuralNetwork;
     private Learning learning;
+    private LearningService learningService;
 
     /* Learning parameters */
     private ArrayList<NeuralObject> learningData;
@@ -30,6 +32,7 @@ public class Backpropagation extends Thread {
     Backpropagation(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         learning = neuralNetwork.getLearning();
+        learningService = new LearningService(neuralNetwork);
         learningFactor = 0.1;
     }
 
@@ -70,6 +73,7 @@ public class Backpropagation extends Thread {
                 putInputData(neuralObject);
                 countOutputs();
                 countLastLayerError(neuralObject);
+                countOutputError();
                 countHiddenLayersError();
                 modifyWeights();
             }
@@ -120,40 +124,23 @@ public class Backpropagation extends Thread {
     /** Operations **/
     /* put new input vector x */
     private void putInputData(NeuralObject neuralObject) {
-        List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(0).getNeurons();
-
-        for (int i = 0; i < neurons.size(); i++) {
-            neurons.get(i).setOutput(neuralObject.getInputValues().get(i));
-        }
+        learningService.putInputData(neuralObject);
     }
 
     /* count outputs for every neuron */
     private void countOutputs() {
-        List<Layer> layers = neuralNetwork.getStructure().getLayers();
-
-        for (int i = 1; i < layers.size(); i++) {
-            for (Neuron neuron : layers.get(i).getNeurons()) {
-                double output = 0d;
-
-                for (Connection connection : neuron.getConnectionsInput()) {
-                    output += connection.getNeuronInput().getOutput() * connection.getWeight();
-                }
-
-                neuron.setOutput(neuron.getLayer().getActivationFunction().useFunction(output));
-            }
-        }
+        learningService.countOutputs();
     }
 
     /* count error for neurons in last layer */
     private void countLastLayerError(NeuralObject neuralObject) {
-        List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons();
-        List<Double> correctAnswer = neuralObject.getCorrectAnswer();
+        learningService.countLastLayerError(neuralObject);
+    }
 
+    private void countOutputError() {
         error = 0d;
-        for (int i = 0; i < neurons.size(); i++) {
-            double neuronError = Math.pow(correctAnswer.get(i) - neurons.get(i).getOutput(), 2);
-            error += neuronError;
-            neurons.get(i).setOutputError((neuronError));
+        for (Neuron neuron : neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons()) {
+            error += neuron.getOutputError();
         }
     }
 
@@ -189,6 +176,7 @@ public class Backpropagation extends Thread {
     }
 
     private void endLearning() {
+        neuralNetwork.setLearned(true);
         learning.getLearningWidget().endLearning();
     }
 

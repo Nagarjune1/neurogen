@@ -1,12 +1,13 @@
 package pl.wozniaktomek.neural;
 
-import pl.wozniaktomek.neural.util.Parameters;
-import pl.wozniaktomek.neural.structure.Structure;
+import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.learning.Learning;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
+import pl.wozniaktomek.neural.structure.Structure;
 import pl.wozniaktomek.neural.util.NeuralObject;
+import pl.wozniaktomek.neural.util.Parameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,17 @@ public class NeuralNetwork {
     private Parameters parameters;
     private Learning learning;
 
+
+    private Boolean isLearned;
+
+    /* Interface */
+    private NeuralControl neuralControl;
+
     public NeuralNetwork() {
         structure = new Structure(this);
         parameters = new Parameters(this);
         learning = new Learning(this);
+        isLearned = false;
     }
 
     /* Learning data */
@@ -51,6 +59,21 @@ public class NeuralNetwork {
 
     public Learning getLearning() {
         return learning;
+    }
+
+    public Boolean getLearned() {
+        return isLearned;
+    }
+
+    /* Setters */
+    public void setLearned(Boolean learned) {
+        isLearned = learned;
+        neuralControl.getStartupWidget().refreshWidget();
+    }
+
+    /* Interface control */
+    public void setNeuralControl(NeuralControl neuralControl) {
+        this.neuralControl = neuralControl;
     }
 
     /* just for debug */

@@ -7,10 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.layout.widget.LoadDataWidget;
-import pl.wozniaktomek.layout.widget.LearningWidget;
-import pl.wozniaktomek.layout.widget.SettingsWidget;
-import pl.wozniaktomek.layout.widget.TopologyWidget;
+import pl.wozniaktomek.layout.widget.*;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
 import java.net.URL;
@@ -34,6 +31,7 @@ public class NeuralControl implements Initializable {
     private SettingsWidget settingsWidget;
     private TopologyWidget neuralTopologyWidget;
     private LearningWidget learningWidget;
+    private StartupWidget startupWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -42,7 +40,9 @@ public class NeuralControl implements Initializable {
         initializeSettingsWidget();
         initializeNetworkTopologyWidget();
         initializeLearningWidget();
+        initializeStartupWidget();
         initializeSizeListener();
+        neuralNetwork.setNeuralControl(this);
     }
 
     public void refreshSettings() {
@@ -77,6 +77,11 @@ public class NeuralControl implements Initializable {
         learningTab.getChildren().add(learningWidget.getWidget());
     }
 
+    private void initializeStartupWidget() {
+        startupWidget = new StartupWidget(neuralNetwork);
+        startupTab.getChildren().add(startupWidget.getWidget());
+    }
+
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
@@ -96,5 +101,10 @@ public class NeuralControl implements Initializable {
 
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
         ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+    }
+
+    /* Getters */
+    public StartupWidget getStartupWidget() {
+        return startupWidget;
     }
 }

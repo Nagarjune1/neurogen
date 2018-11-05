@@ -66,6 +66,8 @@ public class Learning {
                 executorService.submit(backpropagation);
                 break;
         }
+
+        neuralNetwork.setLearned(false);
     }
 
     public void stopLearning() {
