@@ -1,12 +1,12 @@
 package pl.wozniaktomek.layout.widget;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.service.ParametersService;
 import pl.wozniaktomek.neural.service.StartupService;
@@ -102,19 +102,21 @@ public class StartupWidget extends Widget {
         parametersService.setCorrectAnswers(verificationData);
 
         table = new TableView<>();
+        table.setPrefHeight(ThesisApp.stage.getHeight() - 365);
         table.setEditable(false);
 
         tableContainer.getChildren().clear();
         tableContainer.getChildren().add(table);
 
-        createTableColumns();
         fillTable();
+        createTableColumns();
+        initializeTableSizeListener();
     }
 
     private void createTableColumns() {
         List<String> columnNames = createColumnNames();
 
-        for (int i = 0; i <columnNames.size(); i++) {
+        for (int i = 0; i < columnNames.size(); i++) {
             TableColumn<List<String>, String> column = new TableColumn<>(columnNames.get(i));
 
             final int finalId = i;
@@ -122,34 +124,61 @@ public class StartupWidget extends Widget {
 
             column.setSortable(false);
             column.setReorderable(false);
-
             column.setMaxWidth(128d);
-            column.setMinWidth(64d);
+            column.setMinWidth(32d);
+
+            if (i == columnNames.size() - 1) {
+                createCellFactory(column);
+            }
 
             table.getColumns().add(column);
         }
     }
 
+    private void createCellFactory(TableColumn<List<String>, String> tableColumn) {
+        tableColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                setText(empty ? "" : getItem());
+                setGraphic(null);
+
+                TableRow<List<String>> row = getTableRow();
+
+                if (!isEmpty()) {
+                    if (Double.parseDouble(item.replace(",", ".")) <= neuralNetwork.getLearning().getLearningTolerance()) {
+                        row.setStyle("-fx-background-color: rgba(16, 66, 16, 0.9);");
+                    } else {
+                        row.setStyle("-fx-background-color: rgba(145, 8, 12, 0.9);");
+                    }
+                }
+            }
+        });
+    }
+
     private List<String> createColumnNames() {
         List<String> columnNames = new ArrayList<>();
 
-        columnNames.add("id");
+        columnNames.add("ID");
 
         for (int i = 0; i < neuralNetwork.getParameters().getInputSize(); i++) {
-            columnNames.add("x[" + (i + 1) + "]");
+            columnNames.add("X[" + (i + 1) + "]");
         }
 
         for (int i = 0; i < neuralNetwork.getParameters().getOutputSize(); i++) {
-            columnNames.add("d[" + (i + 1) + "]");
+            columnNames.add("D[" + (i + 1) + "]");
         }
 
         for (int i = 0; i < neuralNetwork.getParameters().getOutputSize(); i++) {
-            columnNames.add("y[" + (i + 1) + "]");
+            columnNames.add("Y[" + (i + 1) + "]");
         }
 
         for (int i = 0; i < neuralNetwork.getParameters().getOutputSize(); i++) {
-            columnNames.add("error[" + (i + 1) + "]");
+            columnNames.add("E[" + (i + 1) + "]");
         }
+
+        columnNames.add("E");
 
         return columnNames;
     }
@@ -172,15 +201,24 @@ public class StartupWidget extends Widget {
             List<Neuron> neuronsInLastLayer = startupService.getLastLayerNeurons(verificationData.get(i));
 
             for (Neuron neuron : neuronsInLastLayer) {
-                row.add(String.format("%.10f", neuron.getOutput()));
+                row.add(String.format("%.5f", neuron.getOutput()));
             }
 
+            double error = 0d;
             for (Neuron neuron : neuronsInLastLayer) {
-                row.add(String.format("%.10f", neuron.getOutputError()));
+                row.add(String.format("%.5f", neuron.getOutputError()));
+                error += neuron.getOutputError();
             }
+
+            row.add(String.format("%.5f", error));
 
             table.getItems().add(row);
         }
+    }
+
+    private void initializeTableSizeListener() {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(ThesisApp.stage.getHeight() - 365);
+        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
     private void setButtonStyle(Boolean state) {

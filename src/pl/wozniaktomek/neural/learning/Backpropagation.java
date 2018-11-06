@@ -121,7 +121,9 @@ public class Backpropagation extends Thread {
         return iteration < iterationsAmount;
     }
 
-    /** Operations **/
+    /**
+     * Operations
+     **/
     /* put new input vector x */
     private void putInputData(NeuralObject neuralObject) {
         learningService.putInputData(neuralObject);

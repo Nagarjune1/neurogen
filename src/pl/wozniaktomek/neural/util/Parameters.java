@@ -1,7 +1,6 @@
 package pl.wozniaktomek.neural.util;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.learning.Learning;
 import pl.wozniaktomek.neural.service.ParametersService;
 import pl.wozniaktomek.neural.service.ValidationService;
 
