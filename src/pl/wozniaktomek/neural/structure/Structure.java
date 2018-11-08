@@ -86,6 +86,7 @@ public class Structure {
         }
     }
 
+    /* Getters */
     public List<Layer> getLayers() {
         return layers;
     }
@@ -96,5 +97,10 @@ public class Structure {
 
     public Boolean isBias() {
         return isBias;
+    }
+
+    /* Setters */
+    public void setConnections(List<Connection> connections) {
+        this.connections = connections;
     }
 }

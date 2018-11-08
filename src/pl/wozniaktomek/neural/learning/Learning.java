@@ -53,6 +53,9 @@ public class Learning {
         backpropagation.setLearningParameters(learningFactor);
     }
 
+    /* Genetic algorithm initialization */
+    // #TODO
+
     /* Control */
     public void startLearning() {
         switch (learningMethod) {

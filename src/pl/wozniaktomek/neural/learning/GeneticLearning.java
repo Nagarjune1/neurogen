@@ -1,5 +1,6 @@
 package pl.wozniaktomek.neural.learning;
 
+import pl.wozniaktomek.genetic.GeneticAlgorithm;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 
 public class GeneticLearning extends Thread {
     private NeuralNetwork neuralNetwork;
+    private GeneticAlgorithm geneticAlgorithm;
 
     /* Learning parameters */
     private ArrayList<NeuralObject> learningData;
@@ -29,6 +31,12 @@ public class GeneticLearning extends Thread {
         this.learningTolerance = learningTolerance;
     }
 
+    @Override
+    public void run() {
+        isLearning = true;
+        startLearning();
+    }
+
     /* Control */
     public void startLearning() {
 
@@ -36,5 +44,21 @@ public class GeneticLearning extends Thread {
 
     public void stopLearning() {
         isLearning = false;
+    }
+
+    private void learning() {
+        while (isLearning && conditions()) {
+
+        }
+    }
+
+
+    /* Conditions */
+    private boolean conditions() {
+        return iterationConditions();
+    }
+
+    private boolean iterationConditions() {
+        return iteration < iterationsAmount;
     }
 }
