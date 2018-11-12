@@ -23,8 +23,10 @@ public class LearningService {
     }
 
     public void initializeBiasOutput(List<Layer> layers) {
-        for (int i = 0; i < layers.size() - 2; i++) {
-            layers.get(i).getNeurons().get(layers.get(i).getNeurons().size() - 1).setOutput(1d);
+        if (neuralNetwork.getStructure().isBias()) {
+            for (int i = 0; i < layers.size() - 2; i++) {
+                layers.get(i).getNeurons().get(layers.get(i).getNeurons().size() - 1).setOutput(1d);
+            }
         }
     }
 

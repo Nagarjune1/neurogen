@@ -1,77 +1,61 @@
 package pl.wozniaktomek.neural.learning;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.learning.parameters.BackpropagationParameters;
 import pl.wozniaktomek.neural.service.LearningService;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
-import pl.wozniaktomek.neural.structure.Structure;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Backpropagation extends Thread {
     private NeuralNetwork neuralNetwork;
-    private Structure structure;
     private Learning learning;
     private LearningService learningService;
-
-    /* Learning parameters */
-    private ArrayList<NeuralObject> learningData;
-    private Double learningFactor;
-
-    /* Ending conditions */
-    private Integer iterationsAmount;
-    private Double learningTolerance;
-
-    /* Status parameters */
-    private Integer iteration;
-    private Double error;
-    private Boolean isLearning;
+    private BackpropagationParameters backpropagationParameters;
 
     Backpropagation(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        structure = neuralNetwork.getStructure();
         learning = neuralNetwork.getLearning();
         learningService = new LearningService(neuralNetwork);
-        learningFactor = 0.1;
+        backpropagationParameters = new BackpropagationParameters(neuralNetwork.getStructure());
+        initializeBasicParameters();
     }
 
     /* Initialization */
     void setEndingConditions(Integer iterationsAmount, Double learningTolerance) {
-        this.iterationsAmount = iterationsAmount;
-        this.learningTolerance = learningTolerance;
+        backpropagationParameters.setIterationsAmount(iterationsAmount);
+        backpropagationParameters.setLearningTolerance(learningTolerance);
     }
 
-    void setLearningParameters(Double learningFactor) {
-        this.learningFactor = learningFactor;
+    private void initializeBasicParameters() {
+        backpropagationParameters.setLearningFactor(0.1);
     }
 
     /* Control */
     @Override
     public void run() {
-        isLearning = true;
-        startLearning();
-    }
+        backpropagationParameters.setIsLearning(true);
+        backpropagationParameters.setIteration(0);
+        backpropagationParameters.setLearningData(learningService.initializeLearningData());
 
-    private void startLearning() {
-        learningData = learningService.initializeLearningData();
-        learningService.initializeBiasOutput(structure.getLayers());
-        learningService.initializeConnectionWeights(structure.getConnections());
-        iteration = 0;
+        learningService.initializeBiasOutput(backpropagationParameters.getStructure().getLayers());
+        learningService.initializeConnectionWeights(backpropagationParameters.getStructure().getConnections());
+
         learning();
     }
 
     void stopLearning() {
-        isLearning = false;
+        backpropagationParameters.setIsLearning(false);
     }
 
     private void learning() {
-        while (isLearning && conditions()) {
-            iteration++;
+        while (backpropagationParameters.getIsLearning() && conditions()) {
+            backpropagationParameters.setIteration(backpropagationParameters.getIteration() + 1);
 
-            for (NeuralObject neuralObject : learningData) {
+            for (NeuralObject neuralObject : backpropagationParameters.getLearningData()) {
                 putInputData(neuralObject);
                 countOutputs();
                 countLastLayerError(neuralObject);
@@ -85,19 +69,6 @@ public class Backpropagation extends Thread {
 
         showIteration();
         endLearning();
-    }
-
-    /* Ending conditions */
-    private boolean conditions() {
-        return iterationConditions() && toleranceConditions();
-    }
-
-    private boolean iterationConditions() {
-        return iteration < iterationsAmount;
-    }
-
-    private boolean toleranceConditions() {
-        return true;
     }
 
     /* Operations */
@@ -114,12 +85,12 @@ public class Backpropagation extends Thread {
     }
 
     private void countOutputError() {
-        error = learningService.countOutputError(structure.getLayers().get(structure.getLayers().size() - 1));
+        backpropagationParameters.setError(learningService.countOutputError(backpropagationParameters.getStructure().getLayers().get(backpropagationParameters.getStructure().getLayers().size() - 1)));
     }
 
     /* backpropagation -  count error for neurons in every hidden layer */
     private void countHiddenLayersError() {
-        List<Layer> layers = structure.getLayers();
+        List<Layer> layers = backpropagationParameters.getStructure().getLayers();
 
         for (int i = layers.size() - 2; i >= 0; i--) {
             for (Neuron neuron : layers.get(i).getNeurons()) {
@@ -136,16 +107,29 @@ public class Backpropagation extends Thread {
 
     /* backpropagation - modify weights in network */
     private void modifyWeights() {
-        List<Connection> connections = structure.getConnections();
+        List<Connection> connections = backpropagationParameters.getStructure().getConnections();
 
         for (Connection connection : connections) {
-            connection.setWeight(connection.getWeight() + (2 * learningFactor * connection.getNeuronOutput().getOutputError() * connection.getNeuronInput().getOutput()));
+            connection.setWeight(connection.getWeight() + (2 * backpropagationParameters.getLearningFactor() * connection.getNeuronOutput().getOutputError() * connection.getNeuronInput().getOutput()));
         }
+    }
+
+    /* Ending conditions */
+    private boolean conditions() {
+        return iterationConditions() && toleranceConditions();
+    }
+
+    private boolean iterationConditions() {
+        return backpropagationParameters.getIteration() < backpropagationParameters.getIterationsAmount();
+    }
+
+    private boolean toleranceConditions() {
+        return true;
     }
 
     /* interface update */
     private void updateInterface() {
-        learning.getLearningWidget().updateInterface(iteration, error);
+        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getError());
     }
 
     private void endLearning() {
@@ -153,16 +137,21 @@ public class Backpropagation extends Thread {
         learning.getLearningWidget().endLearning();
     }
 
+    /* get parameters */
+    public BackpropagationParameters getBackpropagationParameters() {
+        return backpropagationParameters;
+    }
+
     /* just for debug */
     private void showIteration() {
-        System.out.println("\n Iteration " + iteration);
+        System.out.println("\n Iteration " + backpropagationParameters.getIteration());
 
         int number = 0;
-        for (Connection connection : structure.getConnections()) {
+        for (Connection connection : backpropagationParameters.getStructure().getConnections()) {
             System.out.println("Connection [" + (++number) + "] WEIGHT: " + connection.getWeight());
         }
 
-        for (Layer layer : structure.getLayers()) {
+        for (Layer layer : backpropagationParameters.getStructure().getLayers()) {
             for (Neuron neuron : layer.getNeurons()) {
                 System.out.println("Neuron [" + neuron.getNumber() + "] OUTPUT: " + neuron.getOutput() + " | OUTPUT ERROR: " + neuron.getOutputError());
             }

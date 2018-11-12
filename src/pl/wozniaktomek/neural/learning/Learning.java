@@ -11,7 +11,7 @@ public class Learning {
 
     /* Learning methods */
     private LearningMethod learningMethod;
-    private GeneticLearning geneticLearning;
+    private GeneticAlgorithm geneticAlgorithm;
     private Backpropagation backpropagation;
 
     /* General parameters */
@@ -39,7 +39,7 @@ public class Learning {
 
         switch (learningMethod) {
             case GENETIC:
-                geneticLearning = new GeneticLearning(neuralNetwork);
+                geneticAlgorithm = new GeneticAlgorithm(neuralNetwork);
                 break;
 
             case BACKPROPAGATION:
@@ -48,20 +48,12 @@ public class Learning {
         }
     }
 
-    /* Backpropagation initialization */
-    public void setLearningFactor(Double learningFactor) {
-        backpropagation.setLearningParameters(learningFactor);
-    }
-
-    /* Genetic algorithm initialization */
-    // #TODO
-
     /* Control */
     public void startLearning() {
         switch (learningMethod) {
             case GENETIC:
-                geneticLearning.setEndingConditions(iterationsAmount, learningTolerance);
-                executorService.submit(geneticLearning);
+                geneticAlgorithm.setEndingConditions(iterationsAmount, learningTolerance);
+                executorService.submit(geneticAlgorithm);
                 break;
 
             case BACKPROPAGATION:
@@ -76,7 +68,7 @@ public class Learning {
     public void stopLearning() {
         switch (learningMethod) {
             case GENETIC:
-                geneticLearning.stopLearning();
+                geneticAlgorithm.stopLearning();
                 break;
 
             case BACKPROPAGATION:
@@ -113,6 +105,14 @@ public class Learning {
 
     public void setLearningTolerance(Double learningTolerance) {
         this.learningTolerance = learningTolerance;
+    }
+
+    public GeneticAlgorithm getGeneticAlgorithm() {
+        return geneticAlgorithm;
+    }
+
+    public Backpropagation getBackpropagation() {
+        return backpropagation;
     }
 
     /* Learning method */

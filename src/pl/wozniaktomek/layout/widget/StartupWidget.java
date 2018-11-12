@@ -148,9 +148,9 @@ public class StartupWidget extends Widget {
 
                 if (!isEmpty()) {
                     if (Double.parseDouble(item.replace(",", ".")) <= neuralNetwork.getLearning().getLearningTolerance()) {
-                        row.setStyle("-fx-background-color: rgba(16, 66, 16, 0.9);");
+                        row.setStyle("-fx-background-color: rgba(16, 66, 16, 0.9)");
                     } else {
-                        row.setStyle("-fx-background-color: rgba(145, 8, 12, 0.9);");
+                        row.setStyle("-fx-background-color: rgba(145, 8, 12, 0.9)");
                     }
                 }
             }
