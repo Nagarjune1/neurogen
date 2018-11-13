@@ -32,7 +32,7 @@ public class LearningService {
 
     public void initializeConnectionWeights(List<Connection> connections) {
         for (Connection connection : connections) {
-            connection.setWeight(ThreadLocalRandom.current().nextDouble(-1.0, 1.0));
+            connection.setWeight(ThreadLocalRandom.current().nextDouble(0d, 1d));
         }
     }
 
@@ -41,8 +41,14 @@ public class LearningService {
     public void putInputData(NeuralObject neuralObject) {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(0).getNeurons();
 
-        for (int i = 0; i < neurons.size(); i++) {
-            neurons.get(i).setOutput(neuralObject.getInputValues().get(i));
+        if (neuralNetwork.getStructure().isBias()) {
+            for (int i = 0; i < neurons.size() - 1; i++) {
+                neurons.get(i).setOutput(neuralObject.getInputValues().get(i));
+            }
+        } else {
+            for (int i = 0; i < neurons.size(); i++) {
+                neurons.get(i).setOutput(neuralObject.getInputValues().get(i));
+            }
         }
     }
 
@@ -51,14 +57,29 @@ public class LearningService {
         List<Layer> layers = neuralNetwork.getStructure().getLayers();
 
         for (int i = 1; i < layers.size(); i++) {
-            for (Neuron neuron : layers.get(i).getNeurons()) {
-                double output = 0d;
+            Layer layer = layers.get(i);
 
-                for (Connection connection : neuron.getConnectionsInput()) {
-                    output += connection.getNeuronInput().getOutput() * connection.getWeight();
+            if (neuralNetwork.getStructure().isBias()) {
+                for (int j = 0; j < layer.getLayerSize() - 1; j++) {
+                    double net = 0d;
+                    Neuron neuron = layer.getNeurons().get(j);
+
+                    for (Connection connection : neuron.getConnectionsInput()) {
+                        net += connection.getNeuronInput().getOutput() * connection.getWeight();
+                    }
+
+                    neuron.setOutput(neuron.getLayer().getActivationFunction().useFunction(net));
                 }
+            } else {
+                for (Neuron neuron : layer.getNeurons()) {
+                    double net = 0d;
 
-                neuron.setOutput(neuron.getLayer().getActivationFunction().useFunction(output));
+                    for (Connection connection : neuron.getConnectionsInput()) {
+                        net += connection.getWeight() * connection.getNeuronInput().getOutput();
+                    }
+
+                    neuron.setOutput(neuron.getLayer().getActivationFunction().useFunction(net));
+                }
             }
         }
     }
@@ -69,18 +90,8 @@ public class LearningService {
         List<Double> correctAnswer = neuralObject.getCorrectAnswer();
 
         for (int i = 0; i < neurons.size(); i++) {
-            double neuronError = Math.pow(correctAnswer.get(i) - neurons.get(i).getOutput(), 2);
-            neurons.get(i).setOutputError(neuronError);
+            neurons.get(i).setOutputError(Math.pow(correctAnswer.get(i) - neurons.get(i).getOutput(), 2));
+            neurons.get(i).setErrorSignal(neurons.get(i).getOutput() * (1d - neurons.get(i).getOutput()) * (correctAnswer.get(i) - neurons.get(i).getOutput()));
         }
-    }
-
-    /* count error on network output */
-    public Double countOutputError(Layer lastLayer) {
-        double error = 0d;
-        for (Neuron neuron : lastLayer.getNeurons()) {
-            error += neuron.getOutputError();
-        }
-
-        return error;
     }
 }

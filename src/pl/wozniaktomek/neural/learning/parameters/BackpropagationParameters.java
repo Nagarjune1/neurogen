@@ -4,7 +4,7 @@ import pl.wozniaktomek.neural.structure.Structure;
 
 public class BackpropagationParameters extends LearningParameters {
     private Double learningFactor;
-    private Double error;
+    private Double SSE; // sum of squared errors
 
     public BackpropagationParameters(Structure structure) {
         setStructure(structure);
@@ -15,8 +15,8 @@ public class BackpropagationParameters extends LearningParameters {
         return learningFactor;
     }
 
-    public Double getError() {
-        return error;
+    public Double getSSE() {
+        return SSE;
     }
 
     /* Setters */
@@ -24,7 +24,7 @@ public class BackpropagationParameters extends LearningParameters {
         this.learningFactor = learningFactor;
     }
 
-    public void setError(Double error) {
-        this.error = error;
+    public void setSSE(Double SSE) {
+        this.SSE = SSE;
     }
 }

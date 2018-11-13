@@ -159,17 +159,19 @@ public class GeneticAlgorithm extends Thread {
     }
 
     private void endLearning() {
-        List<Connection> connections = neuralNetwork.getStructure().getConnections();
-        List<Chromosome> population = geneticParameters.getPopulation();
-
         try {
-            population.sort(Comparator.comparingDouble(Chromosome::getFitness).reversed());
+            geneticParameters.getPopulation().sort(Comparator.comparingDouble(Chromosome::getFitness).reversed());
         } catch (IllegalArgumentException exception) {
             exception.printStackTrace();
         }
 
+        List<Connection> connections = neuralNetwork.getStructure().getConnections();
+        Chromosome bestChromosome = geneticParameters.getPopulation().get(0);
+
+        System.out.println("\nEND: " + bestChromosome.getFitness());
+
         for (int i = 0; i < connections.size(); i++) {
-            connections.get(i).setWeight(population.get(population.size() - 1).getWeights().get(i));
+            connections.get(i).setWeight(bestChromosome.getWeights().get(i));
         }
 
         neuralNetwork.setLearned(true);

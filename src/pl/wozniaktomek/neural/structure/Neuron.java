@@ -13,6 +13,7 @@ public class Neuron {
     private Double input;
     private Double output;
     private Double outputError;
+    private Double errorSignal;
 
     Neuron(Layer layer) {
         this.layer = layer;
@@ -62,6 +63,14 @@ public class Neuron {
 
     public Double getOutputSigmoidDerivative() {
         return output * (1 - output);
+    }
+
+    public Double getErrorSignal() {
+        return errorSignal;
+    }
+
+    public void setErrorSignal(Double errorSignal) {
+        this.errorSignal = errorSignal;
     }
 
     /* just for debug */

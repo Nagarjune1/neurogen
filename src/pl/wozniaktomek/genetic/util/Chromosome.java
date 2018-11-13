@@ -11,8 +11,8 @@ public class Chromosome implements Cloneable {
     private Double distribution;
     private Double percent;
 
-    private Double minRange = -2d;
-    private Double maxRange = 2d;
+    private Double minRange = -4d;
+    private Double maxRange = 4d;
     private Double maxValue;
 
     public Chromosome(ArrayList<String> genome, Integer genSize) {
@@ -36,8 +36,8 @@ public class Chromosome implements Cloneable {
         double value = 0d;
         double counter = 0d;
 
-        for (int i = 0; i < gen.length(); i++) {
-            if (gen.charAt(i) == 1) {
+        for (int i = genSize - 1; i >= 0; i--) {
+            if (gen.charAt(i) == '1') {
                 value += Math.pow(2, counter);
             }
             counter++;
@@ -56,7 +56,7 @@ public class Chromosome implements Cloneable {
     private void countGenMaxValue() {
         maxValue = 0d;
         for (int i = 0; i < genSize; i++) {
-            maxValue += (int) (Math.pow(2, i));
+            maxValue += (Math.pow(2, i));
         }
     }
 

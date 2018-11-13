@@ -56,10 +56,12 @@ public class Backpropagation extends Thread {
             backpropagationParameters.setIteration(backpropagationParameters.getIteration() + 1);
 
             for (NeuralObject neuralObject : backpropagationParameters.getLearningData()) {
+                backpropagationParameters.setSSE(0d);
+
                 putInputData(neuralObject);
                 countOutputs();
                 countLastLayerError(neuralObject);
-                countOutputError();
+                countSSE();
                 countHiddenLayersError();
                 modifyWeights();
             }
@@ -84,8 +86,15 @@ public class Backpropagation extends Thread {
         learningService.countLastLayerError(neuralObject);
     }
 
-    private void countOutputError() {
-        backpropagationParameters.setError(learningService.countOutputError(backpropagationParameters.getStructure().getLayers().get(backpropagationParameters.getStructure().getLayers().size() - 1)));
+    private void countSSE() {
+        double currentSSE = backpropagationParameters.getSSE();
+
+        Layer lastLayer = backpropagationParameters.getStructure().getLayers().get(backpropagationParameters.getStructure().getLayers().size() - 1);
+        for (Neuron neuron : lastLayer.getNeurons()) {
+            currentSSE += neuron.getOutputError();
+        }
+
+        backpropagationParameters.setSSE(currentSSE);
     }
 
     /* backpropagation -  count error for neurons in every hidden layer */
@@ -94,13 +103,14 @@ public class Backpropagation extends Thread {
 
         for (int i = layers.size() - 2; i >= 0; i--) {
             for (Neuron neuron : layers.get(i).getNeurons()) {
-                double outputError = 0d;
+                double errorSignal = 0d;
 
                 for (Connection connection : neuron.getConnectionsOutput()) {
-                    outputError += (connection.getNeuronOutput().getOutputError() * connection.getWeight());
+                    errorSignal += (connection.getNeuronOutput().getErrorSignal() * connection.getWeight());
                 }
 
-                neuron.setOutputError(outputError * neuron.getOutputSigmoidDerivative());
+                errorSignal = neuron.getOutput() * (1 - neuron.getOutput()) * errorSignal;
+                neuron.setErrorSignal(errorSignal);
             }
         }
     }
@@ -110,7 +120,7 @@ public class Backpropagation extends Thread {
         List<Connection> connections = backpropagationParameters.getStructure().getConnections();
 
         for (Connection connection : connections) {
-            connection.setWeight(connection.getWeight() + (2 * backpropagationParameters.getLearningFactor() * connection.getNeuronOutput().getOutputError() * connection.getNeuronInput().getOutput()));
+            connection.setWeight(connection.getWeight() + (backpropagationParameters.getLearningFactor() * connection.getNeuronOutput().getErrorSignal() * connection.getNeuronInput().getOutput()));
         }
     }
 
@@ -129,7 +139,7 @@ public class Backpropagation extends Thread {
 
     /* interface update */
     private void updateInterface() {
-        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getError());
+        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getSSE());
     }
 
     private void endLearning() {

@@ -7,6 +7,7 @@ import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.learning.GeneticAlgorithm;
 import pl.wozniaktomek.neural.learning.Learning;
+import pl.wozniaktomek.neural.service.LearningService;
 import pl.wozniaktomek.service.LayoutService;
 
 public class SettingsWidget extends Widget {
@@ -424,6 +425,7 @@ public class SettingsWidget extends Widget {
 
             if (newValue) {
                 neuralNetwork.getStructure().addBias();
+                new LearningService(neuralNetwork).initializeBiasOutput(neuralNetwork.getStructure().getLayers());
             } else {
                 neuralNetwork.getStructure().deleteBias();
             }
