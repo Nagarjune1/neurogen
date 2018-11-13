@@ -128,7 +128,10 @@ public class SettingsWidget extends Widget {
         HBox genSizeHbox = layoutService.getHBox(0d, 0d, 8d);
         genSizeHbox.getChildren().addAll(layoutService.getText("Rozmiar pojedynczego genu", LayoutService.TextStyle.STATUS), getGeneticGenSizeSpinner());
 
-        vBox.getChildren().addAll(populationSizeHbox, genSizeHbox);
+        HBox chromosomeRangeHbox = layoutService.getHBox(0d, 0d, 8d);
+        chromosomeRangeHbox.getChildren().addAll(layoutService.getText("Przedział wartości wag", LayoutService.TextStyle.STATUS), getChromosomeMinRangeSpinner(), getChromosomeMaxRangeSpinner());
+
+        vBox.getChildren().addAll(populationSizeHbox, genSizeHbox, chromosomeRangeHbox);
         return vBox;
     }
 
@@ -358,6 +361,26 @@ public class SettingsWidget extends Widget {
         return spinner;
     }
 
+    private Spinner getChromosomeMinRangeSpinner() {
+        Spinner<Double> spinner = new Spinner<>();
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, -10d, 0.1));
+        spinner.setEditable(true);
+        spinner.setPrefWidth(72d);
+
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMinRange(newValue)));
+        return spinner;
+    }
+
+    private Spinner getChromosomeMaxRangeSpinner() {
+        Spinner<Double> spinner = new Spinner<>();
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, -10d, 0.1));
+        spinner.setEditable(true);
+        spinner.setPrefWidth(72d);
+
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMaxRange(newValue)));
+        return spinner;
+    }
+
     private Spinner getLearningFactorSpinner() {
         Spinner<Double> spinner = new Spinner<>();
         spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, 0.1, 0.01));
@@ -381,7 +404,7 @@ public class SettingsWidget extends Widget {
                 neuralNetwork.getStructure().getLayers().get(getLayerNumber(number)).setNumberOfNeurons(newValue);
             }
 
-            refreshWidget();
+            refreshTopologySettings();
         }));
 
         return spinner;
@@ -393,7 +416,7 @@ public class SettingsWidget extends Widget {
 
         button.setOnAction(event -> {
             neuralNetwork.getStructure().deleteLayer(getLayerNumber(layerNumber));
-            refreshWidget();
+            refreshTopologySettings();
         });
 
         return button;
@@ -410,7 +433,7 @@ public class SettingsWidget extends Widget {
                 neuralNetwork.getStructure().addLayer(1);
             }
 
-            refreshWidget();
+            refreshTopologySettings();
         });
 
         return button;
@@ -430,7 +453,7 @@ public class SettingsWidget extends Widget {
                 neuralNetwork.getStructure().deleteBias();
             }
 
-            refreshWidget();
+            refreshTopologySettings();
         });
 
         return checkBox;

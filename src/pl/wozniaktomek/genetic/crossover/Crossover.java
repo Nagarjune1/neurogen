@@ -9,7 +9,7 @@ public abstract class Crossover {
     ArrayList<Chromosome> population;
     Double probability;
 
-    protected abstract void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome, Integer genIndex);
+    protected abstract void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome);
 
     void crossPopulation() {
         for (int i = 0; i < population.size(); i++) {
@@ -23,11 +23,7 @@ public abstract class Crossover {
         Chromosome firstChromosome = selectRandomChromosome();
         Chromosome secondsChromosome = selectRandomChromosome();
 
-        for (int i = 0; i < firstChromosome.getGenome().size(); i++) {
-            if (ThreadLocalRandom.current().nextDouble(0d, 1d) <= probability) {
-                crossGen(firstChromosome, secondsChromosome, i);
-            }
-        }
+        crossGen(firstChromosome, secondsChromosome);
 
         firstChromosome.decodeGenome();
         secondsChromosome.decodeGenome();

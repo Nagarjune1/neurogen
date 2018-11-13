@@ -48,6 +48,9 @@ public class GeneticAlgorithm extends Thread {
 
         geneticParameters.setPopulationSize(100);
         geneticParameters.setGenSize(12);
+
+        geneticParameters.setChromosomeMinRange(-10d);
+        geneticParameters.setChromosomeMaxRange(10d);
     }
 
     private void generatePopulation() {
@@ -66,7 +69,7 @@ public class GeneticAlgorithm extends Thread {
                 genome.add(gen);
             }
 
-            population.add(new Chromosome(genome, geneticParameters.getGenSize()));
+            population.add(new Chromosome(genome, geneticParameters.getGenSize(), geneticParameters.getChromosomeMinRange(), geneticParameters.getChromosomeMaxRange()));
         }
 
         geneticParameters.setPopulation(population);
@@ -91,9 +94,9 @@ public class GeneticAlgorithm extends Thread {
         while (geneticParameters.getIsLearning() && conditions()) {
             geneticParameters.setIteration(geneticParameters.getIteration() + 1);
 
+            selection();
             crossover();
             mutation();
-            selection();
 
             updateInterface();
         }

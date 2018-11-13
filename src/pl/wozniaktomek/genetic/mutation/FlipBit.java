@@ -3,6 +3,7 @@ package pl.wozniaktomek.genetic.mutation;
 import pl.wozniaktomek.genetic.util.Chromosome;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class FlipBit extends Mutation {
     public FlipBit(ArrayList<Chromosome> population, Double probability) {
@@ -13,22 +14,18 @@ public class FlipBit extends Mutation {
 
     @Override
     protected void mutateChromosome(Chromosome chromosome) {
-        ArrayList<String> newGenome = new ArrayList<>();
+        char[] newGenome = chromosome.getfullGenome().toCharArray();
 
-        for (String gen : chromosome.getGenome()) {
-            char[] genCharArray = gen.toCharArray();
-
-            for (int i = 0; i < genCharArray.length; i++) {
-                if (genCharArray[i] == '0') {
-                    genCharArray[i] = '1';
+        for (int i = 0; i < newGenome.length; i++) {
+            if (ThreadLocalRandom.current().nextDouble(0d, 1d) <= probability) {
+                if (newGenome[i] == '1') {
+                    newGenome[i] = '0';
                 } else {
-                    genCharArray[i] = '0';
+                    newGenome[i] = '1';
                 }
             }
-
-            newGenome.add(new String(genCharArray));
         }
 
-        chromosome.setGenome(newGenome);
+        chromosome.setFullGenome(new String(newGenome));
     }
 }

@@ -11,14 +11,14 @@ public class Chromosome implements Cloneable {
     private Double distribution;
     private Double percent;
 
-    private Double minRange = -4d;
-    private Double maxRange = 4d;
+    private Double minRange;
+    private Double maxRange;
     private Double maxValue;
 
-    public Chromosome(ArrayList<String> genome, Integer genSize) {
+    public Chromosome(ArrayList<String> genome, Integer genSize, Double minRange, Double maxRange) {
         this.genome = genome;
         this.genSize = genSize;
-        countGenMaxValue();
+        setGenValueRanges(minRange, maxRange);
         decodeGenome();
     }
 
@@ -47,7 +47,7 @@ public class Chromosome implements Cloneable {
     }
 
     /* Genome value setter */
-    public void setGenValueRanges(Double minRange, Double maxRange) {
+    private void setGenValueRanges(Double minRange, Double maxRange) {
         this.minRange = minRange;
         this.maxRange = maxRange;
         countGenMaxValue();
@@ -60,17 +60,30 @@ public class Chromosome implements Cloneable {
         }
     }
 
+    /* Full genome operations */
+    public String getfullGenome() {
+        StringBuilder fullGenome = new StringBuilder();
+
+        for (String string : genome) {
+            fullGenome.append(string);
+        }
+
+        return fullGenome.toString();
+    }
+
+    public void setFullGenome(String fullGenome) {
+        genome = new ArrayList<>();
+
+        for (int i = 0; i < weights.size(); i ++) {
+            genome.add(fullGenome.substring(genSize * i, genSize * (i + 1)));
+        }
+
+        decodeGenome();
+    }
+
     /* Getters */
     public ArrayList<Double> getWeights() {
         return weights;
-    }
-
-    public ArrayList<String> getGenome() {
-        return genome;
-    }
-
-    public Integer getGenSize() {
-        return genSize;
     }
 
     public Double getFitness() {
@@ -83,24 +96,6 @@ public class Chromosome implements Cloneable {
 
     public Double getPercent() {
         return percent;
-    }
-
-    public Double getMinRange() {
-        return minRange;
-    }
-
-    public Double getMaxRange() {
-        return maxRange;
-    }
-
-    /* Setters */
-    public void setGenome(ArrayList<String> genome) {
-        this.genome = genome;
-        decodeGenome();
-    }
-
-    public void setGenSize(Integer genSize) {
-        this.genSize = genSize;
     }
 
     public void setFitness(Double fitness) {

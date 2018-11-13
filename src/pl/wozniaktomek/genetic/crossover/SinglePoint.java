@@ -13,16 +13,16 @@ public class SinglePoint extends Crossover {
     }
 
     @Override
-    protected void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome, Integer genIndex) {
-        String firstGen = firstChrmosome.getGenome().get(genIndex);
-        String secondGen = secondChromosome.getGenome().get(genIndex);
+    protected void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome) {
+        String firstGenome = firstChrmosome.getfullGenome();
+        String secondGenome = secondChromosome.getfullGenome();
 
-        int point = ThreadLocalRandom.current().nextInt(1, firstGen.length());
+        int point = ThreadLocalRandom.current().nextInt(1, firstGenome.length());
 
-        String newFirstGen = firstGen.substring(0, point) + secondGen.substring(point, firstGen.length());
-        String newSecondGen = secondGen.substring(0, point) + firstGen.substring(point, secondGen.length());
+        String newFirstGenome = firstGenome.substring(0, point) + secondGenome.substring(point, firstGenome.length());
+        String newSecondGenome = secondGenome.substring(0, point) + firstGenome.substring(point, secondGenome.length());
 
-        firstChrmosome.getGenome().set(genIndex, newFirstGen);
-        secondChromosome.getGenome().set(genIndex, newSecondGen);
+        firstChrmosome.setFullGenome(newFirstGenome);
+        secondChromosome.setFullGenome(newSecondGenome);
     }
 }

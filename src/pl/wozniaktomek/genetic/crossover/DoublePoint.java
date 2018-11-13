@@ -12,12 +12,12 @@ public class DoublePoint extends Crossover {
     }
 
     @Override
-    protected void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome, Integer genIndex) {
-        String firstGen = firstChrmosome.getGenome().get(genIndex);
-        String secondGen = secondChromosome.getGenome().get(genIndex);
+    protected void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome) {
+        String firstGenome = firstChrmosome.getfullGenome();
+        String secondGenome = secondChromosome.getfullGenome();
 
-        int point1 = ThreadLocalRandom.current().nextInt(0, firstGen.length());
-        int point2 = ThreadLocalRandom.current().nextInt(0, firstGen.length());
+        int point1 = ThreadLocalRandom.current().nextInt(0,firstGenome.length());
+        int point2 = ThreadLocalRandom.current().nextInt(0, firstGenome.length());
 
         if (point2 < point1) {
             int tmp = point1;
@@ -25,10 +25,10 @@ public class DoublePoint extends Crossover {
             point2 = tmp;
         }
 
-        String newFirstGen = firstGen.substring(0, point1) + secondGen.substring(point1, point2) + firstGen.substring(point2);
-        String newSecondGen = secondGen.substring(0, point1) + firstGen.substring(point1, point2) + secondGen.substring(point2);
+        String newFirstGenome = firstGenome.substring(0, point1) + secondGenome.substring(point1, point2) + firstGenome.substring(point2);
+        String newSecondGenome = secondGenome.substring(0, point1) + firstGenome.substring(point1, point2) + secondGenome.substring(point2);
 
-        firstChrmosome.getGenome().set(genIndex, newFirstGen);
-        secondChromosome.getGenome().set(genIndex, newSecondGen);
+        firstChrmosome.setFullGenome(newFirstGenome);
+        secondChromosome.setFullGenome(newSecondGenome);
     }
 }
