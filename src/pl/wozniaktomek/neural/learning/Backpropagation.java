@@ -3,6 +3,7 @@ package pl.wozniaktomek.neural.learning;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.learning.parameters.BackpropagationParameters;
 import pl.wozniaktomek.neural.service.LearningService;
+import pl.wozniaktomek.neural.service.StartupService;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
@@ -39,6 +40,7 @@ public class Backpropagation extends Thread {
     public void run() {
         backpropagationParameters.setIsLearning(true);
         backpropagationParameters.setIteration(0);
+        backpropagationParameters.setTotalEror(1d);
         backpropagationParameters.setLearningData(learningService.initializeLearningData());
 
         learningService.initializeBiasOutput(backpropagationParameters.getStructure().getLayers());
@@ -67,6 +69,7 @@ public class Backpropagation extends Thread {
             }
 
             updateInterface();
+            backpropagationParameters.setTotalEror(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
         }
 
         showIteration();
@@ -126,20 +129,20 @@ public class Backpropagation extends Thread {
 
     /* Ending conditions */
     private boolean conditions() {
-        return iterationConditions() && toleranceConditions();
+        return iterationCondition() && toleranceCondition();
     }
 
-    private boolean iterationConditions() {
+    private boolean iterationCondition() {
         return backpropagationParameters.getIteration() < backpropagationParameters.getIterationsAmount();
     }
 
-    private boolean toleranceConditions() {
-        return true;
+    private boolean toleranceCondition() {
+        return backpropagationParameters.getTotalEror() > learning.getLearningTolerance();
     }
 
     /* interface update */
     private void updateInterface() {
-        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getSSE());
+        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getTotalEror());
     }
 
     private void endLearning() {

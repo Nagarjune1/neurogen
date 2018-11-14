@@ -3,7 +3,9 @@ package pl.wozniaktomek.genetic.crossover;
 import pl.wozniaktomek.genetic.util.Chromosome;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
 public class SinglePoint extends Crossover {
     public SinglePoint(ArrayList<Chromosome> population, Double probability) {
@@ -14,15 +16,23 @@ public class SinglePoint extends Crossover {
 
     @Override
     protected void crossGen(Chromosome firstChrmosome, Chromosome secondChromosome) {
-        String firstGenome = firstChrmosome.getfullGenome();
-        String secondGenome = secondChromosome.getfullGenome();
+        Integer[] firstGenome = firstChrmosome.getGenome();
+        Integer[] secondGenome = secondChromosome.getGenome();
 
-        int point = ThreadLocalRandom.current().nextInt(1, firstGenome.length());
+        int point = ThreadLocalRandom.current().nextInt(1, firstGenome.length);
 
-        String newFirstGenome = firstGenome.substring(0, point) + secondGenome.substring(point, firstGenome.length());
-        String newSecondGenome = secondGenome.substring(0, point) + firstGenome.substring(point, secondGenome.length());
 
-        firstChrmosome.setFullGenome(newFirstGenome);
-        secondChromosome.setFullGenome(newSecondGenome);
+        Integer[] newFirstGenome = Stream.concat(
+                Arrays.stream(Arrays.copyOfRange(firstGenome, 0, point)),
+                Arrays.stream(Arrays.copyOfRange(secondGenome, point, firstGenome.length)))
+                .toArray((Integer[]::new));
+
+        Integer[] newSecondGenome = Stream.concat(
+                Arrays.stream(Arrays.copyOfRange(secondGenome, 0, point)),
+                Arrays.stream(Arrays.copyOfRange(firstGenome, point, secondGenome.length)))
+                .toArray((Integer[]::new));
+
+        firstChrmosome.setGenome(newFirstGenome);
+        secondChromosome.setGenome(newSecondGenome);
     }
 }

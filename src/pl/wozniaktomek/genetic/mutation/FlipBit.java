@@ -14,18 +14,18 @@ public class FlipBit extends Mutation {
 
     @Override
     protected void mutateChromosome(Chromosome chromosome) {
-        char[] newGenome = chromosome.getfullGenome().toCharArray();
+        Integer[] newGenome = chromosome.getGenome();
 
         for (int i = 0; i < newGenome.length; i++) {
             if (ThreadLocalRandom.current().nextDouble(0d, 1d) <= probability) {
-                if (newGenome[i] == '1') {
-                    newGenome[i] = '0';
+                if (newGenome[i] == 1) {
+                    newGenome[i] = 0;
                 } else {
-                    newGenome[i] = '1';
+                    newGenome[i] = 1;
                 }
             }
         }
 
-        chromosome.setFullGenome(new String(newGenome));
+        chromosome.setGenome(newGenome);
     }
 }

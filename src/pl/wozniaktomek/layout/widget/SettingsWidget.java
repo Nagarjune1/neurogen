@@ -343,7 +343,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getGeneticPopulationSizeSpinner() {
         Spinner<Integer> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 100, 1));
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getPopulationSize(), 1));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
@@ -353,7 +353,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getGeneticGenSizeSpinner() {
         Spinner<Integer> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 32, 12, 1));
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 32, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getGenSize(), 1));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
@@ -363,7 +363,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getChromosomeMinRangeSpinner() {
         Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, -10d, 0.1));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange(), 0.1));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
@@ -373,7 +373,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getChromosomeMaxRangeSpinner() {
         Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, -10d, 0.1));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange(), 0.1));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
@@ -383,7 +383,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getLearningFactorSpinner() {
         Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, 0.1, 0.01));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().getLearningFactor(), 0.01));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 

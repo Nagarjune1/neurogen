@@ -13,8 +13,16 @@ public class FlipString extends Mutation {
 
     @Override
     protected void mutateChromosome(Chromosome chromosome) {
-        String newGenome = chromosome.getfullGenome();
-        newGenome = newGenome.replace("1", "0");
-        chromosome.setFullGenome(newGenome);
+        Integer[] newGenome = chromosome.getGenome();
+
+        for (int i = 0; i < newGenome.length; i++) {
+            if (newGenome[i] == 1) {
+                newGenome[i] = 0;
+            } else {
+                newGenome[i] = 1;
+            }
+        }
+
+        chromosome.setGenome(newGenome);
     }
 }

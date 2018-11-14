@@ -42,24 +42,17 @@ public abstract class Selection {
         return error;
     }
 
+    private Double startupNetwork(NeuralObject neuralObject) {
+        StartupService startupService = new StartupService(neuralNetwork);
+        return startupService.getLastLayerError(neuralObject);
+    }
+
     private void setConnectionsWeights(ArrayList<Double> weightValues) {
         List<Connection> connections = structure.getConnections();
 
         for (int i = 0; i < connections.size(); i++) {
             connections.get(i).setWeight(weightValues.get(i));
         }
-    }
-
-    private Double startupNetwork(NeuralObject neuralObject) {
-        StartupService startupService = new StartupService(neuralNetwork);
-        List<Neuron> neurons = startupService.getLastLayerNeurons(neuralObject);
-
-        double lastLayerError = 0d;
-        for (Neuron neuron : neurons) {
-            lastLayerError += neuron.getOutputError();
-        }
-
-        return lastLayerError;
     }
 
     /* Sorting */

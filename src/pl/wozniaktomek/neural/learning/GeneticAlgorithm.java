@@ -10,6 +10,7 @@ import pl.wozniaktomek.genetic.util.Chromosome;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.learning.parameters.GeneticParameters;
 import pl.wozniaktomek.neural.service.LearningService;
+import pl.wozniaktomek.neural.service.StartupService;
 import pl.wozniaktomek.neural.structure.Connection;
 
 import java.util.ArrayList;
@@ -39,15 +40,15 @@ public class GeneticAlgorithm extends Thread {
 
     private void initializeBasicParameters() {
         geneticParameters.setCrossoverMethod(CrossoverMethod.SINGLE);
-        geneticParameters.setCrossoverProbability(0.2);
+        geneticParameters.setCrossoverProbability(0.5);
 
         geneticParameters.setMutationMethod(MutationMethod.FLIPBIT);
-        geneticParameters.setMutationProbability(0.1);
+        geneticParameters.setMutationProbability(0.01);
 
         geneticParameters.setSelectionMethod(SelectionMethod.TOURNAMENT);
 
-        geneticParameters.setPopulationSize(100);
-        geneticParameters.setGenSize(12);
+        geneticParameters.setPopulationSize(64);
+        geneticParameters.setGenSize(8);
 
         geneticParameters.setChromosomeMinRange(-10d);
         geneticParameters.setChromosomeMaxRange(10d);
@@ -55,18 +56,13 @@ public class GeneticAlgorithm extends Thread {
 
     private void generatePopulation() {
         ArrayList<Chromosome> population = new ArrayList<>();
+        int genomeSize = neuralNetwork.getStructure().getConnections().size() * geneticParameters.getGenSize();
 
         for (int i = 0; i < geneticParameters.getPopulationSize(); i++) {
-            ArrayList<String> genome = new ArrayList<>();
+            Integer[] genome = new Integer[genomeSize];
 
-            for (int j = 0; j < neuralNetwork.getStructure().getConnections().size(); j++) {
-                String gen = "";
-
-                for (int k = 0; k < geneticParameters.getGenSize(); k++) {
-                    gen = gen.concat(String.valueOf(ThreadLocalRandom.current().nextInt(0, 2)));
-                }
-
-                genome.add(gen);
+            for (int j = 0; j < genomeSize; j++) {
+                genome[j] = ThreadLocalRandom.current().nextInt(0, 2);
             }
 
             population.add(new Chromosome(genome, geneticParameters.getGenSize(), geneticParameters.getChromosomeMinRange(), geneticParameters.getChromosomeMaxRange()));
@@ -79,6 +75,7 @@ public class GeneticAlgorithm extends Thread {
     public void run() {
         geneticParameters.setIsLearning(true);
         geneticParameters.setIteration(0);
+        geneticParameters.setTotalError(1d);
         geneticParameters.setLearningData(learningService.initializeLearningData());
 
         generatePopulation();
@@ -98,6 +95,7 @@ public class GeneticAlgorithm extends Thread {
             crossover();
             mutation();
 
+            geneticParameters.setTotalError(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
             updateInterface();
         }
 
@@ -149,16 +147,20 @@ public class GeneticAlgorithm extends Thread {
 
     /* EndingcConditions */
     private boolean conditions() {
-        return iterationConditions();
+        return iterationCondition() && toleranceCondition();
     }
 
-    private boolean iterationConditions() {
+    private boolean iterationCondition() {
         return geneticParameters.getIteration() < geneticParameters.getIterationsAmount();
+    }
+
+    private boolean toleranceCondition() {
+        return geneticParameters.getTotalError() > learning.getLearningTolerance();
     }
 
     /* interface update */
     private void updateInterface() {
-        learning.getLearningWidget().updateInterface(geneticParameters.getIteration(), 0d);
+        learning.getLearningWidget().updateInterface(geneticParameters.getIteration(), geneticParameters.getTotalError());
     }
 
     private void endLearning() {

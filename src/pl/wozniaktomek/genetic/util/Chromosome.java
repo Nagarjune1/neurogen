@@ -1,9 +1,10 @@
 package pl.wozniaktomek.genetic.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Chromosome implements Cloneable {
-    private ArrayList<String> genome; // chromosome binary genome
+    private Integer[] genome;
     private ArrayList<Double> weights; // chromosome genome values
     private Integer genSize; // size of binary string for single weight
 
@@ -15,7 +16,7 @@ public class Chromosome implements Cloneable {
     private Double maxRange;
     private Double maxValue;
 
-    public Chromosome(ArrayList<String> genome, Integer genSize, Double minRange, Double maxRange) {
+    public Chromosome(Integer[] genome, Integer genSize, Double minRange, Double maxRange) {
         this.genome = genome;
         this.genSize = genSize;
         setGenValueRanges(minRange, maxRange);
@@ -25,19 +26,39 @@ public class Chromosome implements Cloneable {
     /* Genome operations */
     public void decodeGenome() {
         weights = new ArrayList<>();
+        ArrayList<Integer[]> genList = getGenList();
 
-        for (String gen : genome) {
+        for (Integer[] gen : genList) {
             weights.add(minRange + ((maxRange - minRange) * countGenValue(gen) / maxValue));
         }
     }
 
+    private ArrayList<Integer[]> getGenList() {
+        ArrayList<Integer[]> genList = new ArrayList<>();
+        int gens = genome.length / genSize;
+        int counter = 0;
+
+        while (counter < (gens * genSize)) {
+            Integer[] gen = new Integer[genSize];
+
+            for (int i = counter; i < counter + genSize; i++) {
+                gen[i % genSize] = genome[i];
+            }
+
+            genList.add(gen);
+            counter += genSize;
+        }
+
+        return genList;
+    }
+
     /* Genome value operations */
-    private Double countGenValue(String gen) {
+    private Double countGenValue(Integer[] gen) {
         double value = 0d;
         double counter = 0d;
 
         for (int i = genSize - 1; i >= 0; i--) {
-            if (gen.charAt(i) == '1') {
+            if (gen[i] == 1) {
                 value += Math.pow(2, counter);
             }
             counter++;
@@ -60,28 +81,11 @@ public class Chromosome implements Cloneable {
         }
     }
 
-    /* Full genome operations */
-    public String getfullGenome() {
-        StringBuilder fullGenome = new StringBuilder();
-
-        for (String string : genome) {
-            fullGenome.append(string);
-        }
-
-        return fullGenome.toString();
-    }
-
-    public void setFullGenome(String fullGenome) {
-        genome = new ArrayList<>();
-
-        for (int i = 0; i < weights.size(); i ++) {
-            genome.add(fullGenome.substring(genSize * i, genSize * (i + 1)));
-        }
-
-        decodeGenome();
-    }
-
     /* Getters */
+    public Integer[] getGenome() {
+        return genome;
+    }
+
     public ArrayList<Double> getWeights() {
         return weights;
     }
@@ -96,6 +100,11 @@ public class Chromosome implements Cloneable {
 
     public Double getPercent() {
         return percent;
+    }
+
+    /* Setters */
+    public void setGenome(Integer[] genome) {
+        this.genome = genome;
     }
 
     public void setFitness(Double fitness) {

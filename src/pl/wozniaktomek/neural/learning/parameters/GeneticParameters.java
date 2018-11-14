@@ -22,6 +22,8 @@ public class GeneticParameters extends LearningParameters {
     private Double chromosomeMinRange;
     private Double chromosomeMaxRange;
 
+    private Double totalError;
+
     public GeneticParameters(Structure structure) {
         setStructure(structure);
     }
@@ -67,6 +69,10 @@ public class GeneticParameters extends LearningParameters {
         return chromosomeMaxRange;
     }
 
+    public Double getTotalError() {
+        return totalError;
+    }
+
     /* Setters*/
     public void setPopulation(ArrayList<Chromosome> population) {
         this.population = population;
@@ -106,5 +112,9 @@ public class GeneticParameters extends LearningParameters {
 
     public void setChromosomeMaxRange(Double chromosomeMaxRange) {
         this.chromosomeMaxRange = chromosomeMaxRange;
+    }
+
+    public void setTotalError(Double totalError) {
+        this.totalError = totalError;
     }
 }

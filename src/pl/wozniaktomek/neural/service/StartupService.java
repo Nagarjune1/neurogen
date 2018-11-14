@@ -5,6 +5,7 @@ import pl.wozniaktomek.neural.structure.Neuron;
 import pl.wozniaktomek.neural.structure.Structure;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StartupService {
@@ -23,5 +24,26 @@ public class StartupService {
         learningService.countLastLayerError(neuralObject);
 
         return structure.getLayers().get(structure.getLayers().size() - 1).getNeurons();
+    }
+
+    public Double getLastLayerError(NeuralObject neuralObject) {
+        List<Neuron> lastLayerNeurons = getLastLayerNeurons(neuralObject);
+
+        double lastLayerError = 0d;
+        for (Neuron neuron : lastLayerNeurons) {
+            lastLayerError += neuron.getOutputError();
+        }
+
+        return lastLayerError;
+    }
+
+    public Double getTotalError(ArrayList<NeuralObject> learningData) {
+        double totalError = 0d;
+
+        for (NeuralObject neuralObject : learningData) {
+            totalError += getLastLayerError(neuralObject);
+        }
+
+        return totalError;
     }
 }
