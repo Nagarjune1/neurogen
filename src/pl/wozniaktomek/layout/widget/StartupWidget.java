@@ -2,10 +2,12 @@ package pl.wozniaktomek.layout.widget;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.service.ParametersService;
@@ -58,12 +60,14 @@ public class StartupWidget extends Widget {
         contentContainer.getChildren().add(mainVBox);
 
         HBox buttonHBox = layoutService.getHBox(0d, 0d, 8d);
-        dataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.STATUS);
+        buttonHBox.setAlignment(Pos.BASELINE_LEFT);
+        dataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.PARAGRAPH);
         buttonHBox.getChildren().addAll(getLoadDataButton(), layoutService.getText("STATUS:", LayoutService.TextStyle.HEADING), dataStatus);
         mainVBox.getChildren().add(buttonHBox);
 
         HBox statusHBox = layoutService.getHBox(0d, 0d, 8d);
-        networkStatus = layoutService.getText("Sieć nie przeszła jeszcze procesu uczenia...", LayoutService.TextStyle.STATUS);
+        statusHBox.setAlignment(Pos.BASELINE_LEFT);
+        networkStatus = layoutService.getText("Sieć nie przeszła jeszcze procesu uczenia...", LayoutService.TextStyle.PARAGRAPH);
         statusHBox.getChildren().addAll(layoutService.getText("STAN SIECI:", LayoutService.TextStyle.HEADING), networkStatus);
         mainVBox.getChildren().add(statusHBox);
     }

@@ -23,13 +23,15 @@ public class Learning {
 
     /* Interface */
     private LearningWidget learningWidget;
+    private Boolean interfaceUpdating;
 
     public Learning(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         executorService = Executors.newSingleThreadExecutor();
+        interfaceUpdating = true;
 
         iterationsAmount = 10000;
-        learningTolerance = 0.2;
+        learningTolerance = 0.1;
         createLearning(LearningMethod.GENETIC);
     }
 
@@ -86,6 +88,14 @@ public class Learning {
         return learningWidget;
     }
 
+    Boolean getInterfaceUpdating() {
+        return interfaceUpdating;
+    }
+
+    public void setInterfaceUpdating(Boolean interfaceUpdating) {
+        this.interfaceUpdating = interfaceUpdating;
+    }
+
     /* Getters */
     public LearningMethod getLearningMethod() {
         return learningMethod;
@@ -114,6 +124,8 @@ public class Learning {
     public Backpropagation getBackpropagation() {
         return backpropagation;
     }
+
+
 
     /* Learning method */
     public enum LearningMethod {

@@ -14,6 +14,9 @@ public class SettingsWidget extends Widget {
     private NeuralNetwork neuralNetwork;
     private NeuralControl neuralControl;
 
+    private VBox mainLearningContainer;
+    private VBox mainTopologyContainer;
+
     private HBox learningParametersContainer;
     private VBox learningMethodContainer;
     private HBox learningMethodSettingsContainer;
@@ -27,25 +30,20 @@ public class SettingsWidget extends Widget {
     }
 
     private void initializeContainers() {
-        VBox localContentContainer = layoutService.getVBox(0d, 0d, 12d);
-        contentContainer.getChildren().add(localContentContainer);
-
-        VBox mainLearningContainer = layoutService.getVBox(4d, 8d, 16d);
-        VBox mainTopologyContainer = layoutService.getVBox(4d, 8d, 8d);
-        localContentContainer.getChildren().addAll(mainLearningContainer, mainTopologyContainer);
+        mainLearningContainer = layoutService.getVBox(4d, 8d, 16d);
+        mainTopologyContainer = layoutService.getVBox(4d, 8d, 8d);
 
         learningParametersContainer = layoutService.getHBox(4d, 8d, 18d);
-        learningParametersContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         mainLearningContainer.getChildren().addAll(layoutService.getText("PARAMETRY UCZENIA", LayoutService.TextStyle.HEADING), learningParametersContainer);
 
         learningMethodContainer = layoutService.getVBox(4d, 8d, 18d);
-        learningMethodContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         learningMethodContainer.setMinWidth(256d);
         mainLearningContainer.getChildren().addAll(layoutService.getText("METODA UCZENIA", LayoutService.TextStyle.HEADING), learningMethodContainer);
 
         topologyContainer = layoutService.getHBox(0d, 8d, 8d);
-        topologyContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         mainTopologyContainer.getChildren().addAll(layoutService.getText("TOPOLOGIA", LayoutService.TextStyle.HEADING), topologyContainer);
+
+        contentContainer.getChildren().add(layoutService.getText("Wymagane jest wczytanie danych uczących!", LayoutService.TextStyle.HEADING));
     }
 
     public void refreshWidget() {
@@ -59,25 +57,25 @@ public class SettingsWidget extends Widget {
     private void refreshLearningSettings() {
         learningParametersContainer.getChildren().clear();
         learningMethodContainer.getChildren().clear();
+        contentContainer.getChildren().clear();
 
         if (neuralNetwork.getStructure().getLayers().size() > 0) {
+            contentContainer.getChildren().addAll(mainLearningContainer, mainTopologyContainer);
             refreshParametersContainer();
             refreshMethodContainer(null);
             refreshMethodContainer(true);
-
         } else {
-            learningParametersContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
-            learningMethodContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
+            contentContainer.getChildren().add(layoutService.getText("Wymagane jest wczytanie danych uczących!", LayoutService.TextStyle.STATUS));
         }
     }
 
     private void refreshParametersContainer() {
         HBox hBox = layoutService.getHBox(0d, 0d, 8d);
-        hBox.getChildren().addAll(layoutService.getText("Maksymalna liczba iteracji", LayoutService.TextStyle.STATUS), getLearningIterationsSpinner());
+        hBox.getChildren().addAll(layoutService.getText("Maksymalna liczba iteracji", LayoutService.TextStyle.PARAGRAPH), getLearningIterationsSpinner());
         learningParametersContainer.getChildren().add(hBox);
 
         hBox = layoutService.getHBox(0d, 0d, 8d);
-        hBox.getChildren().addAll(layoutService.getText("Tolerancja uczenia", LayoutService.TextStyle.STATUS), getLearningToleranceSpinner());
+        hBox.getChildren().addAll(layoutService.getText("Tolerancja uczenia", LayoutService.TextStyle.PARAGRAPH), getLearningToleranceSpinner());
         learningParametersContainer.getChildren().add(hBox);
     }
 
@@ -93,7 +91,7 @@ public class SettingsWidget extends Widget {
                 learningMethodSettingsContainer.getChildren().add(geneticSettingsContainer);
             } else {
                 HBox backpropagationSettingsContainer = layoutService.getHBox(5d, 0d, 8d);
-                backpropagationSettingsContainer.getChildren().addAll(layoutService.getText("Współczynnik uczenia", LayoutService.TextStyle.STATUS), getLearningFactorSpinner());
+                backpropagationSettingsContainer.getChildren().addAll(layoutService.getText("Współczynnik uczenia", LayoutService.TextStyle.PARAGRAPH), getLearningFactorSpinner());
                 learningMethodSettingsContainer.getChildren().add(backpropagationSettingsContainer);
             }
         }
@@ -101,18 +99,18 @@ public class SettingsWidget extends Widget {
 
     private VBox getGeneticMethodsContainer() {
         VBox vBox = layoutService.getVBox(0d, 0d, 8d);
-        vBox.getChildren().add(layoutService.getText("OPERATORY GENETYCZNE", LayoutService.TextStyle.STATUS));
+        vBox.getChildren().add(layoutService.getText("OPERATORY GENETYCZNE", LayoutService.TextStyle.PARAGRAPH));
 
         HBox crossoverHbox = layoutService.getHBox(0d, 0d, 8d);
-        crossoverHbox.getChildren().addAll(layoutService.getText("Krzyżowanie", LayoutService.TextStyle.STATUS), getGeneticCrossoverMethodChoiceBox());
-        crossoverHbox.getChildren().addAll(layoutService.getText("prawdopodobieństwo: ", LayoutService.TextStyle.STATUS), getGeneticCrossoverProbabilitySpinner());
+        crossoverHbox.getChildren().addAll(layoutService.getText("Krzyżowanie", LayoutService.TextStyle.PARAGRAPH), getGeneticCrossoverMethodChoiceBox());
+        crossoverHbox.getChildren().addAll(layoutService.getText("prawdopodobieństwo: ", LayoutService.TextStyle.PARAGRAPH), getGeneticCrossoverProbabilitySpinner());
 
         HBox mutationHbox = layoutService.getHBox(0d, 0d, 8d);
-        mutationHbox.getChildren().addAll(layoutService.getText("Mutacja", LayoutService.TextStyle.STATUS), getGeneticMutationMethodChoiceBox());
-        mutationHbox.getChildren().addAll(layoutService.getText("prawdopodobieństwo: ", LayoutService.TextStyle.STATUS), getGeneticMutationProbabilitySpinner());
+        mutationHbox.getChildren().addAll(layoutService.getText("Mutacja", LayoutService.TextStyle.PARAGRAPH), getGeneticMutationMethodChoiceBox());
+        mutationHbox.getChildren().addAll(layoutService.getText("prawdopodobieństwo: ", LayoutService.TextStyle.PARAGRAPH), getGeneticMutationProbabilitySpinner());
 
         HBox selectionHbox = layoutService.getHBox(0d, 0d, 8d);
-        selectionHbox.getChildren().addAll(layoutService.getText("Selekcja", LayoutService.TextStyle.STATUS), getGeneticSelectionMethodChoiceBox());
+        selectionHbox.getChildren().addAll(layoutService.getText("Selekcja", LayoutService.TextStyle.PARAGRAPH), getGeneticSelectionMethodChoiceBox());
 
         vBox.getChildren().addAll(crossoverHbox, mutationHbox, selectionHbox);
         return vBox;
@@ -120,16 +118,16 @@ public class SettingsWidget extends Widget {
 
     private VBox getGeneticParametersContainer() {
         VBox vBox = layoutService.getVBox(0d, 0d, 8d);
-        vBox.getChildren().add(layoutService.getText("PARAMETRY ALGORYTMU", LayoutService.TextStyle.STATUS));
+        vBox.getChildren().add(layoutService.getText("PARAMETRY ALGORYTMU", LayoutService.TextStyle.PARAGRAPH));
 
         HBox populationSizeHbox = layoutService.getHBox(0d, 0d, 8d);
-        populationSizeHbox.getChildren().addAll(layoutService.getText("Rozmiar populacji", LayoutService.TextStyle.STATUS), getGeneticPopulationSizeSpinner());
+        populationSizeHbox.getChildren().addAll(layoutService.getText("Rozmiar populacji", LayoutService.TextStyle.PARAGRAPH), getGeneticPopulationSizeSpinner());
 
         HBox genSizeHbox = layoutService.getHBox(0d, 0d, 8d);
-        genSizeHbox.getChildren().addAll(layoutService.getText("Rozmiar pojedynczego genu", LayoutService.TextStyle.STATUS), getGeneticGenSizeSpinner());
+        genSizeHbox.getChildren().addAll(layoutService.getText("Rozmiar pojedynczego genu", LayoutService.TextStyle.PARAGRAPH), getGeneticGenSizeSpinner());
 
         HBox chromosomeRangeHbox = layoutService.getHBox(0d, 0d, 8d);
-        chromosomeRangeHbox.getChildren().addAll(layoutService.getText("Przedział wartości wag", LayoutService.TextStyle.STATUS), getChromosomeMinRangeSpinner(), getChromosomeMaxRangeSpinner());
+        chromosomeRangeHbox.getChildren().addAll(layoutService.getText("Przedział wartości wag", LayoutService.TextStyle.PARAGRAPH), getChromosomeMinRangeSpinner(), getChromosomeMaxRangeSpinner());
 
         vBox.getChildren().addAll(populationSizeHbox, genSizeHbox, chromosomeRangeHbox);
         return vBox;
@@ -152,8 +150,6 @@ public class SettingsWidget extends Widget {
             vBox = layoutService.getVBox(6d, 12d, 12d);
             topologyContainer.getChildren().add(vBox);
             refreshTopologySettings(vBox);
-        } else {
-            topologyContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
         }
 
         neuralNetwork.getStructure().createConnections();
@@ -162,7 +158,7 @@ public class SettingsWidget extends Widget {
 
     private void refreshInputLayer(VBox vBox) {
         HBox hBox = layoutService.getHBox(2d, 0d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.STATUS)));
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wejściowa", LayoutService.TextStyle.PARAGRAPH)));
 
         Spinner spinner = getLayerSpinner(true, neuralNetwork.getParameters().getInputSize(), 0);
         hBox.getChildren().add(spinner);
@@ -172,7 +168,7 @@ public class SettingsWidget extends Widget {
 
     private void refreshOutputLayer(VBox vBox) {
         HBox hBox = layoutService.getHBox(2d, 0d, 12d);
-        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.STATUS)));
+        hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa wyjściowa", LayoutService.TextStyle.PARAGRAPH)));
 
         Spinner spinner = getLayerSpinner(true, neuralNetwork.getParameters().getOutputSize(), 1);
         hBox.getChildren().add(spinner);
@@ -183,7 +179,7 @@ public class SettingsWidget extends Widget {
     private void refreshHiddenLayers(VBox vBox) {
         for (int i = 1; i < neuralNetwork.getStructure().getLayers().size() - 1; i++) {
             HBox hBox = layoutService.getHBox(2d, 0d, 12d);
-            hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.STATUS)));
+            hBox.getChildren().add(layoutService.getTextFlow(6d, 0d, 112d, layoutService.getText("Warstwa ukryta " + i, LayoutService.TextStyle.PARAGRAPH)));
 
             Spinner spinner;
             if (neuralNetwork.getStructure().isBias()) {
@@ -202,7 +198,7 @@ public class SettingsWidget extends Widget {
     }
 
     private void refreshTopologySettings(VBox vBox) {
-        vBox.getChildren().add(layoutService.getText("POZOSTAŁE PARAMETRY TOPOLOGII", LayoutService.TextStyle.STATUS));
+        vBox.getChildren().add(layoutService.getText("POZOSTAŁE PARAMETRY TOPOLOGII", LayoutService.TextStyle.PARAGRAPH));
         vBox.getChildren().add(getBiasCheckbox());
     }
 
@@ -221,9 +217,9 @@ public class SettingsWidget extends Widget {
 
     private Spinner getLearningToleranceSpinner() {
         Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, neuralNetwork.getLearning().getLearningTolerance(), 0.01));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1.0, neuralNetwork.getLearning().getLearningTolerance(), 0.01));
         spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
+        spinner.setPrefWidth(78d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningTolerance(newValue)));
         return spinner;

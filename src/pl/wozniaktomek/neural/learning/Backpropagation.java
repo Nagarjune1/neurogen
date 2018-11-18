@@ -68,11 +68,14 @@ public class Backpropagation extends Thread {
                 modifyWeights();
             }
 
-            updateInterface();
-            backpropagationParameters.setTotalEror(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+            updateIteration();
+
+            if (learning.getInterfaceUpdating()) {
+                updateError();
+                updateObjectsOutOfTolerance();
+            }
         }
 
-        showIteration();
         endLearning();
     }
 
@@ -141,8 +144,18 @@ public class Backpropagation extends Thread {
     }
 
     /* interface update */
-    private void updateInterface() {
-        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getTotalEror());
+    private void updateIteration() {
+        learning.getLearningWidget().updateIteration(backpropagationParameters.getIteration());
+    }
+
+    private void updateError() {
+        backpropagationParameters.setTotalEror(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+        learning.getLearningWidget().updateError(backpropagationParameters.getTotalEror());
+    }
+
+    private void updateObjectsOutOfTolerance() {
+        backpropagationParameters.setObjectsOutOfTolerance(new StartupService(neuralNetwork).getObjectsOutOfTolerance(neuralNetwork.getParameters().getLearningData()));
+        learning.getLearningWidget().updateObjectsOutOfTolerance(backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
     }
 
     private void endLearning() {

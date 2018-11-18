@@ -111,6 +111,18 @@ public class LayoutService {
             case STATUS:
                 text.getStyleClass().add("text-status");
                 break;
+
+            case STATUS_WHITE:
+                text.getStyleClass().add("text-status-white");
+                break;
+
+            case PARAGRAPH:
+                text.getStyleClass().add("text-paragraph");
+                break;
+
+            case PARAGRAPH_WHITE:
+                text.getStyleClass().add("text-paragraph-white");
+                break;
         }
 
         return text;
@@ -154,7 +166,7 @@ public class LayoutService {
         return styles;
     }
 
-    public enum TextStyle {WIDGET_PRIMARY_TITLE, WIDGET_SECONDARY_TITLE, HEADING, STATUS}
+    public enum TextStyle {WIDGET_PRIMARY_TITLE, WIDGET_SECONDARY_TITLE, HEADING, STATUS, STATUS_WHITE, PARAGRAPH, PARAGRAPH_WHITE}
 
     public enum ButtonStyle {SECONDARY, WHITE}
 }

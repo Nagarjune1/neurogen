@@ -46,4 +46,16 @@ public class StartupService {
 
         return totalError;
     }
+
+    public Integer getObjectsOutOfTolerance(ArrayList<NeuralObject> learningData) {
+        Integer objectCounter = 0;
+
+        for (NeuralObject neuralObject : learningData) {
+            if (getLastLayerError(neuralObject) > neuralNetwork.getLearning().getLearningTolerance()) {
+                objectCounter++;
+            }
+        }
+
+        return objectCounter;
+    }
 }

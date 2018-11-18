@@ -1,5 +1,6 @@
 package pl.wozniaktomek.layout.widget;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -41,7 +42,11 @@ public class LoadDataWidget extends Widget {
         HBox mainContainer = layoutService.getHBox(0d, 0d, 16d);
 
         buttonContainer = layoutService.getHBox(0d, 0d, 0d);
+        buttonContainer.setAlignment(Pos.BASELINE_LEFT);
+
         statusContainer = layoutService.getHBox(0d, 4d, 8d);
+        statusContainer.setAlignment(Pos.BASELINE_LEFT);
+
         mainContainer.getChildren().addAll(buttonContainer, statusContainer);
 
         contentContainer.getChildren().add(mainContainer);
@@ -54,7 +59,7 @@ public class LoadDataWidget extends Widget {
 
     private void initializeStatuses() {
         statusContainer.getChildren().add(layoutService.getText("STATUS:", LayoutService.TextStyle.HEADING));
-        textDataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.STATUS);
+        textDataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.PARAGRAPH);
         statusContainer.getChildren().add(textDataStatus);
     }
 

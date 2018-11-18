@@ -6,6 +6,7 @@ public class BackpropagationParameters extends LearningParameters {
     private Double learningFactor;
     private Double SSE; // sum of squared errors
     private Double totalEror;
+    private Integer objectsOutOfTolerance;
 
     public BackpropagationParameters(Structure structure) {
         setStructure(structure);
@@ -24,6 +25,10 @@ public class BackpropagationParameters extends LearningParameters {
         return totalEror;
     }
 
+    public Integer getObjectsOutOfTolerance() {
+        return objectsOutOfTolerance;
+    }
+
     /* Setters */
     public void setLearningFactor(Double learningFactor) {
         this.learningFactor = learningFactor;
@@ -35,5 +40,9 @@ public class BackpropagationParameters extends LearningParameters {
 
     public void setTotalEror(Double totalEror) {
         this.totalEror = totalEror;
+    }
+
+    public void setObjectsOutOfTolerance(Integer objectsOutOfTolerance) {
+        this.objectsOutOfTolerance = objectsOutOfTolerance;
     }
 }

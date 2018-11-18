@@ -45,7 +45,7 @@ public class TopologyWidget extends Widget {
             drawNeurons();
             drawConnections();
         } else {
-            contentContainer.getChildren().add(layoutService.getText("wczytaj dane uczące oraz dane testowe", LayoutService.TextStyle.STATUS));
+            contentContainer.getChildren().add(layoutService.getText("Wymagane jest wczytanie danych uczących!", LayoutService.TextStyle.HEADING));
         }
     }
 

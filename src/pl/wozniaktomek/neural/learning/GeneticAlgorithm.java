@@ -95,8 +95,12 @@ public class GeneticAlgorithm extends Thread {
             crossover();
             mutation();
 
-            geneticParameters.setTotalError(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
-            updateInterface();
+            updateIteration();
+
+            if (learning.getInterfaceUpdating()) {
+                updateError();
+                updateObjectsOutOfTolerance();
+            }
         }
 
         endLearning();
@@ -159,8 +163,18 @@ public class GeneticAlgorithm extends Thread {
     }
 
     /* interface update */
-    private void updateInterface() {
-        learning.getLearningWidget().updateInterface(geneticParameters.getIteration(), geneticParameters.getTotalError());
+    private void updateIteration() {
+        learning.getLearningWidget().updateIteration(geneticParameters.getIteration());
+    }
+
+    private void updateError() {
+        geneticParameters.setTotalError(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+        learning.getLearningWidget().updateError(geneticParameters.getTotalError());
+    }
+
+    private void updateObjectsOutOfTolerance() {
+        geneticParameters.setObjectsOutOfTolerace(new StartupService(neuralNetwork).getObjectsOutOfTolerance(neuralNetwork.getParameters().getLearningData()));
+        learning.getLearningWidget().updateObjectsOutOfTolerance(geneticParameters.getObjectsOutOfTolerace().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
     }
 
     private void endLearning() {
@@ -172,8 +186,6 @@ public class GeneticAlgorithm extends Thread {
 
         List<Connection> connections = neuralNetwork.getStructure().getConnections();
         Chromosome bestChromosome = geneticParameters.getPopulation().get(0);
-
-        System.out.println("\nEND: " + bestChromosome.getFitness());
 
         for (int i = 0; i < connections.size(); i++) {
             connections.get(i).setWeight(bestChromosome.getWeights().get(i));
