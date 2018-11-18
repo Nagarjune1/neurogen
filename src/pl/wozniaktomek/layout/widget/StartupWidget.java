@@ -90,7 +90,7 @@ public class StartupWidget extends Widget {
 
     private void validateVerificationData() {
         ValidationService validationService = new ValidationService(neuralNetwork.getParameters());
-        if (validationService.validateObjects(verificationData)) {
+        if (validationService.validateObjects(verificationData, true)) {
             dataStatus.setText("Dane poprawne");
             setButtonStyle(true);
             refreshTable();

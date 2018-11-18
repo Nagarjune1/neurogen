@@ -65,7 +65,7 @@ public class SettingsWidget extends Widget {
             refreshMethodContainer(null);
             refreshMethodContainer(true);
         } else {
-            contentContainer.getChildren().add(layoutService.getText("Wymagane jest wczytanie danych uczących!", LayoutService.TextStyle.STATUS));
+            contentContainer.getChildren().add(layoutService.getText("Wymagane jest wczytanie danych uczących!", LayoutService.TextStyle.HEADING));
         }
     }
 

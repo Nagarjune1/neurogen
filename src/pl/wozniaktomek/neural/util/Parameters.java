@@ -26,7 +26,7 @@ public class Parameters {
         ValidationService validationService = new ValidationService(this);
         ParametersService parametersService = new ParametersService(neuralNetwork);
 
-        if (validationService.validateObjects(learningData)) {
+        if (validationService.validateObjects(learningData, false)) {
             parametersService.approveData(learningData);
             this.learningData = learningData;
             return true;
