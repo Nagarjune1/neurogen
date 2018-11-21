@@ -46,6 +46,7 @@ public class GeneticAlgorithm extends Thread {
         geneticParameters.setMutationProbability(0.01);
 
         geneticParameters.setSelectionMethod(SelectionMethod.TOURNAMENT);
+        geneticParameters.setTournamentSize(8);
 
         geneticParameters.setPopulationSize(64);
         geneticParameters.setGenSize(8);

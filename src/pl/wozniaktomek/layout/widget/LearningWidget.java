@@ -27,6 +27,7 @@ public class LearningWidget extends Widget {
     private Long startTime;
 
     private DecimalFormat errorDecimalFormat = new DecimalFormat("#.####");
+    private DecimalFormat timeDecimalFormat = new DecimalFormat("#.#");
 
     public LearningWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -139,7 +140,7 @@ public class LearningWidget extends Widget {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                textTime.setText(String.valueOf((System.currentTimeMillis() - startTime) / 1000d) + " s");
+                textTime.setText(timeDecimalFormat.format((System.currentTimeMillis() - startTime) / 1000d) + " s");
             }}, 0, 50);
     }
 

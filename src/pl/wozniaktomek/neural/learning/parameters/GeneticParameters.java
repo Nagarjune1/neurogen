@@ -15,6 +15,7 @@ public class GeneticParameters extends LearningParameters {
 
     private Double crossoverProbability;
     private Double mutationProbability;
+    private Integer tournamentSize;
 
     private Integer populationSize;
     private Integer genSize;
@@ -52,6 +53,10 @@ public class GeneticParameters extends LearningParameters {
 
     public Double getMutationProbability() {
         return mutationProbability;
+    }
+
+    public Integer getTournamentSize() {
+        return tournamentSize;
     }
 
     public Integer getPopulationSize() {
@@ -101,6 +106,10 @@ public class GeneticParameters extends LearningParameters {
 
     public void setMutationProbability(Double mutationProbability) {
         this.mutationProbability = mutationProbability;
+    }
+
+    public void setTournamentSize(Integer tournamentSize) {
+        this.tournamentSize = tournamentSize;
     }
 
     public void setPopulationSize(Integer populationSize) {

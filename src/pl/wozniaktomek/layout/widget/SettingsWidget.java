@@ -112,6 +112,10 @@ public class SettingsWidget extends Widget {
         HBox selectionHbox = layoutService.getHBox(0d, 0d, 8d);
         selectionHbox.getChildren().addAll(layoutService.getText("Selekcja", LayoutService.TextStyle.PARAGRAPH), getGeneticSelectionMethodChoiceBox());
 
+        if (neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getSelectionMethod().equals(GeneticAlgorithm.SelectionMethod.TOURNAMENT)) {
+            selectionHbox.getChildren().add(getTournamentSizeSpinner());
+        }
+
         vBox.getChildren().addAll(crossoverHbox, mutationHbox, selectionHbox);
         return vBox;
     }
@@ -335,6 +339,16 @@ public class SettingsWidget extends Widget {
         }
 
         return choiceBox;
+    }
+
+    private Spinner getTournamentSizeSpinner() {
+        Spinner<Integer> spinner = new Spinner<>();
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 32, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getTournamentSize(), 1));
+        spinner.setEditable(true);
+        spinner.setPrefWidth(72d);
+
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setTournamentSize(newValue)));
+        return spinner;
     }
 
     private Spinner getGeneticPopulationSizeSpinner() {
