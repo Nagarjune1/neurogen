@@ -1,7 +1,11 @@
 package pl.wozniaktomek.layout.widget;
 
 import javafx.application.Platform;
+import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -18,16 +22,19 @@ public class LearningWidget extends Widget {
     private Button buttonStartLearning;
     private Button buttonStopLearning;
 
+    private Text textTime;
     private Text textIterations;
     private Text textError;
     private Text textoObjectsOutOfTolerance;
-    private Text textTime;
 
     private Timer timer;
     private Long startTime;
 
     private DecimalFormat errorDecimalFormat = new DecimalFormat("#.####");
+    private DecimalFormat weightDecimalFormat = new DecimalFormat("#.##");
     private DecimalFormat timeDecimalFormat = new DecimalFormat("#.#");
+
+    private VBox weightPane;
 
     public LearningWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -38,6 +45,7 @@ public class LearningWidget extends Widget {
     private void initialize() {
         initializeControlsContainer();
         initializeStatisticsContainer();
+        initializeWeightsContainer();
         initializeButtonActions();
         disableControls();
 
@@ -50,6 +58,13 @@ public class LearningWidget extends Widget {
 
         HBox mainHBox = layoutService.getHBox(0d, 0d, 12d);
         vBox.getChildren().add(mainHBox);
+
+        VBox timeVbox = layoutService.getVBox(8d, 16d, 4d);
+        timeVbox.getStyleClass().add("stats-pane");
+        timeVbox.setMinWidth(156d);
+        textTime = layoutService.getText("nic tu nie ma...", LayoutService.TextStyle.STATUS_WHITE);
+        timeVbox.getChildren().addAll(layoutService.getText("Czas uczenia", LayoutService.TextStyle.PARAGRAPH_WHITE), textTime);
+        mainHBox.getChildren().add(timeVbox);
 
         VBox iterationVbox = layoutService.getVBox(8d, 16d, 4d);
         iterationVbox.getStyleClass().add("stats-pane");
@@ -72,13 +87,6 @@ public class LearningWidget extends Widget {
         objectsVbox.getChildren().addAll(layoutService.getText("Dane poza tolerancją", LayoutService.TextStyle.PARAGRAPH_WHITE), textoObjectsOutOfTolerance);
         mainHBox.getChildren().add(objectsVbox);
 
-        VBox timeVbox = layoutService.getVBox(8d, 16d, 4d);
-        timeVbox.getStyleClass().add("stats-pane");
-        timeVbox.setMinWidth(156d);
-        textTime = layoutService.getText("nic tu nie ma...", LayoutService.TextStyle.STATUS_WHITE);
-        timeVbox.getChildren().addAll(layoutService.getText("Czas uczenia", LayoutService.TextStyle.PARAGRAPH_WHITE), textTime);
-        mainHBox.getChildren().add(timeVbox);
-
         contentContainer.getChildren().add(vBox);
     }
 
@@ -87,13 +95,23 @@ public class LearningWidget extends Widget {
         vBox.getChildren().add(layoutService.getText("KONTROLA UCZENIA", LayoutService.TextStyle.HEADING));
         contentContainer.getChildren().add(vBox);
 
-        HBox hBox = layoutService.getHBox(0d, 8d, 12d);
-        hBox.getChildren().add(layoutService.getText("STEROWANIE", LayoutService.TextStyle.PARAGRAPH));
+        HBox hbox = layoutService.getHBox(0d, 8d, 12d);
+        hbox.getChildren().add(layoutService.getText("STEROWANIE", LayoutService.TextStyle.PARAGRAPH));
         buttonStartLearning = layoutService.getButton("Uruchom uczenie");
         buttonStopLearning = layoutService.getButton("Przewij uczenie");
         buttonStopLearning.setDisable(true);
-        hBox.getChildren().addAll(buttonStartLearning, buttonStopLearning);
-        vBox.getChildren().add(hBox);
+        hbox.getChildren().addAll(buttonStartLearning, buttonStopLearning);
+
+        hbox.getChildren().add(new Separator(Orientation.VERTICAL));
+
+        hbox.getChildren().addAll(getInterfaceUpdateCheckbox(), getWeightUpdateCheckbox());
+
+        vBox.getChildren().add(hbox);
+    }
+
+    private void initializeWeightsContainer() {
+        weightPane = layoutService.getVBox(4d, 4d, 4d);
+        contentContainer.getChildren().add(weightPane);
     }
 
     private void initializeButtonActions() {
@@ -133,6 +151,11 @@ public class LearningWidget extends Widget {
         buttonStartLearning.setDisable(false);
     }
 
+    public void endLearning() {
+        switchButtons(buttonStopLearning);
+        stopTimer();
+    }
+
     /* Timer */
     private void startTimer() {
         startTime = System.currentTimeMillis();
@@ -141,7 +164,8 @@ public class LearningWidget extends Widget {
             @Override
             public void run() {
                 textTime.setText(timeDecimalFormat.format((System.currentTimeMillis() - startTime) / 1000d) + " s");
-            }}, 0, 50);
+            }
+        }, 0, 50);
     }
 
     private void stopTimer() {
@@ -161,8 +185,63 @@ public class LearningWidget extends Widget {
         Platform.runLater(() -> this.textoObjectsOutOfTolerance.setText(objects));
     }
 
-    public void endLearning() {
-        switchButtons(buttonStopLearning);
-        stopTimer();
+    public void updateWeightsPane() {
+        Platform.runLater(this::createWeightsPane);
+    }
+
+    /* Weights pane updating */
+    private void clearWeightsPane() {
+        weightPane.getChildren().clear();
+    }
+
+    private void createWeightsPane() {
+        clearWeightsPane();
+
+        FlowPane flowPane = getWeightsFlowPane();
+        for (int i = 0; i < neuralNetwork.getStructure().getConnections().size(); i++) {
+            addWeight(i, flowPane);
+        }
+
+        weightPane.getChildren().add(flowPane);
+        neuralNetwork.getLearning().setIsInterfaceUpdating(false);
+    }
+
+    private void addWeight(Integer weightNumer, FlowPane flowPane) {
+        HBox hBox = layoutService.getHBox(0d, 0d, 8d);
+        hBox.getStyleClass().add("stats-pane-white");
+        hBox.getChildren().add(layoutService.getText("[WAGA " + (weightNumer + 1) + "]", LayoutService.TextStyle.STATUS));
+        hBox.getChildren().add(layoutService.getText(weightDecimalFormat.format(neuralNetwork.getStructure().getConnections().get(weightNumer).getWeight()), LayoutService.TextStyle.PARAGRAPH_THEME));
+
+        flowPane.getChildren().add(hBox);
+    }
+
+    private FlowPane getWeightsFlowPane() {
+        FlowPane flowPane = new FlowPane();
+        flowPane.setHgap(12d);
+        flowPane.setVgap(12d);
+        return flowPane;
+    }
+
+    /* Controls initialization */
+    private CheckBox getInterfaceUpdateCheckbox() {
+        CheckBox checkBox = layoutService.getCheckBox("Aktualizacja statystyk", null);
+        checkBox.setSelected(neuralNetwork.getLearning().getInterfaceUpdating());
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().setInterfaceUpdating(newValue));
+        return checkBox;
+    }
+
+    private CheckBox getWeightUpdateCheckbox() {
+        CheckBox checkBox = layoutService.getCheckBox("Aktualizacja wartości wag", null);
+        checkBox.setSelected(neuralNetwork.getLearning().getWeightsUpdating());
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            neuralNetwork.getLearning().setWeightsUpdating(newValue);
+
+            if (!newValue) {
+                clearWeightsPane();
+            }
+        });
+        return checkBox;
     }
 }

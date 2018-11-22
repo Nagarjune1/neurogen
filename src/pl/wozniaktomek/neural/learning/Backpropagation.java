@@ -68,11 +68,23 @@ public class Backpropagation extends Thread {
                 modifyWeights();
             }
 
-            updateIteration();
-
-            if (learning.getInterfaceUpdating()) {
+            if (!learning.getInterfaceUpdating()) {
+                countError();
+            } else {
+                updateIteration();
                 updateError();
                 updateObjectsOutOfTolerance();
+            }
+
+            if (learning.getWeightsUpdating()) {
+                learning.setIsInterfaceUpdating(true);
+                updateWeights();
+
+                while (learning.getIsInterfaceUpdating()) try {
+                    Thread.sleep(25);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
             }
         }
 
@@ -130,6 +142,15 @@ public class Backpropagation extends Thread {
         }
     }
 
+    /* Parameters counting */
+    private void countError() {
+        backpropagationParameters.setTotalEror(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+    }
+
+    private void countObjectsOutOfTolerance() {
+        backpropagationParameters.setObjectsOutOfTolerance(new StartupService(neuralNetwork).getObjectsOutOfTolerance(neuralNetwork.getParameters().getLearningData()));
+    }
+
     /* Ending conditions */
     private boolean conditions() {
         return iterationCondition() && toleranceCondition();
@@ -149,16 +170,24 @@ public class Backpropagation extends Thread {
     }
 
     private void updateError() {
-        backpropagationParameters.setTotalEror(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+        countError();
         learning.getLearningWidget().updateError(backpropagationParameters.getTotalEror());
     }
 
     private void updateObjectsOutOfTolerance() {
-        backpropagationParameters.setObjectsOutOfTolerance(new StartupService(neuralNetwork).getObjectsOutOfTolerance(neuralNetwork.getParameters().getLearningData()));
+        countObjectsOutOfTolerance();
         learning.getLearningWidget().updateObjectsOutOfTolerance(backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
     }
 
+    private void updateWeights() {
+        learning.getLearningWidget().updateWeightsPane();
+    }
+
     private void endLearning() {
+        updateIteration();
+        updateError();
+        updateObjectsOutOfTolerance();
+
         neuralNetwork.setLearned(true);
         learning.getLearningWidget().endLearning();
     }

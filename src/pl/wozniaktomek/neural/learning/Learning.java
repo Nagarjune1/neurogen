@@ -24,11 +24,15 @@ public class Learning {
     /* Interface */
     private LearningWidget learningWidget;
     private Boolean interfaceUpdating;
+    private Boolean weightsUpdating;
+
+    private Boolean isInterfaceUpdating;
 
     public Learning(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         executorService = Executors.newSingleThreadExecutor();
         interfaceUpdating = true;
+        weightsUpdating = false;
 
         iterationsAmount = 10000;
         learningTolerance = 0.1;
@@ -88,12 +92,28 @@ public class Learning {
         return learningWidget;
     }
 
-    Boolean getInterfaceUpdating() {
+    public Boolean getInterfaceUpdating() {
         return interfaceUpdating;
     }
 
     public void setInterfaceUpdating(Boolean interfaceUpdating) {
         this.interfaceUpdating = interfaceUpdating;
+    }
+
+    public Boolean getWeightsUpdating() {
+        return weightsUpdating;
+    }
+
+    public void setWeightsUpdating(Boolean weightsUpdating) {
+        this.weightsUpdating = weightsUpdating;
+    }
+
+    Boolean getIsInterfaceUpdating() {
+        return isInterfaceUpdating;
+    }
+
+    public void setIsInterfaceUpdating(Boolean updating) {
+        isInterfaceUpdating = updating;
     }
 
     /* Getters */
@@ -124,8 +144,6 @@ public class Learning {
     public Backpropagation getBackpropagation() {
         return backpropagation;
     }
-
-
 
     /* Learning method */
     public enum LearningMethod {

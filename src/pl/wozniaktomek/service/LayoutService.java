@@ -123,6 +123,9 @@ public class LayoutService {
             case PARAGRAPH_WHITE:
                 text.getStyleClass().add("text-paragraph-white");
                 break;
+
+            case PARAGRAPH_THEME:
+                text.getStyleClass().add("text-paragraph-theme");
         }
 
         return text;
@@ -166,7 +169,7 @@ public class LayoutService {
         return styles;
     }
 
-    public enum TextStyle {WIDGET_PRIMARY_TITLE, WIDGET_SECONDARY_TITLE, HEADING, STATUS, STATUS_WHITE, PARAGRAPH, PARAGRAPH_WHITE}
+    public enum TextStyle {WIDGET_PRIMARY_TITLE, WIDGET_SECONDARY_TITLE, HEADING, STATUS, STATUS_WHITE, PARAGRAPH, PARAGRAPH_WHITE, PARAGRAPH_THEME}
 
     public enum ButtonStyle {SECONDARY, WHITE}
 }

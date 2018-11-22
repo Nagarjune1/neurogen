@@ -96,11 +96,25 @@ public class GeneticAlgorithm extends Thread {
             crossover();
             mutation();
 
-            updateIteration();
+            countError();
 
             if (learning.getInterfaceUpdating()) {
+                updateIteration();
                 updateError();
                 updateObjectsOutOfTolerance();
+            } else {
+                countError();
+            }
+
+            if (learning.getWeightsUpdating()) {
+                learning.setIsInterfaceUpdating(true);
+                updateWeights();
+
+                while (learning.getIsInterfaceUpdating()) try {
+                    Thread.sleep(25);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
             }
         }
 
@@ -150,6 +164,14 @@ public class GeneticAlgorithm extends Thread {
         }
     }
 
+    private void countError() {
+        geneticParameters.setTotalError(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+    }
+
+    private void countObjectsOutOfTolerance() {
+        geneticParameters.setObjectsOutOfTolerace(new StartupService(neuralNetwork).getObjectsOutOfTolerance(neuralNetwork.getParameters().getLearningData()));
+    }
+
     /* EndingcConditions */
     private boolean conditions() {
         return iterationCondition() && toleranceCondition();
@@ -169,13 +191,17 @@ public class GeneticAlgorithm extends Thread {
     }
 
     private void updateError() {
-        geneticParameters.setTotalError(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+        countError();
         learning.getLearningWidget().updateError(geneticParameters.getTotalError());
     }
 
     private void updateObjectsOutOfTolerance() {
-        geneticParameters.setObjectsOutOfTolerace(new StartupService(neuralNetwork).getObjectsOutOfTolerance(neuralNetwork.getParameters().getLearningData()));
+        countObjectsOutOfTolerance();
         learning.getLearningWidget().updateObjectsOutOfTolerance(geneticParameters.getObjectsOutOfTolerace().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+    }
+
+    private void updateWeights() {
+        learning.getLearningWidget().updateWeightsPane();
     }
 
     private void endLearning() {
@@ -191,6 +217,10 @@ public class GeneticAlgorithm extends Thread {
         for (int i = 0; i < connections.size(); i++) {
             connections.get(i).setWeight(bestChromosome.getWeights().get(i));
         }
+
+        updateIteration();
+        updateError();
+        updateObjectsOutOfTolerance();
 
         neuralNetwork.setLearned(true);
         learning.getLearningWidget().endLearning();
