@@ -1,5 +1,6 @@
 package pl.wozniaktomek.layout.widget;
 
+import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -90,8 +91,9 @@ public class SettingsWidget extends Widget {
                 geneticSettingsContainer.getChildren().addAll(getGeneticMethodsContainer(), getGeneticParametersContainer());
                 learningMethodSettingsContainer.getChildren().add(geneticSettingsContainer);
             } else {
-                HBox backpropagationSettingsContainer = layoutService.getHBox(5d, 0d, 8d);
+                HBox backpropagationSettingsContainer = layoutService.getHBox(5d, 8d, 12d);
                 backpropagationSettingsContainer.getChildren().addAll(layoutService.getText("Współczynnik uczenia", LayoutService.TextStyle.PARAGRAPH), getLearningFactorSpinner());
+                backpropagationSettingsContainer.getChildren().addAll(new Separator(Orientation.VERTICAL), getRecordsMixingCheckbox());
                 learningMethodSettingsContainer.getChildren().add(backpropagationSettingsContainer);
             }
         }
@@ -399,6 +401,15 @@ public class SettingsWidget extends Widget {
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().setLearningFactor(newValue)));
         return spinner;
+    }
+
+    private CheckBox getRecordsMixingCheckbox() {
+        CheckBox checkBox = layoutService.getCheckBox("Mieszanie danych wejściowych", null);
+        checkBox.setSelected(neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().getRecordsMixing());
+
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().setRecordsMixing(newValue));
+
+        return checkBox;
     }
 
     private Spinner getLayerSpinner(Boolean isDisable, Integer value, Integer number) {

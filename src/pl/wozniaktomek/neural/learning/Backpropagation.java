@@ -9,6 +9,8 @@ import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Backpropagation extends Thread {
@@ -33,6 +35,7 @@ public class Backpropagation extends Thread {
 
     private void initializeBasicParameters() {
         backpropagationParameters.setLearningFactor(0.1);
+        backpropagationParameters.setRecordsMixing(false);
     }
 
     /* Control */
@@ -57,7 +60,12 @@ public class Backpropagation extends Thread {
         while (backpropagationParameters.getIsLearning() && conditions()) {
             backpropagationParameters.setIteration(backpropagationParameters.getIteration() + 1);
 
-            for (NeuralObject neuralObject : backpropagationParameters.getLearningData()) {
+            List<NeuralObject> learningData = backpropagationParameters.getLearningData();
+            if (backpropagationParameters.getRecordsMixing()) {
+                Collections.shuffle(learningData);
+            }
+
+            for (NeuralObject neuralObject : learningData) {
                 backpropagationParameters.setSSE(0d);
 
                 putInputData(neuralObject);

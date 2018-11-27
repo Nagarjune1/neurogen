@@ -8,6 +8,8 @@ public class BackpropagationParameters extends LearningParameters {
     private Double totalEror;
     private Integer objectsOutOfTolerance;
 
+    private Boolean isRecordsMixing;
+
     public BackpropagationParameters(Structure structure) {
         setStructure(structure);
     }
@@ -29,6 +31,10 @@ public class BackpropagationParameters extends LearningParameters {
         return objectsOutOfTolerance;
     }
 
+    public Boolean getRecordsMixing() {
+        return isRecordsMixing;
+    }
+
     /* Setters */
     public void setLearningFactor(Double learningFactor) {
         this.learningFactor = learningFactor;
@@ -44,5 +50,9 @@ public class BackpropagationParameters extends LearningParameters {
 
     public void setObjectsOutOfTolerance(Integer objectsOutOfTolerance) {
         this.objectsOutOfTolerance = objectsOutOfTolerance;
+    }
+
+    public void setRecordsMixing(Boolean recordsMixing) {
+        isRecordsMixing = recordsMixing;
     }
 }
