@@ -1,7 +1,8 @@
 package pl.wozniaktomek.neural.learning;
 
-import pl.wozniaktomek.genetic.crossover.DoublePoint;
-import pl.wozniaktomek.genetic.crossover.SinglePoint;
+import pl.wozniaktomek.genetic.crossover.CrossDouble;
+import pl.wozniaktomek.genetic.crossover.CrossEvenly;
+import pl.wozniaktomek.genetic.crossover.CrossSingle;
 import pl.wozniaktomek.genetic.mutation.FlipString;
 import pl.wozniaktomek.genetic.mutation.FlipBit;
 import pl.wozniaktomek.genetic.selection.Roulette;
@@ -125,14 +126,18 @@ public class GeneticAlgorithm extends Thread {
     private void crossover() {
         switch (geneticParameters.getCrossoverMethod()) {
             case SINGLE:
-                SinglePoint singlePoint = new SinglePoint(geneticParameters.getPopulation(), geneticParameters.getCrossoverProbability());
-                geneticParameters.setPopulation(singlePoint.getPopulation());
+                CrossSingle crossSingle = new CrossSingle(geneticParameters.getPopulation(), geneticParameters.getCrossoverProbability());
+                geneticParameters.setPopulation(crossSingle.getPopulation());
                 break;
 
             case DOUBLE:
-                DoublePoint doublePoint = new DoublePoint(geneticParameters.getPopulation(), geneticParameters.getCrossoverProbability());
-                geneticParameters.setPopulation(doublePoint.getPopulation());
+                CrossDouble crossDouble = new CrossDouble(geneticParameters.getPopulation(), geneticParameters.getCrossoverProbability());
+                geneticParameters.setPopulation(crossDouble.getPopulation());
                 break;
+
+            case EVENLY:
+                CrossEvenly crossEvenly = new CrossEvenly(geneticParameters.getPopulation(), geneticParameters.getCrossoverProbability());
+                geneticParameters.setPopulation(crossEvenly.getPopulation());
         }
     }
 
@@ -236,7 +241,7 @@ public class GeneticAlgorithm extends Thread {
         ROULETTE, TOURNAMENT
     }
 
-    public enum CrossoverMethod {SINGLE, DOUBLE}
+    public enum CrossoverMethod {SINGLE, DOUBLE, EVENLY}
 
     public enum MutationMethod {FLIPBIT, FLIPSTRING}
 }

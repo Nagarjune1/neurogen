@@ -259,21 +259,29 @@ public class SettingsWidget extends Widget {
 
     private ChoiceBox getGeneticCrossoverMethodChoiceBox() {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("Krzyżowanie jednopunktowe", "Krzyżowanie dwupunktowe");
+        choiceBox.getItems().addAll("Krzyżowanie jednopunktowe", "Krzyżowanie dwupunktowe", "Krzyżowanie równomierne");
         choiceBox.setMinWidth(212d);
 
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals("Krzyżowanie jednopunktowe")) {
-                neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setCrossoverMethod(GeneticAlgorithm.CrossoverMethod.SINGLE);
-            } else {
-                neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setCrossoverMethod(GeneticAlgorithm.CrossoverMethod.DOUBLE);
+            switch (newValue) {
+                case "Krzyżowanie jednopunktowe":
+                    neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setCrossoverMethod(GeneticAlgorithm.CrossoverMethod.SINGLE);
+                    break;
+                case "Krzyżowanie dwupunktowe":
+                    neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setCrossoverMethod(GeneticAlgorithm.CrossoverMethod.DOUBLE);
+                    break;
+                default:
+                    neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setCrossoverMethod(GeneticAlgorithm.CrossoverMethod.EVENLY);
+                    break;
             }
         });
 
         if (neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getCrossoverMethod().equals(GeneticAlgorithm.CrossoverMethod.SINGLE)) {
             choiceBox.getSelectionModel().select("Krzyżowanie jednopunktowe");
-        } else {
+        } else if (neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getCrossoverMethod().equals(GeneticAlgorithm.CrossoverMethod.DOUBLE)) {
             choiceBox.getSelectionModel().select("Krzyżowanie dwupunktowe");
+        } else {
+            choiceBox.getSelectionModel().select("Krzyżowanie równomierne");
         }
 
         return choiceBox;
@@ -281,7 +289,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getGeneticCrossoverProbabilitySpinner() {
         Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getCrossoverProbability(), 0.01));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0d, 1d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getCrossoverProbability(), 0.01));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
@@ -313,7 +321,7 @@ public class SettingsWidget extends Widget {
 
     private Spinner getGeneticMutationProbabilitySpinner() {
         Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getMutationProbability(), 0.01));
+        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0d, 1d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getMutationProbability(), 0.01));
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
