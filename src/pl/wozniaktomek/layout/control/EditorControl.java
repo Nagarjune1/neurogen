@@ -24,17 +24,12 @@ public class EditorControl implements Initializable {
     @FXML private Button buttonClear;
     @FXML private Button buttonSave;
     @FXML private Button buttonRead;
-    @FXML private Button buttonHelp;
 
     @FXML private HBox titleContainer;
     @FXML private HBox chartContainer;
 
-    @FXML private RadioButton dataClassRadioButton1;
-    @FXML private RadioButton dataClassRadioButton2;
-    @FXML private RadioButton dataClassRadioButton3;
-    @FXML private RadioButton dataClassRadioButton4;
-    @FXML private RadioButton dataClassRadioButton5;
-    @FXML private ToggleGroup dataClassToggleGroup;
+    @FXML private Spinner<Integer> classAmountSpinner;
+    @FXML private ChoiceBox<Integer> classChoiceBox;
 
     @FXML private TextFlow textSummary;
     private Text textSummaryContent;
@@ -43,20 +38,48 @@ public class EditorControl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeRadioButtons();
+        initializeClassSpinner();
+        initializeClassChoiceBox();
         initializeSizeListener();
-        initializeToggleListener();
         initializeSummaryListener();
         initializeButtonActions();
         initializeWidget();
     }
 
-    private void initializeRadioButtons() {
-        dataClassRadioButton1.setUserData(1);
-        dataClassRadioButton2.setUserData(2);
-        dataClassRadioButton3.setUserData(3);
-        dataClassRadioButton4.setUserData(4);
-        dataClassRadioButton5.setUserData(5);
+    private void initializeClassSpinner() {
+        classAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 8, 4));
+        classAmountSpinner.setEditable(true);
+
+        classAmountSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            refreshClassChoiceBox(newValue);
+
+            if (newValue < oldValue) {
+                editorChart.clearChart();
+            }
+        }));
+    }
+
+    private void initializeClassChoiceBox() {
+        for (int i = 1; i <= 4; i++) {
+            classChoiceBox.getItems().add(i);
+        }
+
+        classChoiceBox.getSelectionModel().select(0);
+        classChoiceBox.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> editorChart.setClassNumber(newValue)));
+    }
+
+    private void refreshClassChoiceBox(Integer classAmount) {
+        Integer selectedItem = classChoiceBox.getSelectionModel().getSelectedItem();
+        if (selectedItem > classAmount) {
+            selectedItem = classAmount;
+        }
+
+        classChoiceBox.getItems().clear();
+        for (int i = 1; i <= classAmount; i++) {
+            classChoiceBox.getItems().add(i);
+        }
+
+        classChoiceBox.getSelectionModel().select(selectedItem);
     }
 
     private void initializeSizeListener() {
@@ -69,18 +92,13 @@ public class EditorControl implements Initializable {
         ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
-    private void initializeToggleListener() {
-        dataClassToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                editorChart.setClassNumber(Integer.valueOf(dataClassToggleGroup.getSelectedToggle().getUserData().toString())));
-    }
-
     private void initializeSummaryListener() {
         textSummaryContent = new Text();
 
         textSummaryContent.textProperty().addListener((observable, oldValue, newValue) -> {
             textSummary.getChildren().clear();
             textSummaryContent = new Text(newValue);
-            textSummaryContent.getStyleClass().add("text-status");
+            textSummaryContent.getStyleClass().add("text-paragraph");
 
             textSummary.getChildren().add(textSummaryContent);
         });
@@ -98,7 +116,6 @@ public class EditorControl implements Initializable {
         });
 
         buttonClear.setOnAction(event -> editorChart.clearChart());
-
 
         buttonSave.setOnAction(event -> {
             new DataTransferService().saveToFile(editorChart.getObjects());

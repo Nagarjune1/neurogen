@@ -44,9 +44,9 @@ public class DataTransferService {
 
     /* Parsing to file */
     private HashMap<Integer, ArrayList<Point2D>> organizeObjects(HashMap<Integer, ArrayList<Point2D>> objects) {
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <= 8; i++) {
             if (!objects.containsKey(i)) {
-                for (int j = i + 1; j < 6; j++) {
+                for (int j = i + 1; j <= 8; j++) {
                     if (objects.containsKey(j)) {
                         objects.put(i, objects.get(j));
                         objects.remove(j);
@@ -57,7 +57,7 @@ public class DataTransferService {
         }
 
         classCounter = 0;
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <= 8; i++) {
             if (objects.containsKey(i)) {
                 classCounter++;
             }

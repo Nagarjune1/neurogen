@@ -58,8 +58,9 @@ public class EditorChart {
             if (pointClass.getX() >= xAxis.getLowerBound() && pointClass.getX() <= xAxis.getUpperBound() && pointClass.getY() >= yAxis.getLowerBound() && pointClass.getY() <= yAxis.getUpperBound()) {
                 if (objects.containsKey(classNumber)) {
                     ArrayList<Point2D> classPoints = objects.get(classNumber);
-                    if (!classPoints.contains(pointClass))
+                    if (!classPoints.contains(pointClass)) {
                         classPoints.add(pointClass);
+                    }
                     objects.replace(classNumber, classPoints);
                 } else {
                     ArrayList<Point2D> classPoints = new ArrayList<>();
@@ -92,7 +93,7 @@ public class EditorChart {
 
         String summary = "";
 
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <= 8; i++) {
             if (objects.get(i) != null)
                 summary = summary.concat("\nklasa " + i + ":  " + objects.get(i).size() + " / " + objectAmount);
         }
