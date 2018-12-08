@@ -24,7 +24,7 @@ public class GeneticParameters extends LearningParameters {
     private Double chromosomeMaxRange;
 
     private Double totalError;
-    private Integer objectsOutOfTolerace;
+    private Integer objectsOutOfTolerance;
 
     public GeneticParameters(Structure structure) {
         setStructure(structure);
@@ -79,8 +79,8 @@ public class GeneticParameters extends LearningParameters {
         return totalError;
     }
 
-    public Integer getObjectsOutOfTolerace() {
-        return objectsOutOfTolerace;
+    public Integer getObjectsOutOfTolerance() {
+        return objectsOutOfTolerance;
     }
 
     /* Setters*/
@@ -132,7 +132,7 @@ public class GeneticParameters extends LearningParameters {
         this.totalError = totalError;
     }
 
-    public void setObjectsOutOfTolerace(Integer objectsOutOfTolerace) {
-        this.objectsOutOfTolerace = objectsOutOfTolerace;
+    public void setObjectsOutOfTolerance(Integer objectsOutOfTolerance) {
+        this.objectsOutOfTolerance = objectsOutOfTolerance;
     }
 }

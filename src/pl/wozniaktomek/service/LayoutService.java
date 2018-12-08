@@ -9,10 +9,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import pl.wozniaktomek.layout.widget.Widget;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class LayoutService {
     public Button getButton(String text, Double width, Double height, ButtonStyle buttonStyle) {
@@ -149,24 +145,6 @@ public class LayoutService {
         }
 
         return textFlow;
-    }
-
-    public HashMap<Widget.WidgetStyle, ArrayList<String>> getWidgetStyles() {
-        HashMap<Widget.WidgetStyle, ArrayList<String>> styles = new HashMap<>();
-
-        ArrayList<String> styleClasses = new ArrayList<>();
-        styleClasses.add("widget-primary");
-        styleClasses.add("widget-primary-header");
-        styleClasses.add("widget-primary-title");
-        styles.put(Widget.WidgetStyle.PRIMARY, styleClasses);
-
-        styleClasses = new ArrayList<>();
-        styleClasses.add("widget-secondary");
-        styleClasses.add("widget-secondary-header");
-        styleClasses.add("widget-secondary-title");
-        styles.put(Widget.WidgetStyle.SECONDARY, styleClasses);
-
-        return styles;
     }
 
     public enum TextStyle {WIDGET_PRIMARY_TITLE, WIDGET_SECONDARY_TITLE, HEADING, STATUS, STATUS_WHITE, PARAGRAPH, PARAGRAPH_WHITE, PARAGRAPH_THEME}

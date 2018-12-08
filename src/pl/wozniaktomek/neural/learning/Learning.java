@@ -24,15 +24,16 @@ public class Learning {
     /* Interface */
     private LearningWidget learningWidget;
     private Boolean interfaceUpdating;
-    private Boolean weightsUpdating;
+    private Boolean learningVisualization;
 
-    private Boolean isInterfaceUpdating;
+    private Boolean isNowInterfaceUpdating;
+    private Boolean isNowVisualizationUpdating;
 
     public Learning(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         executorService = Executors.newSingleThreadExecutor();
         interfaceUpdating = true;
-        weightsUpdating = false;
+        learningVisualization = false;
 
         iterationsAmount = 10000;
         learningTolerance = 0.1;
@@ -100,20 +101,28 @@ public class Learning {
         this.interfaceUpdating = interfaceUpdating;
     }
 
-    public Boolean getWeightsUpdating() {
-        return weightsUpdating;
+    public Boolean getLearningVisualization() {
+        return learningVisualization;
     }
 
-    public void setWeightsUpdating(Boolean weightsUpdating) {
-        this.weightsUpdating = weightsUpdating;
+    public void setLearningVisualization(Boolean learningVisualization) {
+        this.learningVisualization = learningVisualization;
     }
 
-    Boolean getIsInterfaceUpdating() {
-        return isInterfaceUpdating;
+    Boolean getIsNowInterfaceUpdating() {
+        return isNowInterfaceUpdating;
     }
 
-    public void setIsInterfaceUpdating(Boolean updating) {
-        isInterfaceUpdating = updating;
+    public void setIsNowInterfaceUpdating(Boolean updating) {
+        isNowInterfaceUpdating = updating;
+    }
+
+    Boolean getIsNowVisualizationUpdating() {
+        return isNowVisualizationUpdating;
+    }
+
+    public void setIsNowVisualizationUpdating(Boolean nowVisualizationUpdating) {
+        isNowVisualizationUpdating = nowVisualizationUpdating;
     }
 
     /* Getters */

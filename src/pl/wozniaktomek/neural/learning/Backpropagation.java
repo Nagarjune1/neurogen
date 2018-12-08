@@ -9,7 +9,6 @@ import pl.wozniaktomek.neural.structure.Layer;
 import pl.wozniaktomek.neural.structure.Neuron;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class Backpropagation extends Thread {
     public void run() {
         backpropagationParameters.setIsLearning(true);
         backpropagationParameters.setIteration(0);
-        backpropagationParameters.setTotalEror(1d);
+        backpropagationParameters.setTotalError(1d);
         backpropagationParameters.setLearningData(learningService.initializeLearningData());
 
         learningService.initializeBiasOutput(backpropagationParameters.getStructure().getLayers());
@@ -76,19 +75,24 @@ public class Backpropagation extends Thread {
                 modifyWeights();
             }
 
-            if (!learning.getInterfaceUpdating()) {
-                countError();
+            if (learning.getInterfaceUpdating()) {
+                learning.setIsNowInterfaceUpdating(true);
+                updateInterface();
+
+                while (learning.getIsNowInterfaceUpdating()) try {
+                    Thread.sleep(25);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
             } else {
-                updateIteration();
-                updateError();
-                updateObjectsOutOfTolerance();
+                countError();
             }
 
-            if (learning.getWeightsUpdating()) {
-                learning.setIsInterfaceUpdating(true);
-                updateWeights();
+            if (learning.getLearningVisualization()) {
+                learning.setIsNowVisualizationUpdating(true);
+                updateVisualization();
 
-                while (learning.getIsInterfaceUpdating()) try {
+                while (learning.getIsNowVisualizationUpdating()) try {
                     Thread.sleep(25);
                 } catch (InterruptedException exception) {
                     exception.printStackTrace();
@@ -152,7 +156,7 @@ public class Backpropagation extends Thread {
 
     /* Parameters counting */
     private void countError() {
-        backpropagationParameters.setTotalEror(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
+        backpropagationParameters.setTotalError(new StartupService(neuralNetwork).getTotalError(neuralNetwork.getParameters().getLearningData()));
     }
 
     private void countObjectsOutOfTolerance() {
@@ -169,33 +173,24 @@ public class Backpropagation extends Thread {
     }
 
     private boolean toleranceCondition() {
-        return backpropagationParameters.getTotalEror() > learning.getLearningTolerance();
+        return backpropagationParameters.getTotalError() > learning.getLearningTolerance();
     }
 
     /* interface update */
-    private void updateIteration() {
-        learning.getLearningWidget().updateIteration(backpropagationParameters.getIteration());
-    }
-
-    private void updateError() {
-        countError();
-        learning.getLearningWidget().updateError(backpropagationParameters.getTotalEror());
-    }
-
-    private void updateObjectsOutOfTolerance() {
+    private void updateInterface() {
         countObjectsOutOfTolerance();
-        learning.getLearningWidget().updateObjectsOutOfTolerance(backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+        countError();
+        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getTotalError(),
+                backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
     }
 
-    private void updateWeights() {
-        learning.getLearningWidget().updateWeightsPane();
+    private void updateVisualization() {
+        learning.getLearningWidget().drawLearningVisulization();
     }
 
     private void endLearning() {
-        updateIteration();
-        updateError();
-        updateObjectsOutOfTolerance();
-
+        updateInterface();
+        updateVisualization();
         neuralNetwork.setLearned(true);
         learning.getLearningWidget().endLearning();
     }

@@ -35,7 +35,7 @@ public class StartupWidget extends Widget {
 
     public StartupWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        createPrimaryWidget("Uruchomienie sieci");
+        createWidget("Uruchomienie sieci");
         initialize();
     }
 
@@ -61,13 +61,13 @@ public class StartupWidget extends Widget {
 
         HBox buttonHBox = layoutService.getHBox(0d, 0d, 8d);
         buttonHBox.setAlignment(Pos.BASELINE_LEFT);
-        dataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.PARAGRAPH);
+        dataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.HEADING);
         buttonHBox.getChildren().addAll(getLoadDataButton(), layoutService.getText("STATUS:", LayoutService.TextStyle.HEADING), dataStatus);
         mainVBox.getChildren().add(buttonHBox);
 
         HBox statusHBox = layoutService.getHBox(0d, 0d, 8d);
         statusHBox.setAlignment(Pos.BASELINE_LEFT);
-        networkStatus = layoutService.getText("Sieć nie przeszła jeszcze procesu uczenia...", LayoutService.TextStyle.PARAGRAPH);
+        networkStatus = layoutService.getText("Sieć nie przeszła jeszcze procesu uczenia...", LayoutService.TextStyle.HEADING);
         statusHBox.getChildren().addAll(layoutService.getText("STAN SIECI:", LayoutService.TextStyle.HEADING), networkStatus);
         mainVBox.getChildren().add(statusHBox);
     }

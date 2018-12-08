@@ -17,22 +17,23 @@ import java.util.List;
 import java.util.Map;
 
 public class TopologyWidget extends Widget {
-    private final static double DEFAULT_NEURON_RADIUS = 52d;
-    private final static double DEFAULT_NEURON_SIZE = 60d;
-    private Double neuronRadius, neuronSize, neuronMargin;
+    private final static double DEFAULT_NEURON_RADIUS = 58d;
+    private final static double DEFAULT_NEURON_SIZE = 78d;
+    private Double neuronSize, neuronMargin;
+    Double neuronRadius;
 
-    private NeuralNetwork neuralNetwork;
+    NeuralNetwork neuralNetwork;
     private Integer mostNeuronsInLayer, layersAmount;
 
-    private GraphicsContext graphicsContext;
+    GraphicsContext graphicsContext;
     private Canvas canvas;
     private Double canvasWidth;
 
-    private HashMap<Integer, ArrayList<Point2D>> points;
+    HashMap<Integer, ArrayList<Point2D>> points;
 
     public TopologyWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        createPrimaryWidget("Wizualizacja topologii sieci");
+        createWidget("Wizualizacja topologii sieci");
     }
 
     public void drawNetwork(Double width) {
@@ -99,7 +100,7 @@ public class TopologyWidget extends Widget {
     private void calculatePoints() {
         points = new HashMap<>();
 
-        double height = neuronSize / 2d;
+        double height = DEFAULT_NEURON_SIZE / 2d;
         for (int i = 1; i < neuralNetwork.getStructure().getLayers().size() + 1; i++) {
             ArrayList<Point2D> listOfPoints = new ArrayList<>();
 
@@ -121,7 +122,7 @@ public class TopologyWidget extends Widget {
                 counter++;
             }
 
-            height += neuronSize * 2;
+            height += DEFAULT_NEURON_SIZE * 2;
             points.put(i, listOfPoints);
         }
     }
@@ -159,7 +160,7 @@ public class TopologyWidget extends Widget {
         }
     }
 
-    private void drawConnections() {
+    protected void drawConnections() {
         graphicsContext.setLineWidth(0.5);
 
         ArrayList<Point2D> allPoints = new ArrayList<>();

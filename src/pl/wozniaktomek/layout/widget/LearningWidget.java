@@ -1,14 +1,15 @@
 package pl.wozniaktomek.layout.widget;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.service.LayoutService;
 
@@ -19,33 +20,39 @@ import java.util.TimerTask;
 public class LearningWidget extends Widget {
     private NeuralNetwork neuralNetwork;
 
+    /* Controls */
     private Button buttonStartLearning;
     private Button buttonStopLearning;
 
+    /* Statistics */
     private Text textTime;
     private Text textIterations;
     private Text textError;
     private Text textoObjectsOutOfTolerance;
 
+    /* Timer */
     private Timer timer;
     private Long startTime;
 
+    /* Text format */
     private DecimalFormat errorDecimalFormat = new DecimalFormat("#.####");
-    private DecimalFormat weightDecimalFormat = new DecimalFormat("#.##");
     private DecimalFormat timeDecimalFormat = new DecimalFormat("#.#");
 
-    private VBox weightPane;
+    /* Visualization */
+    private VBox visualizationyContainer;
+    private LearningVisualizationWidget learningVisualizationWidget;
 
     public LearningWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
-        createPrimaryWidget("Panel kontrolny");
+        createWidget("Panel kontrolny");
         initialize();
     }
 
     private void initialize() {
         initializeControlsContainer();
         initializeStatisticsContainer();
-        initializeWeightsContainer();
+        initializeVisualizationContainer();
+        initializeSizeListener();
         initializeButtonActions();
         disableControls();
 
@@ -104,14 +111,17 @@ public class LearningWidget extends Widget {
 
         hbox.getChildren().add(new Separator(Orientation.VERTICAL));
 
-        hbox.getChildren().addAll(getInterfaceUpdateCheckbox(), getWeightUpdateCheckbox());
+        hbox.getChildren().addAll(getInterfaceUpdateCheckbox(), getLearningVisualizationCheckbox());
 
         vBox.getChildren().add(hbox);
     }
 
-    private void initializeWeightsContainer() {
-        weightPane = layoutService.getVBox(4d, 4d, 4d);
-        contentContainer.getChildren().add(weightPane);
+    private void initializeVisualizationContainer() {
+        visualizationyContainer = layoutService.getVBox(0d, 0d, 0d);
+
+        learningVisualizationWidget = new LearningVisualizationWidget(neuralNetwork);
+        visualizationyContainer.getChildren().add(learningVisualizationWidget.getWidget());
+        contentContainer.getChildren().add(visualizationyContainer);
     }
 
     private void initializeButtonActions() {
@@ -141,7 +151,20 @@ public class LearningWidget extends Widget {
         }
     }
 
+    private void initializeSizeListener() {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            if (startTime != null) {
+                drawLearningVisulization();
+            }
+        };
+        ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
+    }
+
     /* Interface control */
+    public void drawLearningVisulization() {
+        Platform.runLater(() -> learningVisualizationWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 108));
+    }
+
     public void disableControls() {
         buttonStartLearning.setDisable(true);
         buttonStopLearning.setDisable(true);
@@ -173,53 +196,14 @@ public class LearningWidget extends Widget {
     }
 
     /* Interface update */
-    public void updateIteration(Integer iteration) {
-        Platform.runLater(() -> this.textIterations.setText(String.valueOf(iteration)));
-    }
+    public void updateInterface(Integer iteration, Double error, String objects) {
+        Platform.runLater(() -> {
+            this.textIterations.setText(String.valueOf(iteration));
+            this.textError.setText(errorDecimalFormat.format(error));
+            this.textoObjectsOutOfTolerance.setText(objects);
+        });
 
-    public void updateError(Double error) {
-        Platform.runLater(() -> this.textError.setText(errorDecimalFormat.format(error)));
-    }
-
-    public void updateObjectsOutOfTolerance(String objects) {
-        Platform.runLater(() -> this.textoObjectsOutOfTolerance.setText(objects));
-    }
-
-    public void updateWeightsPane() {
-        Platform.runLater(this::createWeightsPane);
-    }
-
-    /* Weights pane updating */
-    private void clearWeightsPane() {
-        weightPane.getChildren().clear();
-    }
-
-    private void createWeightsPane() {
-        clearWeightsPane();
-
-        FlowPane flowPane = getWeightsFlowPane();
-        for (int i = 0; i < neuralNetwork.getStructure().getConnections().size(); i++) {
-            addWeight(i, flowPane);
-        }
-
-        weightPane.getChildren().add(flowPane);
-        neuralNetwork.getLearning().setIsInterfaceUpdating(false);
-    }
-
-    private void addWeight(Integer weightNumer, FlowPane flowPane) {
-        HBox hBox = layoutService.getHBox(0d, 0d, 8d);
-        hBox.getStyleClass().add("stats-pane-white");
-        hBox.getChildren().add(layoutService.getText("[WAGA " + (weightNumer + 1) + "]", LayoutService.TextStyle.STATUS));
-        hBox.getChildren().add(layoutService.getText(weightDecimalFormat.format(neuralNetwork.getStructure().getConnections().get(weightNumer).getWeight()), LayoutService.TextStyle.PARAGRAPH_THEME));
-
-        flowPane.getChildren().add(hBox);
-    }
-
-    private FlowPane getWeightsFlowPane() {
-        FlowPane flowPane = new FlowPane();
-        flowPane.setHgap(12d);
-        flowPane.setVgap(12d);
-        return flowPane;
+        neuralNetwork.getLearning().setIsNowInterfaceUpdating(false);
     }
 
     /* Controls initialization */
@@ -231,17 +215,11 @@ public class LearningWidget extends Widget {
         return checkBox;
     }
 
-    private CheckBox getWeightUpdateCheckbox() {
-        CheckBox checkBox = layoutService.getCheckBox("Aktualizacja wartości wag", null);
-        checkBox.setSelected(neuralNetwork.getLearning().getWeightsUpdating());
+    private CheckBox getLearningVisualizationCheckbox() {
+        CheckBox checkBox = layoutService.getCheckBox("Wizualizacja uczenia", null);
+        checkBox.setSelected(neuralNetwork.getLearning().getLearningVisualization());
 
-        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            neuralNetwork.getLearning().setWeightsUpdating(newValue);
-
-            if (!newValue) {
-                clearWeightsPane();
-            }
-        });
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningVisualization(newValue));
         return checkBox;
     }
 }

@@ -8,12 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import pl.wozniaktomek.service.LayoutService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public abstract class Widget {
-    protected LayoutService layoutService;
-    private HashMap<WidgetStyle, ArrayList<String>> styles;
+    LayoutService layoutService;
 
     private VBox mainContainer;
     private HBox titleContainer;
@@ -24,47 +20,30 @@ public abstract class Widget {
     private boolean isMinimized;
     private Button minimizationButton;
 
-    protected Widget() {
+    Widget() {
         layoutService = new LayoutService();
-
-        initializeStyles();
         initializeContainers();
         initializeWidgetSizeListener();
     }
 
-    protected void createPrimaryWidget(String title) {
-        initializeTitle(title, LayoutService.TextStyle.WIDGET_PRIMARY_TITLE);
-        setStyle(WidgetStyle.PRIMARY);
+    void createWidget(String title) {
+        initializeTitle(title);
         initializeMinimizationButton();
         setMinimizationVisibility(true);
-    }
-
-    protected void createSecondaryWidget(String title) {
-        initializeTitle(title, LayoutService.TextStyle.WIDGET_SECONDARY_TITLE);
-        setStyle(WidgetStyle.SECONDARY);
-        initializeMinimizationButton();
-        setMinimizationVisibility(false);
+        setStyle();
     }
 
     public VBox getWidget() {
         return mainContainer;
     }
 
-    private void setStyle(WidgetStyle widgetStyle) {
-        for (WidgetStyle style : WidgetStyle.values()) {
-            if (widgetStyle.equals(style)) {
-                mainContainer.getStyleClass().add(styles.get(style).get(0));
-                titleContainer.getStyleClass().add(styles.get(style).get(1));
-                widgetTitle.getStyleClass().add(styles.get(style).get(2));
-            } else {
-                mainContainer.getStyleClass().remove(styles.get(style).get(0));
-                titleContainer.getStyleClass().remove(styles.get(style).get(1));
-                widgetTitle.getStyleClass().remove(styles.get(style).get(2));
-            }
-        }
+    private void setStyle() {
+        mainContainer.getStyleClass().add("widget-primary");
+        titleContainer.getStyleClass().add("widget-primary-header");
+        widgetTitle.getStyleClass().add("widget-primary-title");
     }
 
-    private void setMinimizationVisibility(boolean isButtonVisible) {
+    void setMinimizationVisibility(boolean isButtonVisible) {
         minimizationButton.setVisible(isButtonVisible);
     }
 
@@ -80,10 +59,6 @@ public abstract class Widget {
         setMainContainerHeight(null);
         minimizationButton.setText("-");
         isMinimized = false;
-    }
-
-    private void initializeStyles() {
-        styles = layoutService.getWidgetStyles();
     }
 
     private void initializeContainers() {
@@ -104,8 +79,8 @@ public abstract class Widget {
         contentContainer.widthProperty().addListener(stageSizeListener);
     }
 
-    private void initializeTitle(String title, LayoutService.TextStyle textStyle) {
-        widgetTitle = layoutService.getText(title, textStyle);
+    private void initializeTitle(String title) {
+        widgetTitle = layoutService.getText(title, LayoutService.TextStyle.WIDGET_PRIMARY_TITLE);
         titleTextContainer.getChildren().add(widgetTitle);
         titleContainer.getChildren().add(titleTextContainer);
     }
@@ -136,5 +111,7 @@ public abstract class Widget {
         }
     }
 
-    public enum WidgetStyle {PRIMARY, SECONDARY}
+    void setTitle(String title) {
+        widgetTitle.setText(title);
+    }
 }

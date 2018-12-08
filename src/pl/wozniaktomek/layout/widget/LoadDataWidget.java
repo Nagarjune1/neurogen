@@ -27,7 +27,7 @@ public class LoadDataWidget extends Widget {
     public LoadDataWidget(NeuralControl neuralControl, NeuralNetwork neuralNetwork) {
         this.neuralControl = neuralControl;
         this.neuralNetwork = neuralNetwork;
-        createPrimaryWidget("Dane wejściowe");
+        createWidget("Dane wejściowe");
         initialize();
     }
 

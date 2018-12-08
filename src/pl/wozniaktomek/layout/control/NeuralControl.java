@@ -29,7 +29,7 @@ public class NeuralControl implements Initializable {
 
     private LoadDataWidget loadDataWidget;
     private SettingsWidget settingsWidget;
-    private TopologyWidget neuralTopologyWidget;
+    private TopologyWidget topologyWidget;
     private LearningWidget learningWidget;
     private StartupWidget startupWidget;
 
@@ -50,7 +50,7 @@ public class NeuralControl implements Initializable {
     }
 
     public void refreshTopology() {
-        neuralTopologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 54);
+        topologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 54);
     }
 
     private void initializeNeuralNetwork() {
@@ -68,8 +68,8 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeNetworkTopologyWidget() {
-        neuralTopologyWidget = new TopologyWidget(neuralNetwork);
-        settingsTab.getChildren().add(neuralTopologyWidget.getWidget());
+        topologyWidget = new TopologyWidget(neuralNetwork);
+        settingsTab.getChildren().add(topologyWidget.getWidget());
     }
 
     private void initializeLearningWidget() {

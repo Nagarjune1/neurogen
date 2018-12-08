@@ -5,7 +5,7 @@ import pl.wozniaktomek.neural.structure.Structure;
 public class BackpropagationParameters extends LearningParameters {
     private Double learningFactor;
     private Double SSE; // sum of squared errors
-    private Double totalEror;
+    private Double totalError;
     private Integer objectsOutOfTolerance;
 
     private Boolean isRecordsMixing;
@@ -23,8 +23,8 @@ public class BackpropagationParameters extends LearningParameters {
         return SSE;
     }
 
-    public Double getTotalEror() {
-        return totalEror;
+    public Double getTotalError() {
+        return totalError;
     }
 
     public Integer getObjectsOutOfTolerance() {
@@ -44,8 +44,8 @@ public class BackpropagationParameters extends LearningParameters {
         this.SSE = SSE;
     }
 
-    public void setTotalEror(Double totalEror) {
-        this.totalEror = totalEror;
+    public void setTotalError(Double totalError) {
+        this.totalError = totalError;
     }
 
     public void setObjectsOutOfTolerance(Integer objectsOutOfTolerance) {

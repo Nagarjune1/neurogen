@@ -26,7 +26,7 @@ public class SettingsWidget extends Widget {
     public SettingsWidget(NeuralNetwork neuralNetwork, NeuralControl neuralControl) {
         this.neuralNetwork = neuralNetwork;
         this.neuralControl = neuralControl;
-        createPrimaryWidget("Parametry sieci");
+        createWidget("Parametry sieci");
         initializeContainers();
     }
 

@@ -192,25 +192,6 @@
     -fx-font-family: "Roboto Medium";
 }
 
-.widget-secondary {
-    -fx-background-color: rgba(0, 195, 237, 1.0);
-    -fx-background-radius: 4px;
-    -fx-padding: 4px 8px 4px 8px;
-    -fx-fill: white;
-}
-
-.widget-secondary-header {
-    -fx-background-color: rgba(0, 195, 237, 1.0);
-    -fx-border-width: 0px 0px 3px 0px;
-    -fx-border-color: rgba(255, 255, 255, 0.75);
-}
-
-.widget-secondary-title {
-    -fx-font-size: 22px;
-    -fx-fill: rgba(255, 255, 255, 1.0);
-    -fx-font-family: "Roboto Medium";
-}
-
 /* Controls */
 .button {
     -fx-background-color: transparent;
