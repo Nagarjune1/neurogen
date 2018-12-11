@@ -219,7 +219,13 @@ public class LearningWidget extends Widget {
         CheckBox checkBox = layoutService.getCheckBox("Wizualizacja uczenia", null);
         checkBox.setSelected(neuralNetwork.getLearning().getLearningVisualization());
 
-        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningVisualization(newValue));
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            neuralNetwork.getLearning().setLearningVisualization(newValue);
+
+            if (!newValue) {
+                visualizationyContainer.getChildren().clear();
+            }
+        });
         return checkBox;
     }
 }

@@ -80,6 +80,8 @@ public class GeneticAlgorithm extends Thread {
         geneticParameters.setTotalError(1d);
         geneticParameters.setLearningData(learningService.initializeLearningData());
 
+        learningService.initializeBiasOutput();
+
         generatePopulation();
         learning();
     }
@@ -99,29 +101,8 @@ public class GeneticAlgorithm extends Thread {
 
             countError();
 
-            if (learning.getInterfaceUpdating()) {
-                learning.setIsNowInterfaceUpdating(true);
-                updateInterface();
-
-                while (learning.getIsNowInterfaceUpdating()) try {
-                    Thread.sleep(25);
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
-            } else {
-                countError();
-            }
-
-            if (learning.getLearningVisualization()) {
-                learning.setIsNowVisualizationUpdating(true);
-                updateVisualization();
-
-                while (learning.getIsNowVisualizationUpdating()) try {
-                    Thread.sleep(25);
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
-            }
+            updateInterface();
+            updateVisualization();
         }
 
         endLearning();
@@ -197,13 +178,17 @@ public class GeneticAlgorithm extends Thread {
 
     /* interface update */
     private void updateInterface() {
-        countObjectsOutOfTolerance();
-        learning.getLearningWidget().updateInterface(geneticParameters.getIteration(), geneticParameters.getTotalError(),
-                geneticParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+        if (learning.getInterfaceUpdating()) {
+            countObjectsOutOfTolerance();
+            learningService.updateLearningParameters(geneticParameters.getIteration(), geneticParameters.getTotalError(),
+                    geneticParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+        }
     }
 
     private void updateVisualization() {
-        learning.getLearningWidget().drawLearningVisulization();
+        if (learning.getLearningVisualization()) {
+            learningService.updateVisualization();
+        }
     }
 
     private void endLearning() {

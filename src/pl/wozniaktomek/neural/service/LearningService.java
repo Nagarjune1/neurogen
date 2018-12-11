@@ -111,4 +111,28 @@ public class LearningService {
             neurons.get(i).setErrorSignal(neurons.get(i).getOutput() * (1d - neurons.get(i).getOutput()) * (correctAnswer.get(i) - neurons.get(i).getOutput()));
         }
     }
+
+    /* interface updates */
+    public void updateLearningParameters(Integer iteration, Double error, String objects) {
+        neuralNetwork.getLearning().setIsNowInterfaceUpdating(true);
+        neuralNetwork.getLearning().getLearningWidget().updateInterface(iteration, error, objects);
+
+        while (neuralNetwork.getLearning().getIsNowInterfaceUpdating()) try {
+            Thread.sleep(25);
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void updateVisualization() {
+        neuralNetwork.getLearning().setIsNowVisualizationUpdating(true);
+        neuralNetwork.getLearning().getLearningWidget().drawLearningVisulization();
+
+        while (neuralNetwork.getLearning().getIsNowVisualizationUpdating()) try {
+            Thread.sleep(25);
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        }
+    }
+
 }

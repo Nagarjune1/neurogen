@@ -109,7 +109,7 @@ public class Learning {
         this.learningVisualization = learningVisualization;
     }
 
-    Boolean getIsNowInterfaceUpdating() {
+    public Boolean getIsNowInterfaceUpdating() {
         return isNowInterfaceUpdating;
     }
 
@@ -117,7 +117,7 @@ public class Learning {
         isNowInterfaceUpdating = updating;
     }
 
-    Boolean getIsNowVisualizationUpdating() {
+    public Boolean getIsNowVisualizationUpdating() {
         return isNowVisualizationUpdating;
     }
 

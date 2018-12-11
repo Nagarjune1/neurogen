@@ -75,29 +75,8 @@ public class Backpropagation extends Thread {
                 modifyWeights();
             }
 
-            if (learning.getInterfaceUpdating()) {
-                learning.setIsNowInterfaceUpdating(true);
-                updateInterface();
-
-                while (learning.getIsNowInterfaceUpdating()) try {
-                    Thread.sleep(25);
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
-            } else {
-                countError();
-            }
-
-            if (learning.getLearningVisualization()) {
-                learning.setIsNowVisualizationUpdating(true);
-                updateVisualization();
-
-                while (learning.getIsNowVisualizationUpdating()) try {
-                    Thread.sleep(25);
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
-            }
+            updateInterface();
+            updateVisualization();
         }
 
         endLearning();
@@ -178,14 +157,18 @@ public class Backpropagation extends Thread {
 
     /* interface update */
     private void updateInterface() {
-        countObjectsOutOfTolerance();
-        countError();
-        learning.getLearningWidget().updateInterface(backpropagationParameters.getIteration(), backpropagationParameters.getTotalError(),
-                backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+        if (learning.getInterfaceUpdating()) {
+            countObjectsOutOfTolerance();
+            countError();
+            learningService.updateLearningParameters(backpropagationParameters.getIteration(), backpropagationParameters.getTotalError(),
+                    backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+        }
     }
 
     private void updateVisualization() {
-        learning.getLearningWidget().drawLearningVisulization();
+        if (learning.getLearningVisualization()) {
+            learningService.updateVisualization();
+        }
     }
 
     private void endLearning() {
