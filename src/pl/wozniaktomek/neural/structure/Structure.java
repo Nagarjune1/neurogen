@@ -1,6 +1,7 @@
 package pl.wozniaktomek.neural.structure;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.service.LearningService;
 import pl.wozniaktomek.neural.util.ActivationFunction;
 import pl.wozniaktomek.neural.service.ConnectionService;
 

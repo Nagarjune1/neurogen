@@ -477,7 +477,6 @@ public class SettingsWidget extends Widget {
 
             if (newValue) {
                 neuralNetwork.getStructure().addBias();
-                new LearningService(neuralNetwork).initializeBiasOutput(neuralNetwork.getStructure().getLayers());
             } else {
                 neuralNetwork.getStructure().deleteBias();
             }

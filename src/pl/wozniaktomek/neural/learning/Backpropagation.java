@@ -45,7 +45,7 @@ public class Backpropagation extends Thread {
         backpropagationParameters.setTotalError(1d);
         backpropagationParameters.setLearningData(learningService.initializeLearningData());
 
-        learningService.initializeBiasOutput(backpropagationParameters.getStructure().getLayers());
+        learningService.initializeBiasOutput();
         learningService.initializeConnectionWeights(backpropagationParameters.getStructure().getConnections());
 
         learning();
