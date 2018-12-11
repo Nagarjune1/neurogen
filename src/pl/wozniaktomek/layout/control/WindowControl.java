@@ -46,19 +46,19 @@ public class WindowControl implements Initializable {
 
     private void initializePanels() {
         try {
-            homePane = FXMLLoader.load(getClass().getResource("../view/home.fxml"));
+            homePane = FXMLLoader.load(getClass().getResource("view/home.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            editorPane = FXMLLoader.load(getClass().getResource("../view/editor.fxml"));
+            editorPane = FXMLLoader.load(getClass().getResource("view/editor.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            neuralPane = FXMLLoader.load(getClass().getResource("../view/neural.fxml"));
+            neuralPane = FXMLLoader.load(getClass().getResource("view/neural.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -19,7 +19,7 @@ public class ThesisApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("layout/view/window.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("layout/control/view/window.fxml"));
         root = fxmlLoader.load();
         setStage(primaryStage);
 

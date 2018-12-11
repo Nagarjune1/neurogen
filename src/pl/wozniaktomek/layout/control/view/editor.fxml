@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.EditorControl">
+<AnchorPane stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.EditorControl">
    <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <HBox fx:id="titleContainer">
          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edytor danych dwuwymiarowych">
@@ -37,14 +37,12 @@
                      <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                   </padding>
                   <HBox alignment="CENTER_LEFT" spacing="8.0">
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-paragraph"
-                           text="Liczba klas obiektów"/>
-                     <Spinner fx:id="classAmountSpinner" prefWidth="164.0"/>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-paragraph" text="Liczba klas obiektów" />
+                     <Spinner fx:id="classAmountSpinner" prefWidth="164.0" />
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="8.0">
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-paragraph"
-                           text="Wybierz numer klasy"/>
-                     <ChoiceBox fx:id="classChoiceBox" prefWidth="164.0"/>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-paragraph" text="Wybierz numer klasy" />
+                     <ChoiceBox fx:id="classChoiceBox" prefWidth="164.0" />
                   </HBox>
                </VBox>
             </VBox>

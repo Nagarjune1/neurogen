@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.NeuralControl">
+<AnchorPane stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.NeuralControl">
    <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <VBox fx:id="contentContainer" spacing="16.0">
          <HBox alignment="CENTER_LEFT">
@@ -31,21 +31,20 @@
          </HBox>
           <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
               <VBox.margin>
-                  <Insets/>
+                  <Insets />
               </VBox.margin>
               <padding>
-                  <Insets left="16.0"/>
+                  <Insets left="16.0" />
               </padding>
               <Tab text="USTAWIENIA SIECI">
                   <AnchorPane fx:id="settingsTabPane">
-                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <padding>
-                              <Insets top="16.0"/>
+                              <Insets top="16.0" />
                           </padding>
                           <VBox fx:id="settingsTab" spacing="12.0">
                               <padding>
-                                  <Insets bottom="16.0" right="16.0"/>
+                                  <Insets bottom="16.0" right="16.0" />
                               </padding>
                           </VBox>
                       </ScrollPane>
@@ -53,14 +52,13 @@
               </Tab>
               <Tab text="UCZENIE SIECI">
                   <AnchorPane fx:id="learningTabPane">
-                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <padding>
-                              <Insets top="16.0"/>
+                              <Insets top="16.0" />
                           </padding>
                           <VBox fx:id="learningTab" spacing="12.0">
                               <padding>
-                                  <Insets bottom="16.0" right="16.0"/>
+                                  <Insets bottom="16.0" right="16.0" />
                               </padding>
                           </VBox>
                       </ScrollPane>
@@ -68,14 +66,13 @@
               </Tab>
               <Tab text="URUCHOMIENIE SIECI">
                   <AnchorPane fx:id="startupTabPane">
-                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <padding>
-                              <Insets top="16.0"/>
+                              <Insets top="16.0" />
                           </padding>
                           <VBox fx:id="startupTab" spacing="12.0">
                               <padding>
-                                  <Insets bottom="16.0" right="16.0"/>
+                                  <Insets bottom="16.0" right="16.0" />
                               </padding>
                           </VBox>
                       </ScrollPane>

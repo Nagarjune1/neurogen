@@ -7,23 +7,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.HomeControl">
+<AnchorPane stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.HomeControl">
    <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <VBox fx:id="contentContainer" spacing="10.0">
          <HBox alignment="CENTER_LEFT">
-            <HBox fx:id="titleContainer">
+            <HBox>
                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Ekran główny">
                   <HBox.margin>
-                     <Insets right="6.0"/>
+                     <Insets right="6.0" />
                   </HBox.margin>
                </Text>
             </HBox>
          </HBox>
          <VBox alignment="CENTER" styleClass="widget-primary">
             <padding>
-               <Insets bottom="64.0" left="64.0" right="64.0" top="64.0"/>
+               <Insets bottom="64.0" left="64.0" right="64.0" top="64.0" />
             </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="W BUDOWIE"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="W BUDOWIE" />
          </VBox>
       </VBox>
       <padding>
