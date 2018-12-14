@@ -2,14 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.HomeControl">
-   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <VBox fx:id="contentContainer" spacing="10.0">
+   <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="contentContainer" spacing="24.0">
          <HBox alignment="CENTER_LEFT">
             <HBox>
                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Ekran główny">
@@ -20,10 +24,237 @@
             </HBox>
          </HBox>
          <VBox alignment="CENTER" styleClass="widget-primary">
-            <padding>
-               <Insets bottom="64.0" left="64.0" right="64.0" top="64.0" />
-            </padding>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="W BUDOWIE" />
+            <HBox styleClass="widget-primary-header">
+               <padding>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+               </padding>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="widget-primary-title"
+                     text="Charakterystyka aplikacji"/>
+            </HBox>
+            <FlowPane hgap="24.0" rowValignment="TOP" vgap="18.0">
+               <padding>
+                  <Insets bottom="16.0" left="24.0" right="24.0" top="16.0"/>
+               </padding>
+               <VBox spacing="12.0">
+                  <TextFlow>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="Zawartość"/>
+                  </TextFlow>
+                  <HBox spacing="24.0">
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_tool.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Narzędzie do uczenia stucznej sieci neuronowej"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_editor.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Edytor danych dwuwymiarowych"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                  </HBox>
+               </VBox>
+               <VBox spacing="12.0">
+                  <TextFlow>
+                     <VBox.margin>
+                        <Insets/>
+                     </VBox.margin>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading"
+                           text="Metody uczenia"/>
+                  </TextFlow>
+                  <HBox spacing="24.0">
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_gene.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Algorytm genetyczny"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_back.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Algorytm wstecznej propagacji"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                  </HBox>
+               </VBox>
+               <VBox spacing="12.0">
+                  <TextFlow>
+                     <VBox.margin>
+                        <Insets/>
+                     </VBox.margin>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading"
+                           text="Funkcjonalność"/>
+                  </TextFlow>
+                  <HBox spacing="24.0">
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_parameter.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Parametry sieci"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_parameter2.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Parametry uczenia"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_visualization.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Wizualizacja uczenia"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                  </HBox>
+               </VBox>
+               <VBox spacing="12.0">
+                  <TextFlow>
+                     <VBox.margin>
+                        <Insets/>
+                     </VBox.margin>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="Autor"/>
+                  </TextFlow>
+                  <HBox spacing="24.0">
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_person.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Tomasz Woźniak"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                        <VBox alignment="CENTER" styleClass="widget-icon-background">
+                           <padding>
+                              <Insets bottom="18.0" left="18.0" right="18.0" top="18.0"/>
+                           </padding>
+                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true"
+                                      preserveRatio="true">
+                              <Image url="@../../style/icons/icon_university.png"/>
+                           </ImageView>
+                        </VBox>
+                        <VBox alignment="CENTER">
+                           <padding>
+                              <Insets bottom="6.0" left="16.0" right="16.0" top="6.0"/>
+                           </padding>
+                           <TextFlow textAlignment="CENTER">
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon"
+                                    text="Politechnika Świętokrzyska"/>
+                           </TextFlow>
+                        </VBox>
+                     </HBox>
+                  </HBox>
+               </VBox>
+            </FlowPane>
          </VBox>
       </VBox>
       <padding>
