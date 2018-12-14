@@ -1,2 +1,4 @@
-# Thesis
-Designing topology of artificial neural networks using a genetic algorithm
+# NeuroGen
+Learning an artificial neural networks using genetic algorithm (and backpropagation)
+
+**`Document will be update soon`**
