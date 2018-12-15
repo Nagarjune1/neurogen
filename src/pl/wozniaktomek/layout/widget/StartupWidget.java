@@ -106,7 +106,7 @@ public class StartupWidget extends Widget {
         parametersService.setCorrectAnswers(verificationData);
 
         table = new TableView<>();
-        table.setPrefHeight(ThesisApp.stage.getHeight() - 365);
+        table.setPrefHeight(ThesisApp.stage.getHeight() - 368);
         table.setEditable(false);
 
         tableContainer.getChildren().clear();
@@ -144,19 +144,21 @@ public class StartupWidget extends Widget {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-
                 setText(empty ? "" : getItem());
-                setGraphic(null);
 
+                /*
                 TableRow<List<String>> row = getTableRow();
-
                 if (!isEmpty()) {
-                    if (Double.parseDouble(item.replace(",", ".")) <= neuralNetwork.getLearning().getLearningTolerance()) {
-                        row.setStyle("-fx-background-color: rgba(16, 66, 16, 0.9)");
-                    } else {
-                        row.setStyle("-fx-background-color: rgba(145, 8, 12, 0.9)");
+                    if (row != null) {
+                        if (Double.parseDouble(item.replace(",", ".")) <= neuralNetwork.getLearning().getLearningTolerance()) {
+                            row.setStyle("-fx-background-color: rgba(16, 66, 16, 0.9)");
+                        } else {
+                            row.setStyle("-fx-background-color: rgba(145, 8, 12, 0.9)");
+                        }
                     }
                 }
+                // #TODO cell color changes
+                */
             }
         });
     }
@@ -182,7 +184,7 @@ public class StartupWidget extends Widget {
             columnNames.add("E[" + (i + 1) + "]");
         }
 
-        columnNames.add("E");
+        columnNames.add("E[SUM]");
 
         return columnNames;
     }
@@ -221,7 +223,7 @@ public class StartupWidget extends Widget {
     }
 
     private void initializeTableSizeListener() {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(ThesisApp.stage.getHeight() - 365);
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(ThesisApp.stage.getHeight() - 368);
         ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
