@@ -101,8 +101,13 @@ public class GeneticAlgorithm extends Thread {
 
             countError();
 
-            updateInterface();
-            updateVisualization();
+            if (learning.getInterfaceUpdating()) {
+                updateInterface();
+            }
+
+            if (learning.getLearningVisualization()) {
+                updateVisualization();
+            }
         }
 
         endLearning();
@@ -178,17 +183,14 @@ public class GeneticAlgorithm extends Thread {
 
     /* interface update */
     private void updateInterface() {
-        if (learning.getInterfaceUpdating()) {
-            countObjectsOutOfTolerance();
-            learningService.updateLearningParameters(geneticParameters.getIteration(), geneticParameters.getTotalError(),
-                    geneticParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
-        }
+        countObjectsOutOfTolerance();
+        learningService.updateLearningParameters(geneticParameters.getIteration(), geneticParameters.getTotalError(),
+                geneticParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
+
     }
 
     private void updateVisualization() {
-        if (learning.getLearningVisualization()) {
-            learningService.updateVisualization();
-        }
+        learningService.updateVisualization();
     }
 
     private void endLearning() {

@@ -75,8 +75,16 @@ public class Backpropagation extends Thread {
                 modifyWeights();
             }
 
-            updateInterface();
-            updateVisualization();
+            countError();
+
+            if (learning.getInterfaceUpdating()) {
+                updateInterface();
+            }
+
+            if (learning.getLearningVisualization()) {
+                updateVisualization();
+            }
+
         }
 
         endLearning();
@@ -157,18 +165,13 @@ public class Backpropagation extends Thread {
 
     /* interface update */
     private void updateInterface() {
-        if (learning.getInterfaceUpdating()) {
-            countObjectsOutOfTolerance();
-            countError();
-            learningService.updateLearningParameters(backpropagationParameters.getIteration(), backpropagationParameters.getTotalError(),
-                    backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
-        }
+        countObjectsOutOfTolerance();
+        learningService.updateLearningParameters(backpropagationParameters.getIteration(), backpropagationParameters.getTotalError(),
+                backpropagationParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
     }
 
     private void updateVisualization() {
-        if (learning.getLearningVisualization()) {
-            learningService.updateVisualization();
-        }
+        learningService.updateVisualization();
     }
 
     private void endLearning() {
@@ -181,21 +184,5 @@ public class Backpropagation extends Thread {
     /* get parameters */
     public BackpropagationParameters getBackpropagationParameters() {
         return backpropagationParameters;
-    }
-
-    /* just for debug */
-    private void showIteration() {
-        System.out.println("\n Iteration " + backpropagationParameters.getIteration());
-
-        int number = 0;
-        for (Connection connection : backpropagationParameters.getStructure().getConnections()) {
-            System.out.println("Connection [" + (++number) + "] WEIGHT: " + connection.getWeight());
-        }
-
-        for (Layer layer : backpropagationParameters.getStructure().getLayers()) {
-            for (Neuron neuron : layer.getNeurons()) {
-                System.out.println("Neuron [" + neuron.getNumber() + "] OUTPUT: " + neuron.getOutput() + " | OUTPUT ERROR: " + neuron.getOutputError());
-            }
-        }
     }
 }
