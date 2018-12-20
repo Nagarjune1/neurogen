@@ -10,15 +10,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataTransferService {
     private final static String SEPARATOR = ";";
     private Integer classCounter;
+    private String transferStatus;
 
+    /* Parsing to file */
     public void saveToFile(HashMap<Integer, ArrayList<Point2D>> objects) {
         FileChooser fileChooser = createFileChooser();
         File file = fileChooser.showSaveDialog(ThesisApp.stage);
@@ -31,18 +30,6 @@ public class DataTransferService {
         }
     }
 
-    public ArrayList<NeuralObject> readFromFile() {
-        FileChooser fileChooser = createFileChooser();
-        File file = fileChooser.showOpenDialog(ThesisApp.stage);
-
-        if (file != null) {
-            return parseFromFile(file);
-        } else {
-            return null;
-        }
-    }
-
-    /* Parsing to file */
     private HashMap<Integer, ArrayList<Point2D>> organizeObjects(HashMap<Integer, ArrayList<Point2D>> objects) {
         for (int i = 1; i <= 8; i++) {
             if (!objects.containsKey(i)) {
@@ -99,6 +86,18 @@ public class DataTransferService {
     }
 
     /* Parsing from file */
+    public ArrayList<NeuralObject> readFromFile() {
+        FileChooser fileChooser = createFileChooser();
+        File file = fileChooser.showOpenDialog(ThesisApp.stage);
+
+        if (file != null) {
+            return parseFromFile(file);
+        } else {
+            transferStatus = "Nie wybrano pliku.";
+            return null;
+        }
+    }
+
     private ArrayList<NeuralObject> parseFromFile(File file) {
         List<String> lines = new ArrayList<>();
 
@@ -114,22 +113,27 @@ public class DataTransferService {
     private ArrayList<NeuralObject> getObjectsFromLines(List<String> lines) {
         ArrayList<NeuralObject> objects = new ArrayList<>();
         Integer inputAmount = getInputAmount(lines.get(0));
+        Integer classAmount = getClassAmount(lines.get(0));
 
         for (int i = 1; i < lines.size(); i++) {
-            String[] splitLine = lines.get(i).split(SEPARATOR);
-            ArrayList<Double> inputValues = getInputValues(splitLine, inputAmount);
-            Integer classNumber = getClassNumber(splitLine, inputAmount);
+            if (!lines.get(i).equals("")) {
+                String[] splitLine = lines.get(i).split(SEPARATOR);
+                ArrayList<Double> inputValues = getInputValues(splitLine, inputAmount, i + 1);
+                Integer classNumber = getClassNumber(splitLine, inputAmount, classAmount, i + 1);
 
-            if (inputValues != null && classNumber != null) {
-                objects.add(new NeuralObject(inputValues, classNumber));
-            } else {
-                return null;
+                if (inputValues != null && classNumber != null) {
+                    objects.add(new NeuralObject(inputValues, classNumber));
+                } else {
+                    return null;
+                }
             }
         }
 
         if (objects.size() > 0) {
+            transferStatus = "Zbiór danych jest poprawny.";
             return objects;
         } else {
+            transferStatus = "Zbiór danych jest pusty.";
             return null;
         }
     }
@@ -139,28 +143,54 @@ public class DataTransferService {
         return Integer.valueOf(splitLine[1]);
     }
 
-    private ArrayList<Double> getInputValues(String splitLine[], Integer inputAmount) {
+    private Integer getClassAmount(String line) {
+        String[] splitLine = line.split(SEPARATOR);
+        return Integer.valueOf(splitLine[2]);
+    }
+
+    private ArrayList<Double> getInputValues(String splitLine[], Integer inputAmount, Integer line) {
         ArrayList<Double> inputValues = new ArrayList<>();
 
         for (int j = 0; j < inputAmount; j++) {
-            inputValues.add(Double.valueOf(splitLine[j]));
+            if (Objects.equals(splitLine[j], "")) {
+                transferStatus = "Dane w linii " + line + " są niepoprawne - pustka w duszy.";
+                return null;
+            } else {
+                inputValues.add(Double.valueOf(splitLine[j]));
+            }
         }
 
-        if (inputValues.size() > 0) {
+        if (inputValues.size() == inputAmount) {
             return inputValues;
         } else {
+            transferStatus = "Dane w linii " + line + " są niepoprawne - błędny rozmiar danych wejściowych";
             return null;
         }
     }
 
-    private Integer getClassNumber(String splitLine[], Integer inputAmount) {
+    private Integer getClassNumber(String splitLine[], Integer inputAmount, Integer classAmount, Integer line) {
+        if (splitLine.length != (inputAmount + classAmount)) {
+            transferStatus = "Dane w linii " + line + " są niepoprawne - błędna ilość klas.";
+            return null;
+        }
+
+        Integer classNumber = null;
         for (int i = inputAmount; i < splitLine.length; i++) {
             if (splitLine[i].equals(String.valueOf(1))) {
-                return i - inputAmount + 1;
+                if (classNumber == null) {
+                    classNumber = i - inputAmount + 1;
+                } else {
+                    transferStatus = "Dane w linii " + line + " są niepoprawne - przypisano więcej niż jedną klasę.";
+                    return null;
+                }
             }
         }
 
-        return null;
+        if (classNumber == null) {
+            transferStatus = "Dane w linii " + line + " są niepoprawne - brak przypisanej klasy.";
+        }
+
+        return classNumber;
     }
 
     /* Parsing list to map */
@@ -200,10 +230,16 @@ public class DataTransferService {
         return new Point2D(neuralObject.getInputValues().get(0), neuralObject.getInputValues().get(1));
     }
 
+    /* File Chooser */
     private FileChooser createFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Plik z danymi");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("pliki .csv (*.csv)", "*.csv"));
         return fileChooser;
+    }
+
+    /* Getter */
+    public String getTransferStatus() {
+        return transferStatus;
     }
 }

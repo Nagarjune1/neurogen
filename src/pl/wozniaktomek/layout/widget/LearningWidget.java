@@ -69,28 +69,28 @@ public class LearningWidget extends Widget {
         VBox timeVbox = layoutService.getVBox(8d, 16d, 4d);
         timeVbox.getStyleClass().add("stats-pane");
         timeVbox.setMinWidth(156d);
-        textTime = layoutService.getText("nic tu nie ma...", LayoutService.TextStyle.STATUS_WHITE);
+        textTime = layoutService.getText("N/A", LayoutService.TextStyle.STATUS_WHITE);
         timeVbox.getChildren().addAll(layoutService.getText("Czas uczenia", LayoutService.TextStyle.PARAGRAPH_WHITE), textTime);
         mainHBox.getChildren().add(timeVbox);
 
         VBox iterationVbox = layoutService.getVBox(8d, 16d, 4d);
         iterationVbox.getStyleClass().add("stats-pane");
         iterationVbox.setMinWidth(156d);
-        textIterations = layoutService.getText("nic tu nie ma...", LayoutService.TextStyle.STATUS_WHITE);
+        textIterations = layoutService.getText("N/A", LayoutService.TextStyle.STATUS_WHITE);
         iterationVbox.getChildren().addAll(layoutService.getText("Iteracje", LayoutService.TextStyle.PARAGRAPH_WHITE), textIterations);
         mainHBox.getChildren().add(iterationVbox);
 
         VBox errorVbox = layoutService.getVBox(8d, 16d, 4d);
         errorVbox.getStyleClass().add("stats-pane");
         errorVbox.setMinWidth(156d);
-        textError = layoutService.getText("nic tu nie ma...", LayoutService.TextStyle.STATUS_WHITE);
+        textError = layoutService.getText("N/A", LayoutService.TextStyle.STATUS_WHITE);
         errorVbox.getChildren().addAll(layoutService.getText("Błąd całkowity", LayoutService.TextStyle.PARAGRAPH_WHITE), textError);
         mainHBox.getChildren().add(errorVbox);
 
         VBox objectsVbox = layoutService.getVBox(8d, 16d, 4d);
         objectsVbox.getStyleClass().add("stats-pane");
         objectsVbox.setMinWidth(156d);
-        textoObjectsOutOfTolerance = layoutService.getText("nic tu nie ma...", LayoutService.TextStyle.STATUS_WHITE);
+        textoObjectsOutOfTolerance = layoutService.getText("N/A", LayoutService.TextStyle.STATUS_WHITE);
         objectsVbox.getChildren().addAll(layoutService.getText("Dane poza tolerancją", LayoutService.TextStyle.PARAGRAPH_WHITE), textoObjectsOutOfTolerance);
         mainHBox.getChildren().add(objectsVbox);
 
@@ -219,13 +219,7 @@ public class LearningWidget extends Widget {
         CheckBox checkBox = layoutService.getCheckBox("Wizualizacja uczenia", null);
         checkBox.setSelected(neuralNetwork.getLearning().getLearningVisualization());
 
-        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            neuralNetwork.getLearning().setLearningVisualization(newValue);
-
-            if (!newValue) {
-                visualizationyContainer.getChildren().clear();
-            }
-        });
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningVisualization(newValue));
         return checkBox;
     }
 }

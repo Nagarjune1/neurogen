@@ -37,7 +37,7 @@
     -fx-border-width: 1px;
 }
 
-/* Panel */
+/* Panels */
 .left-pane {
     -fx-background-color: rgba(31, 64, 90, 1.0);
 }
@@ -63,6 +63,12 @@
     -fx-border-color: rgba(31, 64, 90, 1.0);
     -fx-border-radius: 8px;
     -fx-padding: 12px 18px;
+}
+
+.pane-bordered {
+    -fx-border-color: rgba(31, 64, 90, 1.0);
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
 }
 
 /* Scroll pane */
@@ -427,15 +433,9 @@
 }
 
 .text-heading {
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-fill: rgba(113, 140, 158, 0.75);
-}
-
-.text-status {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-fill: rgba(31, 64, 90, 0.75);
+    -fx-fill: rgba(31, 64, 90, 0.85);
 }
 
 .text-status-white {
@@ -446,7 +446,7 @@
 
 .text-paragraph {
     -fx-font-size: 12px;
-    -fx-fill: rgba(54, 69, 79, 0.5);
+    -fx-fill: rgba(31, 64, 90, 0.5);
     -fx-font-family: "Roboto Medium";
 }
 
@@ -456,43 +456,9 @@
     -fx-font-family: "Roboto Medium";
 }
 
-.text-paragraph-theme {
-    -fx-font-size: 16px;
-    -fx-fill: rgba(31, 64, 90, 0.75);
-    -fx-font-family: "Roboto Medium";
-}
-
 .text-widget-icon {
     -fx-font-size: 16px;
     -fx-font-family: "Roboto Medium";
-}
-
-.text-status-success {
-    -fx-fill: rgba(16, 66, 16, 1.0);
-}
-
-.text-status-failure {
-    -fx-fill: rgba(145, 8, 12, 1.0);
-}
-
-.text-color-primary {
-    -fx-fill: rgba(54, 69, 79, 1.0);
-}
-
-.text-color-secondary {
-    -fx-fill: rgba(113, 140, 158, 1.0);
-}
-
-.text-color-status {
-    -fx-fill: rgba(54, 69, 79, 0.5);
-}
-
-.text-color-success {
-    -fx-fill: rgba(16, 66, 16, 1.0);
-}
-
-.text-color-failure {
-    -fx-fill: rgba(145, 8, 12, 1.0);
 }
 
 /* Navigation menu */
@@ -517,6 +483,7 @@
 }
 
 .nav-button-active:hover {
+    -fx-border-color: rgba(255, 255, 255, 1.0);
     -fx-text-fill: rgba(255, 255, 255, 1.0);
 }
 

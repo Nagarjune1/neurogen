@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.service.ParametersService;
@@ -23,6 +22,7 @@ import java.util.List;
 
 public class StartupWidget extends Widget {
     private NeuralNetwork neuralNetwork;
+    private DataTransferService dataTransferService;
 
     private VBox tableContainer;
     private TableView<List<String>> table;
@@ -41,10 +41,10 @@ public class StartupWidget extends Widget {
 
     public void refreshWidget() {
         if (neuralNetwork.getLearned()) {
-            networkStatus.setText("Sieć nauczona");
+            networkStatus.setText("Sieć przeszła przez proces uczenia.");
             buttonLoadData.setDisable(false);
         } else {
-            networkStatus.setText("Sieć nie przeszła jeszcze procesu uczenia...");
+            networkStatus.setText("Sieć nie przeszła jeszcze procesu uczenia.");
             buttonLoadData.setDisable(true);
         }
     }
@@ -56,20 +56,24 @@ public class StartupWidget extends Widget {
     }
 
     private void initializeStatusContainers() {
-        VBox mainVBox = layoutService.getVBox(0d, 0d, 12d);
-        contentContainer.getChildren().add(mainVBox);
-
-        HBox buttonHBox = layoutService.getHBox(0d, 0d, 8d);
-        buttonHBox.setAlignment(Pos.BASELINE_LEFT);
-        dataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.HEADING);
-        buttonHBox.getChildren().addAll(getLoadDataButton(), layoutService.getText("STATUS:", LayoutService.TextStyle.HEADING), dataStatus);
-        mainVBox.getChildren().add(buttonHBox);
-
-        HBox statusHBox = layoutService.getHBox(0d, 0d, 8d);
-        statusHBox.setAlignment(Pos.BASELINE_LEFT);
+        HBox networkStatusHBox = layoutService.getHBox(0d, 0d, 8d);
+        networkStatusHBox .setAlignment(Pos.BASELINE_LEFT);
         networkStatus = layoutService.getText("Sieć nie przeszła jeszcze procesu uczenia...", LayoutService.TextStyle.HEADING);
-        statusHBox.getChildren().addAll(layoutService.getText("STAN SIECI:", LayoutService.TextStyle.HEADING), networkStatus);
-        mainVBox.getChildren().add(statusHBox);
+        networkStatusHBox .getChildren().addAll(layoutService.getText("STAN SIECI:", LayoutService.TextStyle.HEADING), networkStatus);
+
+        HBox buttonContainer = layoutService.getHBox(0d, 0d, 0d);
+        buttonContainer.getChildren().add(getLoadDataButton());
+        buttonContainer.setAlignment(Pos.BASELINE_LEFT);
+
+        dataStatus = layoutService.getText("Nie wczytano danych.", LayoutService.TextStyle.HEADING);
+        HBox statusContainer = layoutService.getHBox(0d, 4d, 6d);
+        statusContainer.getChildren().addAll(layoutService.getText("STATUS:", LayoutService.TextStyle.HEADING), dataStatus);
+        statusContainer.setAlignment(Pos.CENTER_LEFT);
+
+        HBox loadDataHBox = layoutService.getHBox(0d, 0d, 16d);
+        loadDataHBox.getChildren().addAll(buttonContainer, statusContainer);
+
+        contentContainer.getChildren().addAll(networkStatusHBox, loadDataHBox);
     }
 
     private void initializeTableContainer() {
@@ -81,7 +85,8 @@ public class StartupWidget extends Widget {
         buttonLoadData = layoutService.getButton("Wczytaj dane weryfikujące");
 
         buttonLoadData.setOnAction(event -> {
-            verificationData = new DataTransferService().readFromFile();
+            dataTransferService = new DataTransferService();
+            verificationData = dataTransferService.readFromFile();
             validateVerificationData();
         });
 
@@ -91,14 +96,14 @@ public class StartupWidget extends Widget {
     private void validateVerificationData() {
         ValidationService validationService = new ValidationService(neuralNetwork.getParameters());
         if (validationService.validateObjects(verificationData, true)) {
-            dataStatus.setText("Dane poprawne");
             setButtonStyle(true);
             refreshTable();
         } else {
-            dataStatus.setText("Dane nieprawidłowe");
             setButtonStyle(false);
             tableContainer.getChildren().clear();
         }
+
+        dataStatus.setText(dataTransferService.getTransferStatus());
     }
 
     private void refreshTable() {

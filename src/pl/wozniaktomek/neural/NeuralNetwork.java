@@ -17,7 +17,6 @@ public class NeuralNetwork {
     private Parameters parameters;
     private Learning learning;
 
-
     private Boolean isLearned;
 
     /* Interface */

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class Parameters {
     private NeuralNetwork neuralNetwork;
+    private ValidationService validationService;
 
     /* Learning data parameters */
     private ArrayList<NeuralObject> learningData;
@@ -23,7 +24,7 @@ public class Parameters {
     }
 
     public boolean setLearningData(ArrayList<NeuralObject> learningData) {
-        ValidationService validationService = new ValidationService(this);
+        validationService = new ValidationService(this);
         ParametersService parametersService = new ParametersService(neuralNetwork);
 
         if (validationService.validateObjects(learningData, false)) {
@@ -55,5 +56,9 @@ public class Parameters {
 
     public Integer getOutputSize() {
         return outputSize;
+    }
+
+    public ValidationService getValidationService() {
+        return validationService;
     }
 }

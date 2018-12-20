@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class LoadDataWidget extends Widget {
     private NeuralControl neuralControl;
     private NeuralNetwork neuralNetwork;
+    private DataTransferService dataTransferService;
 
     private HBox buttonContainer;
     private HBox statusContainer;
@@ -39,17 +40,16 @@ public class LoadDataWidget extends Widget {
     }
 
     private void initializeContainers() {
-        HBox mainContainer = layoutService.getHBox(0d, 0d, 16d);
+        HBox localContentContainer = layoutService.getHBox(0d, 0d, 16d);
 
         buttonContainer = layoutService.getHBox(0d, 0d, 0d);
         buttonContainer.setAlignment(Pos.BASELINE_LEFT);
 
-        statusContainer = layoutService.getHBox(0d, 4d, 8d);
-        statusContainer.setAlignment(Pos.BASELINE_LEFT);
+        statusContainer = layoutService.getHBox(0d, 4d, 6d);
+        statusContainer.setAlignment(Pos.CENTER_LEFT);
 
-        mainContainer.getChildren().addAll(buttonContainer, statusContainer);
-
-        contentContainer.getChildren().add(mainContainer);
+        localContentContainer.getChildren().addAll(buttonContainer, statusContainer);
+        contentContainer.getChildren().add(localContentContainer);
     }
 
     private void initializeButtons() {
@@ -59,25 +59,26 @@ public class LoadDataWidget extends Widget {
 
     private void initializeStatuses() {
         statusContainer.getChildren().add(layoutService.getText("STATUS:", LayoutService.TextStyle.HEADING));
-        textDataStatus = layoutService.getText("Nie wczytano danych...", LayoutService.TextStyle.PARAGRAPH);
+        textDataStatus = layoutService.getText("Nie wczytano danych.", LayoutService.TextStyle.HEADING);
         statusContainer.getChildren().add(textDataStatus);
     }
 
     private void initializeButtonActions() {
         buttonLoadData.setOnAction(event -> {
-            learningData = new DataTransferService().readFromFile();
+            dataTransferService = new DataTransferService();
+            learningData = dataTransferService.readFromFile();
             validateLearningData();
         });
     }
 
     private void validateLearningData() {
         if (neuralNetwork.loadLearningData(learningData)) {
-            textDataStatus.setText("Dane poprawne");
             setButtonStyle(true);
         } else {
-            textDataStatus.setText("Dane nieprawidłowe");
             setButtonStyle(false);
         }
+
+        textDataStatus.setText(dataTransferService.getTransferStatus());
 
         neuralControl.refreshSettings();
         neuralControl.refreshTopology();
