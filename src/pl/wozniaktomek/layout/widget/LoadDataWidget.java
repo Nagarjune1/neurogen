@@ -74,7 +74,9 @@ public class LoadDataWidget extends Widget {
     private void validateLearningData() {
         if (neuralNetwork.loadLearningData(learningData)) {
             setButtonStyle(true);
+            neuralControl.maximizeSettingsWidgets();
         } else {
+            neuralControl.minimizeSettingsWidgets();
             setButtonStyle(false);
         }
 

@@ -42,6 +42,8 @@ public class NeuralControl implements Initializable {
         initializeLearningWidget();
         initializeStartupWidget();
         initializeSizeListener();
+
+        minimizeSettingsWidgets();
         neuralNetwork.setNeuralControl(this);
     }
 
@@ -101,6 +103,17 @@ public class NeuralControl implements Initializable {
 
         ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
         ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+    }
+
+    /* Widgets expanding */
+    public void minimizeSettingsWidgets() {
+        settingsWidget.minimizeWidget();
+        topologyWidget.minimizeWidget();
+    }
+
+    public void maximizeSettingsWidgets() {
+        settingsWidget.maximizeWidget();
+        topologyWidget.maximizeWidget();
     }
 
     /* Getters */

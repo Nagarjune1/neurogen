@@ -4,11 +4,11 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import pl.wozniaktomek.layout.control.NeuralControl;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.learning.GeneticAlgorithm;
 import pl.wozniaktomek.neural.learning.Learning;
-import pl.wozniaktomek.neural.service.LearningService;
 import pl.wozniaktomek.service.LayoutService;
 
 public class SettingsWidget extends Widget {
@@ -22,6 +22,14 @@ public class SettingsWidget extends Widget {
     private VBox learningMethodContainer;
     private HBox learningMethodSettingsContainer;
     private HBox topologyContainer;
+
+    private Spinner<Double> minRangeSpinner;
+    private Spinner<Double> maxRangeSpinner;
+    private Spinner<Integer> tournamentSizeSpinner;
+
+    private VBox binaryStringInfoVBox;
+    private Text binaryStringInfo;
+    private Text binaryStringWarning;
 
     public SettingsWidget(NeuralNetwork neuralNetwork, NeuralControl neuralControl) {
         this.neuralNetwork = neuralNetwork;
@@ -50,6 +58,7 @@ public class SettingsWidget extends Widget {
     public void refreshWidget() {
         refreshLearningSettings();
         refreshTopologySettings();
+        refreshBinaryStringInfo();
     }
 
     /**
@@ -111,12 +120,9 @@ public class SettingsWidget extends Widget {
         mutationHbox.getChildren().addAll(layoutService.getText("Mutacja", LayoutService.TextStyle.PARAGRAPH), getGeneticMutationMethodChoiceBox());
         mutationHbox.getChildren().addAll(layoutService.getText("prawdopodobieństwo: ", LayoutService.TextStyle.PARAGRAPH), getGeneticMutationProbabilitySpinner());
 
+        createTournamentSizeSpinner();
         HBox selectionHbox = layoutService.getHBox(0d, 0d, 8d);
-        selectionHbox.getChildren().addAll(layoutService.getText("Selekcja", LayoutService.TextStyle.PARAGRAPH), getGeneticSelectionMethodChoiceBox());
-
-        if (neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getSelectionMethod().equals(GeneticAlgorithm.SelectionMethod.TOURNAMENT)) {
-            selectionHbox.getChildren().add(getTournamentSizeSpinner());
-        }
+        selectionHbox.getChildren().addAll(layoutService.getText("Selekcja", LayoutService.TextStyle.PARAGRAPH), getGeneticSelectionMethodChoiceBox(), tournamentSizeSpinner);
 
         vBox.getChildren().addAll(crossoverHbox, mutationHbox, selectionHbox);
         return vBox;
@@ -132,11 +138,38 @@ public class SettingsWidget extends Widget {
         HBox genSizeHbox = layoutService.getHBox(0d, 0d, 8d);
         genSizeHbox.getChildren().addAll(layoutService.getText("Rozmiar pojedynczego genu", LayoutService.TextStyle.PARAGRAPH), getGeneticGenSizeSpinner());
 
+        binaryStringInfoVBox = layoutService.getVBox(0d, 0d, 0d);
+        binaryStringInfo = layoutService.getText("", LayoutService.TextStyle.PARAGRAPH_THEME);
+        binaryStringWarning = layoutService.getText("", LayoutService.TextStyle.PARAGRAPH_THEME);
+        binaryStringInfoVBox.getChildren().addAll(binaryStringInfo, binaryStringWarning);
+
         HBox chromosomeRangeHbox = layoutService.getHBox(0d, 0d, 8d);
         chromosomeRangeHbox.getChildren().addAll(layoutService.getText("Przedział wartości wag", LayoutService.TextStyle.PARAGRAPH), getChromosomeMinRangeSpinner(), getChromosomeMaxRangeSpinner());
 
-        vBox.getChildren().addAll(populationSizeHbox, genSizeHbox, chromosomeRangeHbox);
+        vBox.getChildren().addAll(populationSizeHbox, genSizeHbox, binaryStringInfoVBox, chromosomeRangeHbox);
         return vBox;
+    }
+
+    private void refreshBinaryStringInfo() {
+        int binaryStringSize = neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getGenSize() * neuralNetwork.getStructure().getConnections().size();
+        binaryStringInfo.setText("Rozmiar osobnika: " + binaryStringSize + "b");
+
+        if (binaryStringSize > 512) {
+            binaryStringWarning.setText("Uwaga! Algorytm genetyczny może nie działać prawidłowo!");
+            if (!binaryStringInfoVBox.getChildren().contains(binaryStringWarning)) {
+                binaryStringInfoVBox.getChildren().add(binaryStringWarning);
+            }
+        } else {
+            binaryStringInfoVBox.getChildren().remove(binaryStringWarning);
+        }
+    }
+
+    private void refreshRangeSpinners() {
+        minRangeSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-52d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange() - 0.1,
+                neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange(), 0.1));
+
+        maxRangeSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange() + 0.1,
+                52d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange(), 0.1));
     }
 
     private void refreshTopologySettings() {
@@ -149,7 +182,6 @@ public class SettingsWidget extends Widget {
             refreshOutputLayer(vBox);
 
             vBox = layoutService.getVBox(0d, 12d, 12d);
-            vBox.setMinWidth(356d);
             topologyContainer.getChildren().add(vBox);
             refreshHiddenLayers(vBox);
 
@@ -160,6 +192,7 @@ public class SettingsWidget extends Widget {
 
         neuralNetwork.getStructure().createConnections();
         neuralControl.refreshTopology();
+        refreshBinaryStringInfo();
     }
 
     private void refreshInputLayer(VBox vBox) {
@@ -337,8 +370,10 @@ public class SettingsWidget extends Widget {
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equals("Metoda turniejowa")) {
                 neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setSelectionMethod(GeneticAlgorithm.SelectionMethod.TOURNAMENT);
+                tournamentSizeSpinner.setVisible(true);
             } else {
                 neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setSelectionMethod(GeneticAlgorithm.SelectionMethod.ROULETTE);
+                tournamentSizeSpinner.setVisible(false);
             }
         });
 
@@ -351,14 +386,13 @@ public class SettingsWidget extends Widget {
         return choiceBox;
     }
 
-    private Spinner getTournamentSizeSpinner() {
-        Spinner<Integer> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 32, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getTournamentSize(), 1));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
+    private void createTournamentSizeSpinner() {
+        tournamentSizeSpinner = new Spinner<>();
+        tournamentSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 32, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getTournamentSize(), 1));
+        tournamentSizeSpinner.setEditable(true);
+        tournamentSizeSpinner.setPrefWidth(72d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setTournamentSize(newValue)));
-        return spinner;
+        tournamentSizeSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setTournamentSize(newValue)));
     }
 
     private Spinner getGeneticPopulationSizeSpinner() {
@@ -377,28 +411,39 @@ public class SettingsWidget extends Widget {
         spinner.setEditable(true);
         spinner.setPrefWidth(72d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setGenSize(newValue)));
+        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setGenSize(newValue);
+            refreshBinaryStringInfo();
+        }));
         return spinner;
     }
 
     private Spinner getChromosomeMinRangeSpinner() {
-        Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange(), 0.1));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
+        minRangeSpinner = new Spinner<>();
+        minRangeSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-52d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange() - 0.1,
+                neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange(), 0.1));
+        minRangeSpinner.setEditable(true);
+        minRangeSpinner.setPrefWidth(72d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMinRange(newValue)));
-        return spinner;
+        minRangeSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMinRange(newValue);
+            refreshRangeSpinners();
+        }));
+        return minRangeSpinner;
     }
 
     private Spinner getChromosomeMaxRangeSpinner() {
-        Spinner<Double> spinner = new Spinner<>();
-        spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-20d, 20d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange(), 0.1));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
+        maxRangeSpinner = new Spinner<>();
+        maxRangeSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange() + 0.1,
+                52d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange(), 0.1));
+        maxRangeSpinner.setEditable(true);
+        maxRangeSpinner.setPrefWidth(72d);
 
-        spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMaxRange(newValue)));
-        return spinner;
+        maxRangeSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMaxRange(newValue);
+            refreshRangeSpinners();
+        }));
+        return maxRangeSpinner;
     }
 
     private Spinner getLearningFactorSpinner() {
@@ -453,7 +498,7 @@ public class SettingsWidget extends Widget {
 
     private Button getNewLayerButton() {
         Button button = new Button();
-        button.setText("Dodaj nową warstwę ukrytą");
+        button.setText("Dodaj warstwę ukrytą");
 
         button.setOnAction(event -> {
             if (neuralNetwork.getStructure().isBias()) {

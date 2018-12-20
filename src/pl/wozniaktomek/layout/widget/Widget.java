@@ -9,13 +9,11 @@ import javafx.scene.text.Text;
 import pl.wozniaktomek.service.LayoutService;
 
 public abstract class Widget {
+    protected VBox contentContainer;
     LayoutService layoutService;
-
     private VBox mainContainer;
     private HBox titleContainer;
     private HBox titleTextContainer;
-    protected VBox contentContainer;
-
     private Text widgetTitle;
     private boolean isMinimized;
     private Button minimizationButton;
@@ -47,14 +45,14 @@ public abstract class Widget {
         minimizationButton.setVisible(isButtonVisible);
     }
 
-    private void minimizeWidget() {
+    public void minimizeWidget() {
         contentContainer.setVisible(false);
         setMainContainerHeight(64d);
         minimizationButton.setText("+");
         isMinimized = true;
     }
 
-    private void maximizeWidget() {
+    public void maximizeWidget() {
         contentContainer.setVisible(true);
         setMainContainerHeight(null);
         minimizationButton.setText("-");

@@ -450,6 +450,12 @@
     -fx-font-family: "Roboto Medium";
 }
 
+.text-paragraph-primary {
+    -fx-font-size: 12px;
+    -fx-fill: rgba(31, 64, 90, 1.0);
+    -fx-font-family: "Roboto Medium";
+}
+
 .text-paragraph-white {
     -fx-font-size: 12px;
     -fx-fill: rgba(255, 255, 255, 0.5);

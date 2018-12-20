@@ -120,6 +120,8 @@ public class LearningWidget extends Widget {
         visualizationyContainer = layoutService.getVBox(0d, 0d, 0d);
 
         learningVisualizationWidget = new LearningVisualizationWidget(neuralNetwork);
+        learningVisualizationWidget.minimizeWidget();
+
         visualizationyContainer.getChildren().add(learningVisualizationWidget.getWidget());
         contentContainer.getChildren().add(visualizationyContainer);
     }
@@ -219,7 +221,15 @@ public class LearningWidget extends Widget {
         CheckBox checkBox = layoutService.getCheckBox("Wizualizacja uczenia", null);
         checkBox.setSelected(neuralNetwork.getLearning().getLearningVisualization());
 
-        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningVisualization(newValue));
+        checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            neuralNetwork.getLearning().setLearningVisualization(newValue);
+
+            if (newValue) {
+                learningVisualizationWidget.maximizeWidget();
+            } else {
+                learningVisualizationWidget.minimizeWidget();
+            }
+        });
         return checkBox;
     }
 }
