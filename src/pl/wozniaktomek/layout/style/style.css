@@ -76,6 +76,10 @@
     -fx-background-color: transparent;
 }
 
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
 .scroll-bar:vertical {
     -fx-background-color: transparent;
     -fx-max-width: 18px;
@@ -207,6 +211,7 @@
     -fx-fill: rgba(31, 64, 90, 1.0);
 }
 
+/*
 .widget-icon:hover {
     -fx-border-color: rgba(0, 195, 237, 1.0);
 }
@@ -218,6 +223,7 @@
 .widget-icon:hover > .widget-icon-background {
     -fx-background-color: rgba(0, 195, 237, 1.0);
 }
+*/
 
 .widget-icon-background {
     -fx-background-color: rgba(31, 64, 90, 1.0);
@@ -489,7 +495,6 @@
 }
 
 .nav-button-active:hover {
-    -fx-border-color: rgba(255, 255, 255, 1.0);
     -fx-text-fill: rgba(255, 255, 255, 1.0);
 }
 

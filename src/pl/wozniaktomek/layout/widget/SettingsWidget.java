@@ -151,16 +151,18 @@ public class SettingsWidget extends Widget {
     }
 
     private void refreshBinaryStringInfo() {
-        int binaryStringSize = neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getGenSize() * neuralNetwork.getStructure().getConnections().size();
-        binaryStringInfo.setText("Rozmiar osobnika: " + binaryStringSize + "b");
+        if (neuralNetwork.getLearning().getLearningMethod().equals(Learning.LearningMethod.GENETIC)) {
+            int binaryStringSize = neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getGenSize() * neuralNetwork.getStructure().getConnections().size();
+            binaryStringInfo.setText("Rozmiar osobnika: " + binaryStringSize + "b");
 
-        if (binaryStringSize > 512) {
-            binaryStringWarning.setText("Uwaga! Algorytm genetyczny może nie działać prawidłowo!");
-            if (!binaryStringInfoVBox.getChildren().contains(binaryStringWarning)) {
-                binaryStringInfoVBox.getChildren().add(binaryStringWarning);
+            if (binaryStringSize > 512) {
+                binaryStringWarning.setText("Uwaga! Algorytm genetyczny może nie działać prawidłowo!");
+                if (!binaryStringInfoVBox.getChildren().contains(binaryStringWarning)) {
+                    binaryStringInfoVBox.getChildren().add(binaryStringWarning);
+                }
+            } else {
+                binaryStringInfoVBox.getChildren().remove(binaryStringWarning);
             }
-        } else {
-            binaryStringInfoVBox.getChildren().remove(binaryStringWarning);
         }
     }
 
