@@ -50,13 +50,7 @@ public class EditorControl implements Initializable {
         classAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 8, 4));
         classAmountSpinner.setEditable(true);
 
-        classAmountSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            refreshClassChoiceBox(newValue);
-
-            if (newValue < oldValue) {
-                editorChart.clearChart();
-            }
-        }));
+        classAmountSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> refreshClassChoiceBox(newValue)));
     }
 
     private void initializeClassChoiceBox() {
