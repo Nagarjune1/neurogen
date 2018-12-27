@@ -4,7 +4,6 @@ import pl.wozniaktomek.genetic.util.Chromosome;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.service.StartupService;
 import pl.wozniaktomek.neural.structure.Connection;
-import pl.wozniaktomek.neural.structure.Neuron;
 import pl.wozniaktomek.neural.structure.Structure;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
@@ -19,6 +18,8 @@ public abstract class Selection {
     ArrayList<Chromosome> oldPopulation;
     ArrayList<Chromosome> newPopulation;
 
+    Double fitnessScalingFactor;
+
     protected abstract void initializeSelection();
 
     protected abstract void selectPopulation();
@@ -26,7 +27,7 @@ public abstract class Selection {
     /* Fitness operations */
     void countFitness() {
         for (Chromosome chromosome : oldPopulation) {
-            chromosome.setFitness(countNetworkError(chromosome.getWeights()));
+            chromosome.setFitness(Math.pow(countNetworkError(chromosome.getWeights()), (1d + fitnessScalingFactor)));
         }
     }
 

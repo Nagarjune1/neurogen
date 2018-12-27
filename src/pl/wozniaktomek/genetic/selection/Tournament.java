@@ -10,10 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Tournament extends Selection {
     private Integer tournamentSize;
 
-    public Tournament(ArrayList<Chromosome> oldPopulation, Integer tournamentSize, NeuralNetwork neuralNetwork) {
+    public Tournament(ArrayList<Chromosome> oldPopulation, Integer tournamentSize, NeuralNetwork neuralNetwork, Double fitnessScalingFactor) {
         this.oldPopulation = oldPopulation;
         this.tournamentSize = tournamentSize;
         this.neuralNetwork = neuralNetwork;
+        this.fitnessScalingFactor = fitnessScalingFactor;
         structure = neuralNetwork.getStructure();
 
         initializeSelection();

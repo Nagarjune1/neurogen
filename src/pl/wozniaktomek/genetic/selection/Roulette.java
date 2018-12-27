@@ -9,9 +9,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Roulette extends Selection {
     private Double sumoOfDistribution;
 
-    public Roulette(ArrayList<Chromosome> oldPopulation, NeuralNetwork neuralNetwork) {
+    public Roulette(ArrayList<Chromosome> oldPopulation, NeuralNetwork neuralNetwork, Double fitnessScalingFactor) {
         this.oldPopulation = oldPopulation;
         this.neuralNetwork = neuralNetwork;
+        this.fitnessScalingFactor = fitnessScalingFactor;
         structure = neuralNetwork.getStructure();
 
         initializeSelection();

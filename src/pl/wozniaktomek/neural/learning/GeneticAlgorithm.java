@@ -114,6 +114,20 @@ public class GeneticAlgorithm extends Thread {
     }
 
     /* Genetic operators */
+    private void selection() {
+        switch (geneticParameters.getSelectionMethod()) {
+            case ROULETTE:
+                Roulette roulette = new Roulette(geneticParameters.getPopulation(), neuralNetwork, (double)(geneticParameters.getIteration() / 25600));
+                geneticParameters.setPopulation(roulette.getPopulation());
+                break;
+
+            case TOURNAMENT:
+                Tournament tournament = new Tournament(geneticParameters.getPopulation(), 8, neuralNetwork, (double)(geneticParameters.getIteration() / 25600));
+                geneticParameters.setPopulation(tournament.getPopulation());
+                break;
+        }
+    }
+
     private void crossover() {
         switch (geneticParameters.getCrossoverMethod()) {
             case SINGLE:
@@ -142,20 +156,6 @@ public class GeneticAlgorithm extends Thread {
             case FLIPSTRING:
                 FlipString flipString = new FlipString(geneticParameters.getPopulation(), geneticParameters.getMutationProbability());
                 geneticParameters.setPopulation(flipString.getPopulation());
-                break;
-        }
-    }
-
-    private void selection() {
-        switch (geneticParameters.getSelectionMethod()) {
-            case ROULETTE:
-                Roulette roulette = new Roulette(geneticParameters.getPopulation(), neuralNetwork);
-                geneticParameters.setPopulation(roulette.getPopulation());
-                break;
-
-            case TOURNAMENT:
-                Tournament tournament = new Tournament(geneticParameters.getPopulation(), 8, neuralNetwork);
-                geneticParameters.setPopulation(tournament.getPopulation());
                 break;
         }
     }
