@@ -209,7 +209,7 @@ public class StartupWidget extends Widget {
             }
 
             StartupService startupService = new StartupService(neuralNetwork);
-            List<Neuron> neuronsInLastLayer = startupService.getLastLayerNeurons(verificationData.get(i));
+            List<Neuron> neuronsInLastLayer = startupService.getLastLayerNeurons(verificationData.get(i), true);
 
             for (Neuron neuron : neuronsInLastLayer) {
                 row.add(String.format("%.5f", neuron.getOutput()));

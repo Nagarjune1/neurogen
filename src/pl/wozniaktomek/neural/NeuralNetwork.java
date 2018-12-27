@@ -68,6 +68,7 @@ public class NeuralNetwork {
     public void setLearned(Boolean learned) {
         isLearned = learned;
         neuralControl.getStartupWidget().refreshWidget();
+        neuralControl.getTestWidget().refreshWidget();
     }
 
     /* Interface control */

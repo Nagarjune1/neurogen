@@ -17,17 +17,20 @@ public class StartupService {
         structure = neuralNetwork.getStructure();
     }
 
-    public List<Neuron> getLastLayerNeurons(NeuralObject neuralObject) {
+    public List<Neuron> getLastLayerNeurons(NeuralObject neuralObject, Boolean isErrorCounting) {
         LearningService learningService = new LearningService(neuralNetwork);
         learningService.putInputData(neuralObject);
         learningService.countOutputs();
-        learningService.countLastLayerError(neuralObject);
+
+        if (isErrorCounting) {
+            learningService.countLastLayerError(neuralObject);
+        }
 
         return structure.getLayers().get(structure.getLayers().size() - 1).getNeurons();
     }
 
     public Double getLastLayerError(NeuralObject neuralObject) {
-        List<Neuron> lastLayerNeurons = getLastLayerNeurons(neuralObject);
+        List<Neuron> lastLayerNeurons = getLastLayerNeurons(neuralObject, true);
 
         double lastLayerError = 0d;
         for (Neuron neuron : lastLayerNeurons) {
@@ -57,5 +60,21 @@ public class StartupService {
         }
 
         return objectCounter;
+    }
+
+    public Integer getObjectClass(NeuralObject neuralObject) {
+        List<Neuron> lastLayerNeurons = getLastLayerNeurons(neuralObject, false);
+
+        int objectClass = 1;
+        double outputValue = 0d;
+
+        for (int i = 0; i < lastLayerNeurons.size(); i++) {
+            if (lastLayerNeurons.get(i).getOutput() > outputValue) {
+                outputValue = lastLayerNeurons.get(i).getOutput();
+                objectClass = i + 1;
+            }
+        }
+
+        return objectClass;
     }
 }

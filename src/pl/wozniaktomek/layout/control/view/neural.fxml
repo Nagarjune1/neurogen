@@ -76,6 +76,21 @@
                       </ScrollPane>
                   </AnchorPane>
               </Tab>
+              <Tab text="TESTOWANIE SIECI">
+                  <AnchorPane fx:id="testTabPane">
+                      <ScrollPane vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <padding>
+                              <Insets top="16.0"/>
+                          </padding>
+                          <VBox fx:id="testTab" spacing="12.0">
+                              <padding>
+                                  <Insets bottom="16.0" right="16.0"/>
+                              </padding>
+                          </VBox>
+                      </ScrollPane>
+                  </AnchorPane>
+              </Tab>
           </TabPane>
       </VBox>
    </ScrollPane>

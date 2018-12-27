@@ -99,6 +99,7 @@ public class SettingsWidget extends Widget {
                 HBox geneticSettingsContainer = layoutService.getHBox(5d, 0d, 48d);
                 geneticSettingsContainer.getChildren().addAll(getGeneticMethodsContainer(), getGeneticParametersContainer());
                 learningMethodSettingsContainer.getChildren().add(geneticSettingsContainer);
+                refreshBinaryStringInfo();
             } else {
                 HBox backpropagationSettingsContainer = layoutService.getHBox(5d, 8d, 12d);
                 backpropagationSettingsContainer.getChildren().addAll(layoutService.getText("Współczynnik uczenia", LayoutService.TextStyle.PARAGRAPH), getLearningFactorSpinner());

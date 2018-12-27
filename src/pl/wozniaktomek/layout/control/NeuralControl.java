@@ -20,10 +20,12 @@ public class NeuralControl implements Initializable {
     @FXML private AnchorPane settingsTabPane;
     @FXML private AnchorPane learningTabPane;
     @FXML private AnchorPane startupTabPane;
+    @FXML private AnchorPane testTabPane;
 
     @FXML private VBox settingsTab;
     @FXML private VBox learningTab;
     @FXML private VBox startupTab;
+    @FXML private VBox testTab;
 
     private NeuralNetwork neuralNetwork;
 
@@ -32,6 +34,7 @@ public class NeuralControl implements Initializable {
     private TopologyWidget topologyWidget;
     private LearningWidget learningWidget;
     private StartupWidget startupWidget;
+    private TestWidget testWidget;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,6 +44,7 @@ public class NeuralControl implements Initializable {
         initializeNetworkTopologyWidget();
         initializeLearningWidget();
         initializeStartupWidget();
+        initializeTestWidget();
         initializeSizeListener();
 
         minimizeSettingsWidgets();
@@ -84,6 +88,11 @@ public class NeuralControl implements Initializable {
         startupTab.getChildren().add(startupWidget.getWidget());
     }
 
+    private void initializeTestWidget() {
+        testWidget = new TestWidget(neuralNetwork);
+        testTab.getChildren().add(testWidget.getWidget());
+    }
+
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
@@ -97,6 +106,9 @@ public class NeuralControl implements Initializable {
 
             startupTab.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 36);
             startupTabPane.setPrefSize(ThesisApp.windowControl.getContentPane().getWidth(), ThesisApp.windowControl.getContentPane().getHeight());
+
+            testTab.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 36);
+            testTabPane.setPrefSize(ThesisApp.windowControl.getContentPane().getWidth(), ThesisApp.windowControl.getContentPane().getHeight());
 
             refreshTopology();
         };
@@ -119,5 +131,9 @@ public class NeuralControl implements Initializable {
     /* Getters */
     public StartupWidget getStartupWidget() {
         return startupWidget;
+    }
+
+    public TestWidget getTestWidget() {
+        return testWidget;
     }
 }

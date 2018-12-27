@@ -1,33 +1,30 @@
 package pl.wozniaktomek.util;
 
 import javafx.geometry.Point2D;
-import javafx.scene.text.Text;
+import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.service.StartupService;
+import pl.wozniaktomek.neural.util.NeuralObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EditorChart extends Chart {
-    private Text textSummary;
+public class TestChart extends Chart {
+    private NeuralNetwork neuralNetwork;
 
-    private Integer classNumber;
-    private Integer objectAmount;
-
-    public EditorChart() {
+    public TestChart(NeuralNetwork neuralNetwork, Integer prefWidth, Integer prefHeight) {
+        this.neuralNetwork = neuralNetwork;
         initializeData();
-        initializeChart(854, 480);
+        initializeChart(prefWidth, prefHeight);
         initializeEvent();
     }
 
     @Override
     public void refreshWidget() {
         refreshChart();
-        refreshSummary();
     }
 
     @Override
     void initializeData() {
-        classNumber = 1;
-        objectAmount = 0;
         objects = new HashMap<>();
     }
 
@@ -42,43 +39,24 @@ public class EditorChart extends Chart {
             );
 
             if (pointClass.getX() >= xAxis.getLowerBound() && pointClass.getX() <= xAxis.getUpperBound() && pointClass.getY() >= yAxis.getLowerBound() && pointClass.getY() <= yAxis.getUpperBound()) {
+                Integer classNumber = countClassNumber(pointClass.getX(), pointClass.getY());
                 addPointToChart(pointClass, classNumber);
             }
 
             refreshChart();
-            refreshSummary();
         });
     }
 
-    private void refreshSummary() {
-        objectAmount = objects.values().stream().mapToInt(ArrayList::size).sum();
-
-        String summary = "";
-
-        for (int i = 1; i <= 8; i++) {
-            if (objects.get(i) != null)
-                summary = summary.concat("\nklasa " + i + ":  " + objects.get(i).size() + " / " + objectAmount);
-        }
-
-        if (objectAmount.equals(0))
-            summary = summary.concat("\nbrak obiektów...");
-
-        textSummary.setText(summary);
+    private Integer countClassNumber(Double posX, Double posY) {
+        NeuralObject neuralObject = getNeuralObject(posX, posY);
+        return new StartupService(neuralNetwork).getObjectClass(neuralObject);
     }
 
-    public void clearChart() {
-        objects = new HashMap<>();
-        objectAmount = 0;
-        refreshChart();
-        refreshSummary();
-    }
+    private NeuralObject getNeuralObject(Double posX, Double posY) {
+        ArrayList<Double> inputValues = new ArrayList<>();
+        inputValues.add(posX);
+        inputValues.add(posY);
 
-
-    public void setTextSummary(Text textSummary) {
-        this.textSummary = textSummary;
-    }
-
-    public void setClassNumber(Integer classNumber) {
-        this.classNumber = classNumber;
+        return new NeuralObject(inputValues, null);
     }
 }

@@ -1,5 +1,6 @@
 package pl.wozniaktomek.neural.learning;
 
+import javafx.application.Platform;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.learning.parameters.BackpropagationParameters;
 import pl.wozniaktomek.neural.service.LearningService;
