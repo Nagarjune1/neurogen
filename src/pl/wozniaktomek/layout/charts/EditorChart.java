@@ -1,4 +1,4 @@
-package pl.wozniaktomek.util;
+package pl.wozniaktomek.layout.charts;
 
 import javafx.geometry.Point2D;
 import javafx.scene.text.Text;
@@ -66,10 +66,10 @@ public class EditorChart extends Chart {
         textSummary.setText(summary);
     }
 
+    @Override
     public void clearChart() {
-        objects = new HashMap<>();
+        super.clearChart();
         objectAmount = 0;
-        refreshChart();
         refreshSummary();
     }
 

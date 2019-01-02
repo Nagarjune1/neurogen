@@ -1,4 +1,4 @@
-package pl.wozniaktomek.util;
+package pl.wozniaktomek.layout.charts;
 
 import javafx.geometry.Point2D;
 import pl.wozniaktomek.neural.NeuralNetwork;
@@ -7,6 +7,7 @@ import pl.wozniaktomek.neural.util.NeuralObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestChart extends Chart {
     private NeuralNetwork neuralNetwork;
@@ -38,13 +39,17 @@ public class TestChart extends Chart {
                     Math.round(yAxis.getValueForDisplay(yAxis.sceneToLocal(pointScene).getY()).doubleValue() * 1000.0) / 1000.0
             );
 
-            if (pointClass.getX() >= xAxis.getLowerBound() && pointClass.getX() <= xAxis.getUpperBound() && pointClass.getY() >= yAxis.getLowerBound() && pointClass.getY() <= yAxis.getUpperBound()) {
-                Integer classNumber = countClassNumber(pointClass.getX(), pointClass.getY());
-                addPointToChart(pointClass, classNumber);
-            }
+            addPoint(pointClass);
 
             refreshChart();
         });
+    }
+
+    private void addPoint(Point2D pointClass) {
+        if (pointClass.getX() >= xAxis.getLowerBound() && pointClass.getX() <= xAxis.getUpperBound() && pointClass.getY() >= yAxis.getLowerBound() && pointClass.getY() <= yAxis.getUpperBound()) {
+            Integer classNumber = countClassNumber(pointClass.getX(), pointClass.getY());
+            addPointToChart(pointClass, classNumber);
+        }
     }
 
     private Integer countClassNumber(Double posX, Double posY) {
@@ -58,5 +63,16 @@ public class TestChart extends Chart {
         inputValues.add(posY);
 
         return new NeuralObject(inputValues, null);
+    }
+
+    public void generateRandomObjects() {
+        for (int i = 0; i < 60; i++) {
+            double posX = ThreadLocalRandom.current().nextDouble(-10d, 10d);
+            double posY = ThreadLocalRandom.current().nextDouble(-10d, 10d);
+
+            addPoint(new Point2D(posX, posY));
+        }
+
+        refreshChart();
     }
 }

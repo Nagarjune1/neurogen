@@ -26,6 +26,6 @@ public class DataEditorService {
 
     public HashMap<Integer, ArrayList<Point2D>> generateObjects() {
         DataGeneratorService dataGeneratorService = new DataGeneratorService();
-        return dataGeneratorService.generateObjects(ThreadLocalRandom.current().nextInt(2, 5));
+        return dataGeneratorService.generateObjects(ThreadLocalRandom.current().nextInt(2, 6));
     }
 }

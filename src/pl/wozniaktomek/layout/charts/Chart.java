@@ -1,4 +1,4 @@
-package pl.wozniaktomek.util;
+package pl.wozniaktomek.layout.charts;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Side;
@@ -22,6 +22,11 @@ abstract class Chart {
         chart.setLegendSide(Side.BOTTOM);
         chart.setPrefSize(prefWidth, prefHeight);
         chart.setAnimated(false);
+    }
+
+    public void clearChart() {
+        objects = new HashMap<>();
+        refreshChart();
     }
 
     void refreshChart() {

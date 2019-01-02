@@ -19,6 +19,8 @@ class DataGeneratorService {
                 return generateThreeClasses();
             case 4:
                 return generateFourClasses();
+            case 5:
+                return generateFiveClasses();
 
             default:
                 return new HashMap<>();
@@ -79,6 +81,19 @@ class DataGeneratorService {
                 generateSector(sector, points, ++counter, 60);
                 usedSectors.add(sector);
             }
+        }
+
+        return points;
+    }
+
+    private HashMap<Integer, ArrayList<Point2D>> generateFiveClasses() {
+        HashMap<Integer, ArrayList<Point2D>> points = generateFourClasses();
+
+        for (int i = 0; i < 60; i++) {
+            addObject(points, 5, new Point2D(
+                    ThreadLocalRandom.current().nextDouble(-1d, 1d),
+                    ThreadLocalRandom.current().nextDouble(-1d, 1d)
+            ));
         }
 
         return points;
