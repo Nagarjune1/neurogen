@@ -1,28 +1,45 @@
 package pl.wozniaktomek.layout.widget;
 
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import pl.wozniaktomek.ThesisApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
+import pl.wozniaktomek.neural.service.StartupService;
+import pl.wozniaktomek.neural.util.NeuralObject;
+import pl.wozniaktomek.service.DataTransferService;
 import pl.wozniaktomek.service.LayoutService;
 import pl.wozniaktomek.layout.charts.TestChart;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestWidget extends Widget {
     private NeuralNetwork neuralNetwork;
 
     private Text networkStatus;
-    private HBox buttonsContainer;
 
-    private VBox chartContainer;
+    private HBox buttonsContainer;
+    private VBox resultsContainer;
+
     private TestChart testChart;
+
+    private ArrayList<NeuralObject> testingData;
+    private TableView<List<String>> table;
 
     private Button clearButton;
     private Button generateButton;
+    private Button loadButton;
 
     public TestWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
@@ -30,35 +47,57 @@ public class TestWidget extends Widget {
         initialize();
     }
 
+    /* Refreshing */
     public void refreshWidget() {
         if (neuralNetwork.getLearned()) {
             networkStatus.setText("Sieć przeszła przez proces uczenia.");
 
             if (neuralNetwork.getParameters().getInputSize().equals(2)) {
-                initializeChartButtons();
-                initializeChart();
-                initializeButtonsAction();
+                refreshTwoDimensionalData();
             } else {
-                clearButtons();
-                clearChart();
-                Platform.runLater(() ->
-                        chartContainer.getChildren().add(layoutService.getText("Aktualnie testowanie dostępne jest tylko dla danych dwuwymiarowych.", LayoutService.TextStyle.HEADING)));
+                refreshMultiDimensionalData();
             }
 
         } else {
             networkStatus.setText("Sieć nie przeszła jeszcze procesu uczenia.");
-            clearButtons();
-            clearChart();
+            clearContainers();
 
             Platform.runLater(() ->
-                    chartContainer.getChildren().add(layoutService.getText("Sieć musi przejść proces uczenia, by dostępny był panel testowania.", LayoutService.TextStyle.PARAGRAPH_THEME)));
+                    resultsContainer.getChildren().add(layoutService.getText("Sieć musi przejść proces uczenia, by dostępny był panel testowania.", LayoutService.TextStyle.PARAGRAPH_THEME)));
         }
+    }
+
+    private void refreshTwoDimensionalData() {
+        clearContainers();
+
+        initializeButtons(true);
+        initializeChart();
+        initializeButtonsAction(true);
+    }
+
+    private void refreshMultiDimensionalData() {
+        clearContainers();
+        initializeButtons(false);
+        initializeButtonsAction(false);
+    }
+
+    private void clearContainers() {
+        clearButtonsContainer();
+        clearResultsContainer();
+    }
+
+    private void clearButtonsContainer() {
+        Platform.runLater(() -> buttonsContainer.getChildren().clear());
+    }
+
+    private void clearResultsContainer() {
+        Platform.runLater(() -> resultsContainer.getChildren().clear());
     }
 
     /* Initialization */
     private void initialize() {
         initializeControlsContainer();
-        initializeChartContainer();
+        initializeResultsContainer();
         refreshWidget();
     }
 
@@ -76,12 +115,12 @@ public class TestWidget extends Widget {
         controlContainer.getChildren().addAll(networkStatusContainer, buttonsContainer);
     }
 
-    private void initializeChartContainer() {
-        chartContainer = layoutService.getVBox(0d, 0d, 0d);
-        contentContainer.getChildren().add(chartContainer);
+    private void initializeResultsContainer() {
+        resultsContainer = layoutService.getVBox(0d, 0d, 0d);
+        contentContainer.getChildren().add(resultsContainer);
     }
 
-    private void initializeSizeListener() {
+    private void initializeChartSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
                 testChart.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 300, ThesisApp.windowControl.getContentPane().getHeight() - 292);
 
@@ -90,37 +129,149 @@ public class TestWidget extends Widget {
     }
 
     /* Chart */
-    private void clearChart() {
-        Platform.runLater(() -> chartContainer.getChildren().clear());
-    }
-
     private void addChartToContainer() {
-        Platform.runLater(() -> chartContainer.getChildren().add(testChart.getChart()));
+        Platform.runLater(() -> resultsContainer.getChildren().add(testChart.getChart()));
     }
 
     private void initializeChart() {
-        clearChart();
+        clearResultsContainer();
 
         testChart = new TestChart(neuralNetwork, 850, (int)(ThesisApp.windowControl.getContentPane().getHeight() - 292));
-        initializeSizeListener();
+        initializeChartSizeListener();
 
         addChartToContainer();
     }
 
+    /* Table */
+    private void initializeTable() {
+        clearResultsContainer();
+
+        table = new TableView<>();
+        table.setPrefHeight(ThesisApp.stage.getHeight() - 332);
+        table.setEditable(false);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        fillTable();
+        createTableColumns();
+        initializeTableSizeListener();
+        addTableToContainer();
+    }
+
+    private void fillTable() {
+        StartupService startupService = new StartupService(neuralNetwork);
+
+        for (int i = 0; i < testingData.size(); i++) {
+            List<String> row = new ArrayList<>();
+
+            row.add(String.valueOf(i + 1));
+
+            for (Double value : testingData.get(i).getInputValues()) {
+                row.add(String.format("%.5f", value));
+            }
+
+            row.add(String.valueOf(startupService.getObjectClass(testingData.get(i))));
+            table.getItems().add(row);
+        }
+    }
+
+    private void createTableColumns() {
+        List<String> columnNames = createColumnNames();
+
+        for (int i = 0; i < columnNames.size(); i++) {
+            TableColumn<List<String>, String> column = new TableColumn<>(columnNames.get(i));
+
+            final int finalId = i;
+            column.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().get(finalId)));
+            column.setSortable(false);
+            column.setReorderable(false);
+            column.setMinWidth(32d);
+
+            table.getColumns().add(column);
+        }
+    }
+
+    private List<String> createColumnNames() {
+        List<String> columnNames = new ArrayList<>();
+
+        columnNames.add("ID");
+
+        for (int i = 0; i < neuralNetwork.getParameters().getInputSize(); i++) {
+            columnNames.add("X[" + (i + 1) + "]");
+        }
+
+        columnNames.add("Klasa");
+
+        return columnNames;
+    }
+
+    private void initializeTableSizeListener() {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(ThesisApp.stage.getHeight() - 332);
+        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+    }
+
+    private void addTableToContainer() {
+        Platform.runLater(() -> resultsContainer.getChildren().add(table));
+    }
+
     /* Buttons */
-    private void clearButtons() {
-        Platform.runLater(() -> buttonsContainer.getChildren().clear());
-    }
-
-    private void initializeChartButtons() {
+    private void initializeButtons(Boolean isTwoDimensional) {
         clearButton = layoutService.getButton("Wyczyść");
-        generateButton = layoutService.getButton("Wygeneruj losowe punkty");
+        generateButton = layoutService.getButton("Wygeneruj losowe obiekty");
 
-        Platform.runLater(() -> buttonsContainer.getChildren().addAll(clearButton, generateButton));
+        if (isTwoDimensional) {
+            Platform.runLater(() -> buttonsContainer.getChildren().addAll(clearButton, generateButton));
+        } else {
+            loadButton = layoutService.getButton("Wczytaj zbiór danych");
+            Platform.runLater(() -> buttonsContainer.getChildren().addAll(clearButton, generateButton, new Separator(Orientation.VERTICAL), loadButton));
+        }
     }
 
-    private void initializeButtonsAction() {
-        clearButton.setOnAction(event -> testChart.clearChart());
-        generateButton.setOnAction(event -> testChart.generateRandomObjects());
+    private void initializeButtonsAction(Boolean isTwoDimensional) {
+        if (isTwoDimensional) {
+            clearButton.setOnAction(event -> testChart.clearChart());
+            generateButton.setOnAction(event -> testChart.generateRandomObjects());
+        } else {
+            clearButton.setOnAction(event -> clearResultsContainer());
+            generateButton.setOnAction(event -> {
+                generateTestingData();
+                initializeTable();
+            });
+
+            loadButton.setOnAction(event -> {
+                DataTransferService dataTransferService = new DataTransferService();
+                testingData = dataTransferService.readFromFile();
+
+                if (validateLoadedDataSize()) {
+                    initializeTable();
+                } else {
+                    clearResultsContainer();
+                }
+            });
+        }
+    }
+
+    /* Data operations */
+    private boolean validateLoadedDataSize() {
+        for (NeuralObject neuralObject : testingData) {
+            if (neuralObject.getInputValues().size() != neuralNetwork.getParameters().getInputSize()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void generateTestingData() {
+        testingData = new ArrayList<>();
+
+        for (int i = 0; i < 60; i++) {
+            ArrayList<Double> inputValues = new ArrayList<>();
+
+            for (int j = 0; j < neuralNetwork.getParameters().getInputSize(); j++) {
+                inputValues.add(ThreadLocalRandom.current().nextDouble(-10d, 10d));
+            }
+
+            testingData.add(new NeuralObject(inputValues, null));
+        }
     }
 }

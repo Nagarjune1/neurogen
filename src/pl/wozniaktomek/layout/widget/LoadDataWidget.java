@@ -77,12 +77,12 @@ public class LoadDataWidget extends Widget {
             neuralControl.maximizeSettingsWidgets();
         } else {
             neuralControl.minimizeSettingsWidgets();
-            neuralNetwork.setLearned(false);
             setButtonStyle(false);
         }
 
         textDataStatus.setText(dataTransferService.getTransferStatus());
 
+        neuralNetwork.setLearned(false);
         neuralControl.refreshSettings();
         neuralControl.refreshTopology();
     }

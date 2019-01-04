@@ -115,18 +115,35 @@ public class DataTransferService {
         Integer inputAmount = getInputAmount(lines.get(0));
         Integer classAmount = getClassAmount(lines.get(0));
 
-        for (int i = 1; i < lines.size(); i++) {
-            if (!lines.get(i).equals("")) {
-                String[] splitLine = lines.get(i).split(SEPARATOR);
-                ArrayList<Double> inputValues = getInputValues(splitLine, inputAmount, i + 1);
-                Integer classNumber = getClassNumber(splitLine, inputAmount, classAmount, i + 1);
+        if (classAmount > 0) {
+            for (int i = 1; i < lines.size(); i++) {
+                if (!lines.get(i).equals("")) {
+                    String[] splitLine = lines.get(i).split(SEPARATOR);
+                    ArrayList<Double> inputValues = getInputValues(splitLine, inputAmount, i + 1);
+                    Integer classNumber = getClassNumber(splitLine, inputAmount, classAmount, i + 1);
 
-                if (inputValues != null && classNumber != null) {
-                    objects.add(new NeuralObject(inputValues, classNumber));
-                } else {
-                    return null;
+                    if (inputValues != null && classNumber != null) {
+                        objects.add(new NeuralObject(inputValues, classNumber));
+                    } else {
+                        return null;
+                    }
                 }
             }
+        } else if (classAmount.equals(0)) {
+            for (int i = 1; i < lines.size(); i++) {
+                if (!lines.get(i).equals("")) {
+                    String[] splitLine = lines.get(i).split(SEPARATOR);
+                    ArrayList<Double> inputValues = getInputValues(splitLine, inputAmount, i + 1);
+
+                    if (inputValues != null) {
+                        objects.add(new NeuralObject(inputValues, null));
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        } else {
+            return null;
         }
 
         if (objects.size() > 0) {
