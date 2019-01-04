@@ -1,5 +1,6 @@
 icons via:
 
+https://www.flaticon.com/free-icon/artificial-intelligence_653500
 https://www.flaticon.com/free-icon/sketch_681662#term=tool&page=1&position=28
 https://www.flaticon.com/free-icon/edit_1159633#term=edit&page=1&position=5
 https://www.flaticon.com/free-icon/gene_959947#term=gene&page=1&position=28
