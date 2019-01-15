@@ -1,11 +1,5 @@
 /* Main */
 
-/* Colors:
- * primary: rgba(31, 64, 90, 1.0)
- * secondary light: rgba(0, 195, 237, 1.0)
- * secondary dark: rgba(0, 85, 157, 1.0)
- */
-
 /* Font */
 @font-face {
     font-family: 'Roboto Condensed';
@@ -211,20 +205,6 @@
     -fx-fill: rgba(31, 64, 90, 1.0);
 }
 
-/*
-.widget-icon:hover {
-    -fx-border-color: rgba(0, 195, 237, 1.0);
-}
-
-.widget-icon:hover .text-widget-icon {
-    -fx-fill: rgba(0, 195, 237, 1.0);
-}
-
-.widget-icon:hover > .widget-icon-background {
-    -fx-background-color: rgba(0, 195, 237, 1.0);
-}
-*/
-
 .widget-icon-background {
     -fx-background-color: rgba(31, 64, 90, 1.0);
 }
@@ -421,6 +401,19 @@
     -fx-text-fill: rgba(255, 255, 255, 1.0);
 }
 
+.toggle-button {
+    -fx-background-color: rgba(255, 255, 255, 1.0);
+    -fx-text-fill: rgba(31, 64, 90, 1.0);
+    -fx-border-color: rgba(31, 64, 90, 1.0);
+    -fx-border-radius: 4px;
+    -fx-padding: 8px;
+}
+
+.toggle-button:hover {
+    -fx-background-color: rgba(31, 64, 90, 1.0);
+    -fx-text-fill: rgba(255, 255, 255, 1.0);
+}
+
 /* Text */
 .logo {
     -fx-font-size: 42px;
@@ -564,28 +557,7 @@
     -fx-background-insets: 0px 0px 0px 12px;
 }
 
-/*
-.table-row-cell:filled:selected:focused, .table-row-cell:filled:selected, .table-row-cell:filled {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-focus-color: transparent;
-}
-
-.table-row-cell:filled > .table-cell:selected:focused, .table-row-cell:filled > .table-cell:selected {
-    -fx-background-color:transparent;
-    -fx-border-color: transparent;
-    -fx-focus-color: transparent;
-}
-
-.table-view:row-selection > .virtual-flow > .clipped-container > .sheet > .table-row-cell:filled:focused:hover {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-focus-color: transparent;
-}
-
-*/
-
-/* chart symbols */
+/* Chart symbols */
 .chart-symbol {
     -fx-background-color: #F44336;
     -fx-background-radius: 5px;

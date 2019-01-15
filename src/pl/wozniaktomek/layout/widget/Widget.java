@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 import pl.wozniaktomek.service.LayoutService;
 
 public abstract class Widget {
-    protected VBox contentContainer;
+    VBox contentContainer;
     LayoutService layoutService;
     private VBox mainContainer;
     private HBox titleContainer;
@@ -31,6 +31,7 @@ public abstract class Widget {
         setStyle();
     }
 
+    /* Getter */
     public VBox getWidget() {
         return mainContainer;
     }
@@ -41,6 +42,7 @@ public abstract class Widget {
         widgetTitle.getStyleClass().add("widget-primary-title");
     }
 
+    /* Expanding */
     void setMinimizationVisibility(boolean isButtonVisible) {
         minimizationButton.setVisible(isButtonVisible);
     }
@@ -59,6 +61,7 @@ public abstract class Widget {
         isMinimized = false;
     }
 
+    /* Initialization */
     private void initializeContainers() {
         mainContainer = layoutService.getVBox(null, null, null);
         isMinimized = false;

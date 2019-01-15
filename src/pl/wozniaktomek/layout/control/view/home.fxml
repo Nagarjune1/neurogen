@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
-
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <AnchorPane stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.wozniaktomek.layout.control.HomeControl">
    <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="290.0" layoutY="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <VBox fx:id="contentContainer" spacing="24.0">
+       <VBox spacing="24.0">
          <HBox>
             <HBox alignment="CENTER_LEFT">
                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Ekran główny">
@@ -373,7 +366,9 @@
                                                      <Insets bottom="6.0" left="16.0" right="16.0" top="6.0" />
                                                  </padding>
                                                  <TextFlow textAlignment="CENTER">
-                                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-widget-icon" text="Wczytaj zestaw zestaw danych weryfikujących z prawidłowymi odpowiedziami lub bez nich." />
+                                                     <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                                           styleClass="text-widget-icon"
+                                                           text="Za pomocą zakładki Uruchomienie lub Testowanie sprawdź, jak nauczyła się sieć."/>
                                                  </TextFlow>
                                              </VBox>
                                          </HBox>

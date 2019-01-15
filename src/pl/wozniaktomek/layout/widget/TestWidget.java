@@ -12,13 +12,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.NeuroGenApp;
+import pl.wozniaktomek.layout.charts.TestChart;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.service.StartupService;
 import pl.wozniaktomek.neural.util.NeuralObject;
 import pl.wozniaktomek.service.DataTransferService;
 import pl.wozniaktomek.service.LayoutService;
-import pl.wozniaktomek.layout.charts.TestChart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,10 +122,10 @@ public class TestWidget extends Widget {
 
     private void initializeChartSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
-                testChart.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 300, ThesisApp.windowControl.getContentPane().getHeight() - 292);
+                testChart.setChartSize(NeuroGenApp.windowControl.getContentPane().getWidth() - 300, NeuroGenApp.windowControl.getContentPane().getHeight() - 292);
 
-        ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
-        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+        NeuroGenApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
+        NeuroGenApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
     /* Chart */
@@ -136,7 +136,7 @@ public class TestWidget extends Widget {
     private void initializeChart() {
         clearResultsContainer();
 
-        testChart = new TestChart(neuralNetwork, 850, (int)(ThesisApp.windowControl.getContentPane().getHeight() - 292));
+        testChart = new TestChart(neuralNetwork, 850, (int) (NeuroGenApp.windowControl.getContentPane().getHeight() - 292));
         initializeChartSizeListener();
 
         addChartToContainer();
@@ -147,7 +147,7 @@ public class TestWidget extends Widget {
         clearResultsContainer();
 
         table = new TableView<>();
-        table.setPrefHeight(ThesisApp.stage.getHeight() - 332);
+        table.setPrefHeight(NeuroGenApp.stage.getHeight() - 332);
         table.setEditable(false);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -205,8 +205,8 @@ public class TestWidget extends Widget {
     }
 
     private void initializeTableSizeListener() {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(ThesisApp.stage.getHeight() - 332);
-        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(NeuroGenApp.stage.getHeight() - 332);
+        NeuroGenApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
     private void addTableToContainer() {

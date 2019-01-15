@@ -1,9 +1,8 @@
 package pl.wozniaktomek.neural.structure;
 
 import pl.wozniaktomek.neural.NeuralNetwork;
-import pl.wozniaktomek.neural.service.LearningService;
-import pl.wozniaktomek.neural.util.ActivationFunction;
 import pl.wozniaktomek.neural.service.ConnectionService;
+import pl.wozniaktomek.neural.util.ActivationFunction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,7 @@ public class Structure {
         isBias = false;
     }
 
+    /* Layers */
     public void addLayer(Integer numberOfNeurons) {
         Layer newLayer = new Layer(numberOfNeurons, new ActivationFunction(ActivationFunction.FunctionType.SIGMOID));
 
@@ -47,6 +47,7 @@ public class Structure {
         layers.remove(layerNumber.intValue());
     }
 
+    /* Bias */
     public void addBias() {
         for (int i = 0; i < layers.size() - 1; i++) {
             layers.get(i).addNeuron();
@@ -65,6 +66,7 @@ public class Structure {
         createConnections();
     }
 
+    /* Connections */
     public void createConnections() {
         setNeuronNumbers();
 
@@ -100,7 +102,7 @@ public class Structure {
         return isBias;
     }
 
-    /* Setters */
+    /* Setter */
     public void setConnections(List<Connection> connections) {
         this.connections = connections;
     }

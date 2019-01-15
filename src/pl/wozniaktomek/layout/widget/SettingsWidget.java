@@ -35,10 +35,11 @@ public class SettingsWidget extends Widget {
         this.neuralNetwork = neuralNetwork;
         this.neuralControl = neuralControl;
         createWidget("Parametry sieci");
-        initializeContainers();
+        initialize();
     }
 
-    private void initializeContainers() {
+    /* Initialization */
+    private void initialize() {
         mainLearningContainer = layoutService.getVBox(4d, 8d, 16d);
         mainTopologyContainer = layoutService.getVBox(4d, 8d, 8d);
 
@@ -61,9 +62,9 @@ public class SettingsWidget extends Widget {
         refreshBinaryStringInfo();
     }
 
-    /**
+    /*
      * Containers
-     **/
+     */
     private void refreshLearningSettings() {
         learningParametersContainer.getChildren().clear();
         learningMethodContainer.getChildren().clear();
@@ -87,6 +88,12 @@ public class SettingsWidget extends Widget {
         hBox = layoutService.getHBox(0d, 0d, 8d);
         hBox.getChildren().addAll(layoutService.getText("Tolerancja uczenia", LayoutService.TextStyle.PARAGRAPH), getLearningToleranceSpinner());
         learningParametersContainer.getChildren().add(hBox);
+
+        /*
+        hBox = layoutService.getHBox(0d, 0d, 8d);
+        hBox.getChildren().addAll(layoutService.getText("Tolerancja całkowita", LayoutService.TextStyle.PARAGRAPH), getToleranceToggleButton());
+        learningParametersContainer.getChildren().add(hBox);
+        */
     }
 
     private void refreshMethodContainer(Boolean isGenetic) {
@@ -244,27 +251,40 @@ public class SettingsWidget extends Widget {
         vBox.getChildren().add(getBiasCheckbox());
     }
 
-    /**
+    /*
      * Controls
-     **/
+     */
     private Spinner getLearningIterationsSpinner() {
-        Spinner<Integer> spinner = new Spinner<>();
+        Spinner<Integer> spinner = layoutService.getIntegerSpinner(92d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000000, neuralNetwork.getLearning().getIterationsAmount(), 1));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(92d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setIterationsAmount(newValue)));
         return spinner;
     }
 
     private Spinner getLearningToleranceSpinner() {
-        Spinner<Double> spinner = new Spinner<>();
+        Spinner<Double> spinner = layoutService.getDoubleSpinner(78d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1.0, neuralNetwork.getLearning().getLearningTolerance(), 0.01));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(78d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().setLearningTolerance(newValue)));
         return spinner;
+    }
+
+    private ToggleButton getToleranceToggleButton() {
+        ToggleButton toggleButton = new ToggleButton("Wyłączona");
+        toggleButton.setPrefWidth(84d);
+        toggleButton.setSelected(neuralNetwork.getLearning().getIsTotalTolerance());
+
+        toggleButton.setOnAction(event -> {
+            if (toggleButton.isSelected()) {
+                neuralNetwork.getLearning().setIsTotalTolerance(true);
+                toggleButton.setText("Włączona");
+            } else {
+                neuralNetwork.getLearning().setIsTotalTolerance(false);
+                toggleButton.setText("Wyłączona");
+            }
+        });
+        return toggleButton;
     }
 
     private ChoiceBox getLearningMethodChoiceBox() {
@@ -324,10 +344,8 @@ public class SettingsWidget extends Widget {
     }
 
     private Spinner getGeneticCrossoverProbabilitySpinner() {
-        Spinner<Double> spinner = new Spinner<>();
+        Spinner<Double> spinner = layoutService.getDoubleSpinner(72d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0d, 1d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getCrossoverProbability(), 0.01));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setCrossoverProbability(newValue)));
         return spinner;
@@ -356,10 +374,8 @@ public class SettingsWidget extends Widget {
     }
 
     private Spinner getGeneticMutationProbabilitySpinner() {
-        Spinner<Double> spinner = new Spinner<>();
+        Spinner<Double> spinner = layoutService.getDoubleSpinner(72d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0d, 1d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getMutationProbability(), 0.01));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setMutationProbability(newValue)));
         return spinner;
@@ -390,29 +406,23 @@ public class SettingsWidget extends Widget {
     }
 
     private void createTournamentSizeSpinner() {
-        tournamentSizeSpinner = new Spinner<>();
+        tournamentSizeSpinner = layoutService.getIntegerSpinner(72d, true, false);
         tournamentSizeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 32, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getTournamentSize(), 1));
-        tournamentSizeSpinner.setEditable(true);
-        tournamentSizeSpinner.setPrefWidth(72d);
 
         tournamentSizeSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setTournamentSize(newValue)));
     }
 
     private Spinner getGeneticPopulationSizeSpinner() {
-        Spinner<Integer> spinner = new Spinner<>();
+        Spinner<Integer> spinner = layoutService.getIntegerSpinner(72d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getPopulationSize(), 1));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setPopulationSize(newValue)));
         return spinner;
     }
 
     private Spinner getGeneticGenSizeSpinner() {
-        Spinner<Integer> spinner = new Spinner<>();
+        Spinner<Integer> spinner = layoutService.getIntegerSpinner(72d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 32, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getGenSize(), 1));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
             neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setGenSize(newValue);
@@ -422,11 +432,9 @@ public class SettingsWidget extends Widget {
     }
 
     private Spinner getChromosomeMinRangeSpinner() {
-        minRangeSpinner = new Spinner<>();
+        minRangeSpinner = layoutService.getDoubleSpinner(72d, true, false);
         minRangeSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-52d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange() - 0.1,
                 neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange(), 0.1));
-        minRangeSpinner.setEditable(true);
-        minRangeSpinner.setPrefWidth(72d);
 
         minRangeSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
             neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMinRange(newValue);
@@ -436,11 +444,9 @@ public class SettingsWidget extends Widget {
     }
 
     private Spinner getChromosomeMaxRangeSpinner() {
-        maxRangeSpinner = new Spinner<>();
+        maxRangeSpinner = layoutService.getDoubleSpinner(72d, true, false);
         maxRangeSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMinRange() + 0.1,
                 52d, neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().getChromosomeMaxRange(), 0.1));
-        maxRangeSpinner.setEditable(true);
-        maxRangeSpinner.setPrefWidth(72d);
 
         maxRangeSpinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
             neuralNetwork.getLearning().getGeneticAlgorithm().getGeneticParameters().setChromosomeMaxRange(newValue);
@@ -450,10 +456,8 @@ public class SettingsWidget extends Widget {
     }
 
     private Spinner getLearningFactorSpinner() {
-        Spinner<Double> spinner = new Spinner<>();
+        Spinner<Double> spinner = layoutService.getDoubleSpinner(72d, true, false);
         spinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.01, 1.0, neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().getLearningFactor(), 0.01));
-        spinner.setEditable(true);
-        spinner.setPrefWidth(72d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().setLearningFactor(newValue)));
         return spinner;
@@ -464,15 +468,12 @@ public class SettingsWidget extends Widget {
         checkBox.setSelected(neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().getRecordsMixing());
 
         checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> neuralNetwork.getLearning().getBackpropagation().getBackpropagationParameters().setRecordsMixing(newValue));
-
         return checkBox;
     }
 
     private Spinner getLayerSpinner(Boolean isDisable, Integer value, Integer number) {
-        Spinner<Integer> spinner = new Spinner<>();
+        Spinner<Integer> spinner = layoutService.getIntegerSpinner(64d, false, isDisable);
         spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 64, value));
-        spinner.setDisable(isDisable);
-        spinner.setPrefWidth(64d);
 
         spinner.valueProperty().addListener(((observable, oldValue, newValue) -> {
             if (neuralNetwork.getStructure().isBias()) {

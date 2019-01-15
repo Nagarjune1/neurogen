@@ -17,6 +17,7 @@ public class Learning {
     /* General parameters */
     private Integer iterationsAmount;
     private Double learningTolerance;
+    private Boolean isTotalTolerance;
 
     /* Executor */
     private ExecutorService executorService;
@@ -37,6 +38,7 @@ public class Learning {
 
         iterationsAmount = 10000;
         learningTolerance = 0.1;
+        isTotalTolerance = true;
         createLearning(LearningMethod.GENETIC);
     }
 
@@ -59,12 +61,12 @@ public class Learning {
     public void startLearning() {
         switch (learningMethod) {
             case GENETIC:
-                geneticAlgorithm.setEndingConditions(iterationsAmount, learningTolerance);
+                geneticAlgorithm.setEndingConditions(iterationsAmount, learningTolerance, isTotalTolerance);
                 executorService.submit(geneticAlgorithm);
                 break;
 
             case BACKPROPAGATION:
-                backpropagation.setEndingConditions(iterationsAmount, learningTolerance);
+                backpropagation.setEndingConditions(iterationsAmount, learningTolerance, isTotalTolerance);
                 executorService.submit(backpropagation);
                 break;
         }
@@ -84,11 +86,7 @@ public class Learning {
         }
     }
 
-    /* Interface */
-    public void setLearningWidget(LearningWidget learningWidget) {
-        this.learningWidget = learningWidget;
-    }
-
+    /* Interface getters */
     public LearningWidget getLearningWidget() {
         return learningWidget;
     }
@@ -97,35 +95,40 @@ public class Learning {
         return interfaceUpdating;
     }
 
-    public void setInterfaceUpdating(Boolean interfaceUpdating) {
-        this.interfaceUpdating = interfaceUpdating;
-    }
-
     public Boolean getLearningVisualization() {
         return learningVisualization;
-    }
-
-    public void setLearningVisualization(Boolean learningVisualization) {
-        this.learningVisualization = learningVisualization;
     }
 
     public Boolean getIsNowInterfaceUpdating() {
         return isNowInterfaceUpdating;
     }
 
-    public void setIsNowInterfaceUpdating(Boolean updating) {
-        isNowInterfaceUpdating = updating;
-    }
-
     public Boolean getIsNowVisualizationUpdating() {
         return isNowVisualizationUpdating;
+    }
+
+    /* Interface setters */
+    public void setLearningWidget(LearningWidget learningWidget) {
+        this.learningWidget = learningWidget;
+    }
+
+    public void setInterfaceUpdating(Boolean interfaceUpdating) {
+        this.interfaceUpdating = interfaceUpdating;
+    }
+
+    public void setLearningVisualization(Boolean learningVisualization) {
+        this.learningVisualization = learningVisualization;
+    }
+
+    public void setIsNowInterfaceUpdating(Boolean updating) {
+        isNowInterfaceUpdating = updating;
     }
 
     public void setIsNowVisualizationUpdating(Boolean nowVisualizationUpdating) {
         isNowVisualizationUpdating = nowVisualizationUpdating;
     }
 
-    /* Getters */
+    /* Other getters */
     public LearningMethod getLearningMethod() {
         return learningMethod;
     }
@@ -134,16 +137,12 @@ public class Learning {
         return iterationsAmount;
     }
 
-    public void setIterationsAmount(Integer iterationsAmount) {
-        this.iterationsAmount = iterationsAmount;
-    }
-
     public Double getLearningTolerance() {
         return learningTolerance;
     }
 
-    public void setLearningTolerance(Double learningTolerance) {
-        this.learningTolerance = learningTolerance;
+    public Boolean getIsTotalTolerance() {
+        return isTotalTolerance;
     }
 
     public GeneticAlgorithm getGeneticAlgorithm() {
@@ -154,7 +153,20 @@ public class Learning {
         return backpropagation;
     }
 
-    /* Learning method */
+    /* Other setters */
+    public void setIterationsAmount(Integer iterationsAmount) {
+        this.iterationsAmount = iterationsAmount;
+    }
+
+    public void setLearningTolerance(Double learningTolerance) {
+        this.learningTolerance = learningTolerance;
+    }
+
+    public void setIsTotalTolerance(Boolean totalTolerance) {
+        isTotalTolerance = totalTolerance;
+    }
+
+    /* Learning method enum */
     public enum LearningMethod {
         GENETIC, BACKPROPAGATION
     }

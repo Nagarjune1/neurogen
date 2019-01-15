@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Parameters {
     private NeuralNetwork neuralNetwork;
-    private ValidationService validationService;
 
     /* Learning data parameters */
     private ArrayList<NeuralObject> learningData;
@@ -24,7 +23,7 @@ public class Parameters {
     }
 
     public boolean setLearningData(ArrayList<NeuralObject> learningData) {
-        validationService = new ValidationService(this);
+        ValidationService validationService = new ValidationService(this);
         ParametersService parametersService = new ParametersService(neuralNetwork);
 
         if (validationService.validateObjects(learningData, false)) {
@@ -38,16 +37,9 @@ public class Parameters {
         }
     }
 
+    /* Getters */
     public ArrayList<NeuralObject> getLearningData() {
         return learningData;
-    }
-
-    public void setInputSize(Integer inputSize) {
-        this.inputSize = inputSize;
-    }
-
-    public void setOutputSize(Integer outputSize) {
-        this.outputSize = outputSize;
     }
 
     public Integer getInputSize() {
@@ -58,7 +50,12 @@ public class Parameters {
         return outputSize;
     }
 
-    public ValidationService getValidationService() {
-        return validationService;
+    /* Setters */
+    public void setInputSize(Integer inputSize) {
+        this.inputSize = inputSize;
+    }
+
+    public void setOutputSize(Integer outputSize) {
+        this.outputSize = outputSize;
     }
 }

@@ -40,7 +40,6 @@ public class LearningService {
     }
 
     /* Operations */
-    /* put new input vector x */
     public void putInputData(NeuralObject neuralObject) {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(0).getNeurons();
 
@@ -55,7 +54,6 @@ public class LearningService {
         }
     }
 
-    /* count outputs for every neuron */
     public void countOutputs() {
         List<Layer> layers = neuralNetwork.getStructure().getLayers();
 
@@ -101,7 +99,6 @@ public class LearningService {
         }
     }
 
-    /* count error for neurons in last layer */
     public void countLastLayerError(NeuralObject neuralObject) {
         List<Neuron> neurons = neuralNetwork.getStructure().getLayers().get(neuralNetwork.getStructure().getLayers().size() - 1).getNeurons();
         List<Double> correctAnswer = neuralObject.getCorrectAnswer();
@@ -112,7 +109,7 @@ public class LearningService {
         }
     }
 
-    /* interface updates */
+    /* Interface updating */
     public void updateLearningParameters(Integer iteration, Double error, String objects) {
         neuralNetwork.getLearning().setIsNowInterfaceUpdating(true);
         neuralNetwork.getLearning().getLearningWidget().updateInterface(iteration, error, objects);
@@ -129,7 +126,7 @@ public class LearningService {
         neuralNetwork.getLearning().getLearningWidget().drawLearningVisulization();
 
         while (neuralNetwork.getLearning().getIsNowVisualizationUpdating()) try {
-            Thread.sleep(25);
+            Thread.sleep(100);
         } catch (InterruptedException exception) {
             exception.printStackTrace();
         }

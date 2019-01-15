@@ -73,7 +73,7 @@ public class EditorChart extends Chart {
         refreshSummary();
     }
 
-
+    /* Setters */
     public void setTextSummary(Text textSummary) {
         this.textSummary = textSummary;
     }

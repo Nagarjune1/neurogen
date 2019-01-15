@@ -8,7 +8,7 @@ import pl.wozniaktomek.neural.structure.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LearningVisualizationWidget extends TopologyWidget {
+public class LearningVisualizationWidget extends TopologyVisualizationWidget {
     LearningVisualizationWidget(NeuralNetwork neuralNetwork) {
         super(neuralNetwork);
         setMinimizationVisibility(false);
@@ -47,6 +47,10 @@ public class LearningVisualizationWidget extends TopologyWidget {
 
             double angle = Math.tanh(Math.abs(startPointX - endPointX) / Math.abs(startPointY - endPointY));
             double magnification = connection.getWeight();
+
+            if (magnification < 0) {
+                magnification = (-magnification);
+            }
 
             double[] xPoints = {
                     startPointX,

@@ -26,10 +26,7 @@ public class Layer {
         neurons.add(new Neuron(this));
     }
 
-    public void setNumberOfNeurons(Integer neuronsAmount) {
-        createLayer(neuronsAmount);
-    }
-
+    /* Getters */
     public List<Neuron> getNeurons() {
         return neurons;
     }
@@ -40,5 +37,10 @@ public class Layer {
 
     public ActivationFunction getActivationFunction() {
         return activationFunction;
+    }
+
+    /* Setters */
+    public void setNumberOfNeurons(Integer neuronsAmount) {
+        createLayer(neuronsAmount);
     }
 }

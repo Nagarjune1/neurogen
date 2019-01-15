@@ -4,13 +4,16 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import pl.wozniaktomek.ThesisApp;
-import pl.wozniaktomek.service.DataEditorService;
+import pl.wozniaktomek.NeuroGenApp;
 import pl.wozniaktomek.layout.charts.EditorChart;
+import pl.wozniaktomek.service.DataEditorService;
 import pl.wozniaktomek.service.DataTransferService;
 
 import java.net.URL;
@@ -46,6 +49,7 @@ public class EditorControl implements Initializable {
         initializeWidget();
     }
 
+    /* Initializing */
     private void initializeClassSpinner() {
         classAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 8, 4));
         classAmountSpinner.setEditable(true);
@@ -78,12 +82,12 @@ public class EditorControl implements Initializable {
 
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
-            editorChart.setChartSize(ThesisApp.windowControl.getContentPane().getWidth() - 282, ThesisApp.windowControl.getContentPane().getHeight() - 98);
+            titleContainer.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth() - 82);
+            editorChart.setChartSize(NeuroGenApp.windowControl.getContentPane().getWidth() - 282, NeuroGenApp.windowControl.getContentPane().getHeight() - 98);
         };
 
-        ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
-        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+        NeuroGenApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
+        NeuroGenApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
     private void initializeSummaryListener() {

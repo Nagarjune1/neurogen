@@ -1,7 +1,6 @@
 package pl.wozniaktomek.genetic.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Chromosome implements Cloneable {
     private Integer[] genome;

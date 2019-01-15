@@ -3,8 +3,8 @@ package pl.wozniaktomek.neural.learning;
 import pl.wozniaktomek.genetic.crossover.CrossDouble;
 import pl.wozniaktomek.genetic.crossover.CrossEvenly;
 import pl.wozniaktomek.genetic.crossover.CrossSingle;
-import pl.wozniaktomek.genetic.mutation.FlipString;
 import pl.wozniaktomek.genetic.mutation.FlipBit;
+import pl.wozniaktomek.genetic.mutation.FlipString;
 import pl.wozniaktomek.genetic.selection.Roulette;
 import pl.wozniaktomek.genetic.selection.Tournament;
 import pl.wozniaktomek.genetic.util.Chromosome;
@@ -34,17 +34,18 @@ public class GeneticAlgorithm extends Thread {
     }
 
     /* Initialization */
-    void setEndingConditions(Integer iterationsAmount, Double learningTolerance) {
+    void setEndingConditions(Integer iterationsAmount, Double learningTolerance, Boolean isTotalTolerance) {
         geneticParameters.setIterationsAmount(iterationsAmount);
         geneticParameters.setLearningTolerance(learningTolerance);
+        geneticParameters.setIsTotalTolerance(isTotalTolerance);
     }
 
     private void initializeBasicParameters() {
         geneticParameters.setCrossoverMethod(CrossoverMethod.SINGLE);
-        geneticParameters.setCrossoverProbability(0.5);
+        geneticParameters.setCrossoverProbability(0.75);
 
         geneticParameters.setMutationMethod(MutationMethod.FLIPBIT);
-        geneticParameters.setMutationProbability(0.01);
+        geneticParameters.setMutationProbability(0.05);
 
         geneticParameters.setSelectionMethod(SelectionMethod.TOURNAMENT);
         geneticParameters.setTournamentSize(8);
@@ -79,6 +80,7 @@ public class GeneticAlgorithm extends Thread {
         geneticParameters.setIteration(0);
         geneticParameters.setTotalError(1d);
         geneticParameters.setLearningData(learningService.initializeLearningData());
+        geneticParameters.setObjectsOutOfTolerance(geneticParameters.getLearningData().size());
 
         learningService.initializeBiasOutput();
 
@@ -100,6 +102,7 @@ public class GeneticAlgorithm extends Thread {
             mutation();
 
             countError();
+            countObjectsOutOfTolerance();
 
             if (learning.getInterfaceUpdating()) {
                 updateInterface();
@@ -178,15 +181,17 @@ public class GeneticAlgorithm extends Thread {
     }
 
     private boolean toleranceCondition() {
-        return geneticParameters.getTotalError() > learning.getLearningTolerance();
+        if (geneticParameters.getIsTotalTolerance()) {
+            return geneticParameters.getTotalError() > learning.getLearningTolerance();
+        } else {
+            return geneticParameters.getObjectsOutOfTolerance() > 0;
+        }
     }
 
-    /* interface update */
+    /* Interface updating */
     private void updateInterface() {
-        countObjectsOutOfTolerance();
         learningService.updateLearningParameters(geneticParameters.getIteration(), geneticParameters.getTotalError(),
                 geneticParameters.getObjectsOutOfTolerance().toString() + " / " + neuralNetwork.getParameters().getLearningData().size());
-
     }
 
     private void updateVisualization() {
@@ -214,17 +219,15 @@ public class GeneticAlgorithm extends Thread {
         learning.getLearningWidget().endLearning();
     }
 
-    /* get parameters */
+    /* Getter */
     public GeneticParameters getGeneticParameters() {
         return geneticParameters;
     }
 
-    /* Operations */
+    /* Operations enums */
     public enum SelectionMethod {
         ROULETTE, TOURNAMENT
     }
-
     public enum CrossoverMethod {SINGLE, DOUBLE, EVENLY}
-
     public enum MutationMethod {FLIPBIT, FLIPSTRING}
 }

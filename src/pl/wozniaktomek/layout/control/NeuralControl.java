@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.NeuroGenApp;
 import pl.wozniaktomek.layout.widget.*;
 import pl.wozniaktomek.neural.NeuralNetwork;
 
@@ -29,10 +29,8 @@ public class NeuralControl implements Initializable {
 
     private NeuralNetwork neuralNetwork;
 
-    private LoadDataWidget loadDataWidget;
     private SettingsWidget settingsWidget;
-    private TopologyWidget topologyWidget;
-    private LearningWidget learningWidget;
+    private TopologyVisualizationWidget topologyVisualizationWidget;
     private StartupWidget startupWidget;
     private TestWidget testWidget;
 
@@ -51,20 +49,22 @@ public class NeuralControl implements Initializable {
         neuralNetwork.setNeuralControl(this);
     }
 
+    /* Refreshing */
     public void refreshSettings() {
         settingsWidget.refreshWidget();
     }
 
     public void refreshTopology() {
-        topologyWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 54);
+        topologyVisualizationWidget.drawNetwork(NeuroGenApp.windowControl.getContentPane().getWidth() - 54);
     }
 
+    /* Initializting */
     private void initializeNeuralNetwork() {
         neuralNetwork = new NeuralNetwork();
     }
 
     private void initializeReadDataWidget() {
-        loadDataWidget = new LoadDataWidget(this, neuralNetwork);
+        LoadDataWidget loadDataWidget = new LoadDataWidget(this, neuralNetwork);
         settingsTab.getChildren().add(loadDataWidget.getWidget());
     }
 
@@ -74,12 +74,12 @@ public class NeuralControl implements Initializable {
     }
 
     private void initializeNetworkTopologyWidget() {
-        topologyWidget = new TopologyWidget(neuralNetwork);
-        settingsTab.getChildren().add(topologyWidget.getWidget());
+        topologyVisualizationWidget = new TopologyVisualizationWidget(neuralNetwork);
+        settingsTab.getChildren().add(topologyVisualizationWidget.getWidget());
     }
 
     private void initializeLearningWidget() {
-        learningWidget = new LearningWidget(neuralNetwork);
+        LearningWidget learningWidget = new LearningWidget(neuralNetwork);
         learningTab.getChildren().add(learningWidget.getWidget());
     }
 
@@ -95,37 +95,37 @@ public class NeuralControl implements Initializable {
 
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            titleContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 82);
-            contentContainer.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth());
+            titleContainer.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth() - 82);
+            contentContainer.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth());
 
-            settingsTab.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 36);
-            settingsTabPane.setPrefSize(ThesisApp.windowControl.getContentPane().getWidth(), ThesisApp.windowControl.getContentPane().getHeight());
+            settingsTab.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth() - 36);
+            settingsTabPane.setPrefSize(NeuroGenApp.windowControl.getContentPane().getWidth(), NeuroGenApp.windowControl.getContentPane().getHeight());
 
-            learningTab.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 36);
-            learningTabPane.setPrefSize(ThesisApp.windowControl.getContentPane().getWidth(), ThesisApp.windowControl.getContentPane().getHeight());
+            learningTab.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth() - 36);
+            learningTabPane.setPrefSize(NeuroGenApp.windowControl.getContentPane().getWidth(), NeuroGenApp.windowControl.getContentPane().getHeight());
 
-            startupTab.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 36);
-            startupTabPane.setPrefSize(ThesisApp.windowControl.getContentPane().getWidth(), ThesisApp.windowControl.getContentPane().getHeight());
+            startupTab.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth() - 36);
+            startupTabPane.setPrefSize(NeuroGenApp.windowControl.getContentPane().getWidth(), NeuroGenApp.windowControl.getContentPane().getHeight());
 
-            testTab.setPrefWidth(ThesisApp.windowControl.getContentPane().getWidth() - 36);
-            testTabPane.setPrefSize(ThesisApp.windowControl.getContentPane().getWidth(), ThesisApp.windowControl.getContentPane().getHeight());
+            testTab.setPrefWidth(NeuroGenApp.windowControl.getContentPane().getWidth() - 36);
+            testTabPane.setPrefSize(NeuroGenApp.windowControl.getContentPane().getWidth(), NeuroGenApp.windowControl.getContentPane().getHeight());
 
             refreshTopology();
         };
 
-        ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
-        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+        NeuroGenApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
+        NeuroGenApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
     /* Widgets expanding */
     public void minimizeSettingsWidgets() {
         settingsWidget.minimizeWidget();
-        topologyWidget.minimizeWidget();
+        topologyVisualizationWidget.minimizeWidget();
     }
 
     public void maximizeSettingsWidgets() {
         settingsWidget.maximizeWidget();
-        topologyWidget.maximizeWidget();
+        topologyVisualizationWidget.maximizeWidget();
     }
 
     /* Getters */

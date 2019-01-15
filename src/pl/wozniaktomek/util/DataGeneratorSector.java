@@ -1,6 +1,7 @@
 package pl.wozniaktomek.util;
 
 public enum DataGeneratorSector {
+    /* Predefined sectors for data editor generator */
     N(-4d, 4d, 2d, 8d),
     S(-4d, 4d, -8d, -2d),
     W(-8d, -2d, -4d, 4d),
@@ -22,6 +23,7 @@ public enum DataGeneratorSector {
         this.maxY = maxY;
     }
 
+    /* Getters */
     public Double getMinX() {
         return minX;
     }

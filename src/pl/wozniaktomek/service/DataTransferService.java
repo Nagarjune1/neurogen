@@ -2,7 +2,7 @@ package pl.wozniaktomek.service;
 
 import javafx.geometry.Point2D;
 import javafx.stage.FileChooser;
-import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.NeuroGenApp;
 import pl.wozniaktomek.neural.util.NeuralObject;
 
 import java.io.File;
@@ -17,10 +17,12 @@ public class DataTransferService {
     private Integer classCounter;
     private String transferStatus;
 
-    /* Parsing to file */
+    /*
+     * Parsing to file
+     */
     public void saveToFile(HashMap<Integer, ArrayList<Point2D>> objects) {
         FileChooser fileChooser = createFileChooser();
-        File file = fileChooser.showSaveDialog(ThesisApp.stage);
+        File file = fileChooser.showSaveDialog(NeuroGenApp.stage);
         if (file != null) {
             try {
                 Files.write(Paths.get(file.getPath()), parseToString(organizeObjects(objects)).getBytes());
@@ -30,6 +32,7 @@ public class DataTransferService {
         }
     }
 
+    /* Sorting objects by class */
     private HashMap<Integer, ArrayList<Point2D>> organizeObjects(HashMap<Integer, ArrayList<Point2D>> objects) {
         for (int i = 1; i <= 8; i++) {
             if (!objects.containsKey(i)) {
@@ -85,10 +88,12 @@ public class DataTransferService {
         return content;
     }
 
-    /* Parsing from file */
+    /*
+     * Parsing from file
+     */
     public ArrayList<NeuralObject> readFromFile() {
         FileChooser fileChooser = createFileChooser();
-        File file = fileChooser.showOpenDialog(ThesisApp.stage);
+        File file = fileChooser.showOpenDialog(NeuroGenApp.stage);
 
         if (file != null) {
             return parseFromFile(file);
@@ -170,7 +175,7 @@ public class DataTransferService {
 
         for (int j = 0; j < inputAmount; j++) {
             if (Objects.equals(splitLine[j], "")) {
-                transferStatus = "Dane w linii " + line + " są niepoprawne - pustka w duszy.";
+                transferStatus = "Dane w linii " + line + " są niepoprawne - pusta linia";
                 return null;
             } else {
                 inputValues.add(Double.valueOf(splitLine[j]));
@@ -187,7 +192,7 @@ public class DataTransferService {
 
     private Integer getClassNumber(String splitLine[], Integer inputAmount, Integer classAmount, Integer line) {
         if (splitLine.length != (inputAmount + classAmount)) {
-            transferStatus = "Dane w linii " + line + " są niepoprawne - błędna ilość klas.";
+            transferStatus = "Dane w linii " + line + " są niepoprawne - błędna liczba klas.";
             return null;
         }
 
@@ -210,7 +215,6 @@ public class DataTransferService {
         return classNumber;
     }
 
-    /* Parsing list to map */
     public HashMap<Integer, ArrayList<Point2D>> parseListToMap(ArrayList<NeuralObject> objects) {
         if (objects != null) {
             HashMap<Integer, ArrayList<Point2D>> objectsInMap = new HashMap<>();
@@ -247,7 +251,7 @@ public class DataTransferService {
         return new Point2D(neuralObject.getInputValues().get(0), neuralObject.getInputValues().get(1));
     }
 
-    /* File Chooser */
+    /* File chooser */
     private FileChooser createFileChooser() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Plik z danymi");

@@ -15,6 +15,7 @@ abstract public class LearningParameters {
     /* General learning parameters */
     private Integer iterationsAmount;
     private Double learningTolerance;
+    private Boolean isTotalTolerance;
 
     /* Status parameters */
     private Integer iteration;
@@ -35,6 +36,10 @@ abstract public class LearningParameters {
 
     public Double getLearningTolerance() {
         return learningTolerance;
+    }
+
+    public Boolean getIsTotalTolerance() {
+        return isTotalTolerance;
     }
 
     public Integer getIteration() {
@@ -60,6 +65,10 @@ abstract public class LearningParameters {
 
     public void setLearningTolerance(Double learningTolerance) {
         this.learningTolerance = learningTolerance;
+    }
+
+    public void setIsTotalTolerance(Boolean isTotalTolerance) {
+        this.isTotalTolerance = isTotalTolerance;
     }
 
     public void setIteration(Integer iteration) {

@@ -5,18 +5,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
-import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.service.LayoutService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class TopologyWidget extends Widget {
+public class TopologyVisualizationWidget extends Widget {
     private final static double DEFAULT_NEURON_RADIUS = 58d;
     private final static double DEFAULT_NEURON_SIZE = 78d;
     private Double neuronSize, neuronMargin;
@@ -31,7 +29,7 @@ public class TopologyWidget extends Widget {
 
     HashMap<Integer, ArrayList<Point2D>> points;
 
-    public TopologyWidget(NeuralNetwork neuralNetwork) {
+    public TopologyVisualizationWidget(NeuralNetwork neuralNetwork) {
         this.neuralNetwork = neuralNetwork;
         createWidget("Wizualizacja topologii sieci");
     }
@@ -176,18 +174,4 @@ public class TopologyWidget extends Widget {
             graphicsContext.strokeLine(startPoint.getX(), startPoint.getY() + neuronRadius / 2, endPoint.getX(), endPoint.getY() - neuronRadius / 2);
         }
     }
-
-    /* just for debug */
-    private void drawNeuronNumbers() {
-        graphicsContext.setFont(new Font("Arial", 16));
-        graphicsContext.setFill(Color.rgb(0, 0, 0, 1.0));
-
-        int counter = 0;
-        for (Map.Entry<Integer, ArrayList<Point2D>> entry : points.entrySet()) {
-            for (Point2D point : entry.getValue()) {
-                graphicsContext.fillText(String.valueOf(++counter), point.getX() - neuronRadius / 8d, point.getY() - neuronRadius / 8d);
-            }
-        }
-    }
-
 }

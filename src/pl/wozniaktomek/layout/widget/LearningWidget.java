@@ -9,7 +9,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.NeuroGenApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.service.LayoutService;
 
@@ -19,6 +19,9 @@ import java.util.TimerTask;
 
 public class LearningWidget extends Widget {
     private NeuralNetwork neuralNetwork;
+
+    /* Panels */
+    private VBox visualizationHelpVBox;
 
     /* Controls */
     private Button buttonStartLearning;
@@ -38,8 +41,6 @@ public class LearningWidget extends Widget {
     private DecimalFormat errorDecimalFormat = new DecimalFormat("#.####");
     private DecimalFormat timeDecimalFormat = new DecimalFormat("#.#");
 
-    /* Visualization */
-    private VBox visualizationyContainer;
     private LearningVisualizationWidget learningVisualizationWidget;
 
     public LearningWidget(NeuralNetwork neuralNetwork) {
@@ -48,6 +49,7 @@ public class LearningWidget extends Widget {
         initialize();
     }
 
+    /* Initialization */
     private void initialize() {
         initializeControlsContainer();
         initializeStatisticsContainer();
@@ -59,9 +61,30 @@ public class LearningWidget extends Widget {
         neuralNetwork.getLearning().setLearningWidget(this);
     }
 
+    private void initializeControlsContainer() {
+        VBox vBox = layoutService.getVBox(0d, 0d, 16d);
+        vBox.getChildren().add(layoutService.getText("KONTROLA UCZENIA", LayoutService.TextStyle.HEADING));
+        contentContainer.getChildren().add(vBox);
+
+        HBox hbox = layoutService.getHBox(0d, 8d, 12d);
+        hbox.getChildren().add(layoutService.getText("STEROWANIE", LayoutService.TextStyle.PARAGRAPH));
+        buttonStartLearning = layoutService.getButton("Uruchom uczenie");
+        buttonStopLearning = layoutService.getButton("Przewij uczenie");
+        buttonStopLearning.setDisable(true);
+        hbox.getChildren().addAll(buttonStartLearning, buttonStopLearning);
+
+        hbox.getChildren().add(new Separator(Orientation.VERTICAL));
+        hbox.getChildren().addAll(getInterfaceUpdateCheckbox(), getLearningVisualizationCheckbox());
+        vBox.getChildren().add(hbox);
+
+        visualizationHelpVBox = layoutService.getVBox(0d, 0d, 0d);
+        contentContainer.getChildren().add(visualizationHelpVBox);
+    }
+
     private void initializeStatisticsContainer() {
         VBox vBox = layoutService.getVBox(0d, 0d, 12d);
         vBox.getChildren().add(layoutService.getText("STATYSTYKI UCZENIA", LayoutService.TextStyle.HEADING));
+        contentContainer.getChildren().add(vBox);
 
         HBox mainHBox = layoutService.getHBox(0d, 0d, 12d);
         vBox.getChildren().add(mainHBox);
@@ -93,31 +116,10 @@ public class LearningWidget extends Widget {
         textoObjectsOutOfTolerance = layoutService.getText("N/A", LayoutService.TextStyle.STATUS_WHITE);
         objectsVbox.getChildren().addAll(layoutService.getText("Dane poza tolerancją", LayoutService.TextStyle.PARAGRAPH_WHITE), textoObjectsOutOfTolerance);
         mainHBox.getChildren().add(objectsVbox);
-
-        contentContainer.getChildren().add(vBox);
-    }
-
-    private void initializeControlsContainer() {
-        VBox vBox = layoutService.getVBox(0d, 0d, 16d);
-        vBox.getChildren().add(layoutService.getText("KONTROLA UCZENIA", LayoutService.TextStyle.HEADING));
-        contentContainer.getChildren().add(vBox);
-
-        HBox hbox = layoutService.getHBox(0d, 8d, 12d);
-        hbox.getChildren().add(layoutService.getText("STEROWANIE", LayoutService.TextStyle.PARAGRAPH));
-        buttonStartLearning = layoutService.getButton("Uruchom uczenie");
-        buttonStopLearning = layoutService.getButton("Przewij uczenie");
-        buttonStopLearning.setDisable(true);
-        hbox.getChildren().addAll(buttonStartLearning, buttonStopLearning);
-
-        hbox.getChildren().add(new Separator(Orientation.VERTICAL));
-
-        hbox.getChildren().addAll(getInterfaceUpdateCheckbox(), getLearningVisualizationCheckbox());
-
-        vBox.getChildren().add(hbox);
     }
 
     private void initializeVisualizationContainer() {
-        visualizationyContainer = layoutService.getVBox(0d, 0d, 0d);
+        VBox visualizationyContainer = layoutService.getVBox(0d, 0d, 0d);
 
         learningVisualizationWidget = new LearningVisualizationWidget(neuralNetwork);
         learningVisualizationWidget.minimizeWidget();
@@ -131,6 +133,16 @@ public class LearningWidget extends Widget {
         buttonStopLearning.setOnAction(event -> stopLearning());
     }
 
+    private void initializeSizeListener() {
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            if (startTime != null) {
+                drawLearningVisulization();
+            }
+        };
+        NeuroGenApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
+    }
+
+    /* Control */
     private void startLearning() {
         neuralNetwork.startLearning();
         switchButtons(buttonStartLearning);
@@ -153,18 +165,9 @@ public class LearningWidget extends Widget {
         }
     }
 
-    private void initializeSizeListener() {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            if (startTime != null) {
-                drawLearningVisulization();
-            }
-        };
-        ThesisApp.windowControl.getContentPane().widthProperty().addListener(stageSizeListener);
-    }
-
     /* Interface control */
     public void drawLearningVisulization() {
-        Platform.runLater(() -> learningVisualizationWidget.drawNetwork(ThesisApp.windowControl.getContentPane().getWidth() - 108));
+        Platform.runLater(() -> learningVisualizationWidget.drawNetwork(NeuroGenApp.windowControl.getContentPane().getWidth() - 108));
     }
 
     public void disableControls() {
@@ -226,8 +229,10 @@ public class LearningWidget extends Widget {
 
             if (newValue) {
                 learningVisualizationWidget.maximizeWidget();
+                visualizationHelpVBox.getChildren().add(layoutService.getText("Wizualizacja: kolor ciemny - waga dodatnia, kolor jasny - waga ujemna", LayoutService.TextStyle.PARAGRAPH));
             } else {
                 learningVisualizationWidget.minimizeWidget();
+                visualizationHelpVBox.getChildren().clear();
             }
         });
         return checkBox;

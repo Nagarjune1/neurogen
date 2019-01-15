@@ -12,10 +12,7 @@ public class NeuralObject {
         this.classNumber = classNumber;
     }
 
-    public void setCorrectAnswer(ArrayList<Double> correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
+    /* Getters */
     public ArrayList<Double> getInputValues() {
         return inputValues;
     }
@@ -26,5 +23,10 @@ public class NeuralObject {
 
     public ArrayList<Double> getCorrectAnswer() {
         return correctAnswer;
+    }
+
+    /* Setter */
+    public void setCorrectAnswer(ArrayList<Double> correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }

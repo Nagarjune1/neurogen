@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -52,6 +53,22 @@ public class LayoutService {
         }
 
         return checkBox;
+    }
+
+    public Spinner<Integer> getIntegerSpinner(Double prefWidth, Boolean isEditable, Boolean isDisable) {
+        Spinner<Integer> spinner = new Spinner<>();
+        spinner.setPrefWidth(prefWidth);
+        spinner.setEditable(isEditable);
+        spinner.setDisable(isDisable);
+        return spinner;
+    }
+
+    public Spinner<Double> getDoubleSpinner(Double prefWidth, Boolean isEditable, Boolean isDisable) {
+        Spinner<Double> spinner = new Spinner<>();
+        spinner.setPrefWidth(prefWidth);
+        spinner.setEditable(isEditable);
+        spinner.setDisable(isDisable);
+        return spinner;
     }
 
     public HBox getHBox(Double paddingVertical, Double paddingHorizontal, Double spacing) {

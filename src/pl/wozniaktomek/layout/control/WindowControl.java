@@ -5,9 +5,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.NeuroGenApp;
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,6 +44,7 @@ public class WindowControl implements Initializable {
         switchPanels(ActivePane.HOME);
     }
 
+    /* Initializing */
     private void initializePanels() {
         try {
             homePane = FXMLLoader.load(getClass().getResource("view/home.fxml"));
@@ -80,15 +81,15 @@ public class WindowControl implements Initializable {
 
     private void initializeSizeListener() {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            contentPane.setPrefSize(ThesisApp.stage.getWidth() - navPane.getWidth() - 16, ThesisApp.stage.getHeight() - 38);
+            contentPane.setPrefSize(NeuroGenApp.stage.getWidth() - navPane.getWidth() - 16, NeuroGenApp.stage.getHeight() - 38);
 
             homePane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             editorPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
             neuralPane.setPrefSize(contentPane.getPrefWidth(), contentPane.getPrefHeight());
         };
 
-        ThesisApp.stage.widthProperty().addListener(stageSizeListener);
-        ThesisApp.stage.heightProperty().addListener(stageSizeListener);
+        NeuroGenApp.stage.widthProperty().addListener(stageSizeListener);
+        NeuroGenApp.stage.heightProperty().addListener(stageSizeListener);
     }
 
     private void initializeButtonActions() {
@@ -98,6 +99,8 @@ public class WindowControl implements Initializable {
         buttonNavExit.setOnAction(event -> closeProgram());
 
     }
+
+    /* Switching panels */
     private void switchPanels(ActivePane activePanel) {
         switch (activePanel) {
             case HOME:
@@ -149,10 +152,12 @@ public class WindowControl implements Initializable {
         }
     }
 
+    /* Getter */
     public AnchorPane getContentPane() {
         return contentPane;
     }
 
+    /* Program closing */
     private void closeProgram() {
         Platform.exit();
         System.exit(0);

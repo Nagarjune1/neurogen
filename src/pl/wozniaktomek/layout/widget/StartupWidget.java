@@ -3,11 +3,13 @@ package pl.wozniaktomek.layout.widget;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import pl.wozniaktomek.ThesisApp;
+import pl.wozniaktomek.NeuroGenApp;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.service.ParametersService;
 import pl.wozniaktomek.neural.service.StartupService;
@@ -49,6 +51,7 @@ public class StartupWidget extends Widget {
         }
     }
 
+    /* Initialization */
     private void initialize() {
         initializeStatusContainers();
         initializeTableContainer();
@@ -111,7 +114,7 @@ public class StartupWidget extends Widget {
         parametersService.setCorrectAnswers(verificationData);
 
         table = new TableView<>();
-        table.setPrefHeight(ThesisApp.stage.getHeight() - 368);
+        table.setPrefHeight(NeuroGenApp.stage.getHeight() - 368);
         table.setEditable(false);
 
         tableContainer.getChildren().clear();
@@ -136,36 +139,8 @@ public class StartupWidget extends Widget {
             column.setMaxWidth(128d);
             column.setMinWidth(32d);
 
-            if (i == columnNames.size() - 1) {
-                createCellFactory(column);
-            }
-
             table.getColumns().add(column);
         }
-    }
-
-    private void createCellFactory(TableColumn<List<String>, String> tableColumn) {
-        tableColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? "" : getItem());
-
-                /*
-                TableRow<List<String>> row = getTableRow();
-                if (!isEmpty()) {
-                    if (row != null) {
-                        if (Double.parseDouble(item.replace(",", ".")) <= neuralNetwork.getLearning().getLearningTolerance()) {
-                            row.setStyle("-fx-background-color: rgba(16, 66, 16, 0.9)");
-                        } else {
-                            row.setStyle("-fx-background-color: rgba(145, 8, 12, 0.9)");
-                        }
-                    }
-                }
-                // #TODO cell color changes
-                */
-            }
-        });
     }
 
     private List<String> createColumnNames() {
@@ -228,8 +203,8 @@ public class StartupWidget extends Widget {
     }
 
     private void initializeTableSizeListener() {
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(ThesisApp.stage.getHeight() - 368);
-        ThesisApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> table.setPrefHeight(NeuroGenApp.stage.getHeight() - 368);
+        NeuroGenApp.windowControl.getContentPane().heightProperty().addListener(stageSizeListener);
     }
 
     private void setButtonStyle(Boolean state) {

@@ -32,6 +32,7 @@ public class LoadDataWidget extends Widget {
         initialize();
     }
 
+    /* Initialization */
     private void initialize() {
         initializeContainers();
         initializeButtons();
@@ -71,6 +72,7 @@ public class LoadDataWidget extends Widget {
         });
     }
 
+    /* Actions */
     private void validateLearningData() {
         if (neuralNetwork.loadLearningData(learningData)) {
             setButtonStyle(true);

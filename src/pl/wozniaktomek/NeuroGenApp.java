@@ -11,7 +11,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import pl.wozniaktomek.layout.control.WindowControl;
 
-public class ThesisApp extends Application {
+public class NeuroGenApp extends Application {
     public static WindowControl windowControl;
     public static Stage stage;
     private Parent root;

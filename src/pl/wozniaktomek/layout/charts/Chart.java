@@ -15,6 +15,12 @@ abstract class Chart {
     NumberAxis xAxis;
     NumberAxis yAxis;
 
+    abstract public void refreshWidget();
+
+    abstract void initializeData();
+
+    abstract void initializeEvent();
+
     void initializeChart(Integer prefWidth, Integer prefHeight) {
         xAxis = new NumberAxis(-10, 10, 1);
         yAxis = new NumberAxis(-10, 10, 1);
@@ -58,10 +64,16 @@ abstract class Chart {
         }
     }
 
+    /* Getters */
     public ScatterChart<Number, Number> getChart() {
         return chart;
     }
 
+    public HashMap<Integer, ArrayList<Point2D>> getObjects() {
+        return objects;
+    }
+
+    /* Setters */
     public void setChartSize(Double width, Double height) {
         chart.setPrefSize(width, height);
     }
@@ -69,14 +81,4 @@ abstract class Chart {
     public void setObjects(HashMap<Integer, ArrayList<Point2D>> objects) {
         this.objects = objects;
     }
-
-    public HashMap<Integer, ArrayList<Point2D>> getObjects() {
-        return objects;
-    }
-
-    abstract void initializeEvent();
-
-    abstract void initializeData();
-
-    abstract public void refreshWidget();
 }

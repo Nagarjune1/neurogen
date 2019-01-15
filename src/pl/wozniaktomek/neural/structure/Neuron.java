@@ -10,7 +10,6 @@ public class Neuron {
     private List<Connection> connectionsInput;
     private List<Connection> connectionsOutput;
 
-    private Double input;
     private Double output;
     private Double outputError;
     private Double errorSignal;
@@ -21,22 +20,7 @@ public class Neuron {
         connectionsOutput = new ArrayList<>();
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public void setInput(Double input) {
-        this.input = input;
-    }
-
-    public void setOutput(Double output) {
-        this.output = output;
-    }
-
-    public void setOutputError(Double outputError) {
-        this.outputError = outputError;
-    }
-
+    /* Getters */
     public Layer getLayer() {
         return layer;
     }
@@ -61,30 +45,24 @@ public class Neuron {
         return outputError;
     }
 
-    public Double getOutputSigmoidDerivative() {
-        return output * (1 - output);
-    }
-
     public Double getErrorSignal() {
         return errorSignal;
     }
 
-    public void setErrorSignal(Double errorSignal) {
-        this.errorSignal = errorSignal;
+    /* Setters */
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
-    /* just for debug */
-    private void showConnections() {
-        System.out.println("\n # NEURON [" + number + "]");
+    public void setOutput(Double output) {
+        this.output = output;
+    }
 
-        System.out.println("Połączenia wchodzące (" + connectionsInput.size() + ")");
-        for (Connection connection : connectionsInput) {
-            System.out.println("    połączenie z neuronem: " + connection.getNeuronInput().getNumber() + " o wyjsciu " + connection.getNeuronInput().getOutput());
-        }
+    public void setOutputError(Double outputError) {
+        this.outputError = outputError;
+    }
 
-        System.out.println("Połączenia wychodzące (" + connectionsOutput.size() + ")");
-        for (Connection connection : connectionsOutput) {
-            System.out.println("    połączenie z neuronem: " + connection.getNeuronOutput().getNumber());
-        }
+    public void setErrorSignal(Double errorSignal) {
+        this.errorSignal = errorSignal;
     }
 }
