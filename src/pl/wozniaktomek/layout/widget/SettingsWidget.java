@@ -290,7 +290,6 @@ public class SettingsWidget extends Widget {
     private ChoiceBox getLearningMethodChoiceBox() {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Algorytm genetyczny", "Algorytm wstecznej propagacji");
-        choiceBox.setMinWidth(212d);
 
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equals("Algorytm genetyczny")) {
@@ -316,7 +315,6 @@ public class SettingsWidget extends Widget {
     private ChoiceBox getGeneticCrossoverMethodChoiceBox() {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Krzyżowanie jednopunktowe", "Krzyżowanie dwupunktowe", "Krzyżowanie równomierne");
-        choiceBox.setMinWidth(212d);
 
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             switch (newValue) {
@@ -354,7 +352,6 @@ public class SettingsWidget extends Widget {
     private ChoiceBox getGeneticMutationMethodChoiceBox() {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Mutacja pojedynczego bitu", "Mutacja całego ciągu bitów");
-        choiceBox.setMinWidth(212d);
 
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equals("Mutacja pojedynczego bitu")) {
@@ -384,7 +381,6 @@ public class SettingsWidget extends Widget {
     private ChoiceBox getGeneticSelectionMethodChoiceBox() {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.getItems().addAll("Metoda turniejowa", "Metoda koła ruletki");
-        choiceBox.setMinWidth(212d);
 
         choiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.equals("Metoda turniejowa")) {

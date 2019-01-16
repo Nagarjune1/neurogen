@@ -29,7 +29,7 @@
                      <Insets bottom="16.0" left="24.0" right="24.0" top="16.0" />
                  </padding>
                  <Tab closable="false" text="FUNKCJONALNOŚĆ">
-                     <AnchorPane minWidth="840.0">
+                     <AnchorPane prefWidth="840.0">
                          <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                              <VBox>
                                  <VBox spacing="12.0">
@@ -40,7 +40,8 @@
                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="Zawartość" />
                                      </TextFlow>
                                      <HBox spacing="24.0">
-                                         <HBox alignment="TOP_RIGHT" maxHeight="52.0" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -58,7 +59,8 @@
                                                  </TextFlow>
                                              </VBox>
                                          </HBox>
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -89,7 +91,8 @@
                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="Metody uczenia" />
                                      </TextFlow>
                                      <HBox spacing="24.0">
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -107,7 +110,8 @@
                                                  </TextFlow>
                                              </VBox>
                                          </HBox>
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -138,7 +142,8 @@
                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="Funkcjonalność" />
                                      </TextFlow>
                                      <HBox spacing="24.0">
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -156,7 +161,8 @@
                                                  </TextFlow>
                                              </VBox>
                                          </HBox>
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -174,7 +180,8 @@
                                                  </TextFlow>
                                              </VBox>
                                          </HBox>
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -205,7 +212,8 @@
                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text-heading" text="Autor" />
                                      </TextFlow>
                                      <HBox spacing="24.0">
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
@@ -223,7 +231,8 @@
                                                  </TextFlow>
                                              </VBox>
                                          </HBox>
-                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" styleClass="widget-icon">
+                                         <HBox alignment="TOP_RIGHT" maxWidth="512.0" minWidth="128.0"
+                                               styleClass="widget-icon">
                                              <VBox alignment="CENTER" styleClass="widget-icon-background">
                                                  <padding>
                                                      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
