@@ -1,5 +1,6 @@
 package pl.wozniaktomek.neural.service;
 
+import javafx.application.Platform;
 import pl.wozniaktomek.neural.NeuralNetwork;
 import pl.wozniaktomek.neural.structure.Connection;
 import pl.wozniaktomek.neural.structure.Layer;
@@ -112,10 +113,11 @@ public class LearningService {
     /* Interface updating */
     public void updateLearningParameters(Integer iteration, Double error, String objects) {
         neuralNetwork.getLearning().setIsNowInterfaceUpdating(true);
-        neuralNetwork.getLearning().getLearningWidget().updateInterface(iteration, error, objects);
+
+        Platform.runLater(() -> neuralNetwork.getLearning().getLearningWidget().updateInterface(iteration, error, objects));
 
         while (neuralNetwork.getLearning().getIsNowInterfaceUpdating()) try {
-            Thread.sleep(25);
+            Thread.sleep(10);
         } catch (InterruptedException exception) {
             exception.printStackTrace();
         }
@@ -123,10 +125,11 @@ public class LearningService {
 
     public void updateVisualization() {
         neuralNetwork.getLearning().setIsNowVisualizationUpdating(true);
-        neuralNetwork.getLearning().getLearningWidget().drawLearningVisulization();
+
+        Platform.runLater(() -> neuralNetwork.getLearning().getLearningWidget().drawLearningVisulization());
 
         while (neuralNetwork.getLearning().getIsNowVisualizationUpdating()) try {
-            Thread.sleep(100);
+            Thread.sleep(10);
         } catch (InterruptedException exception) {
             exception.printStackTrace();
         }
